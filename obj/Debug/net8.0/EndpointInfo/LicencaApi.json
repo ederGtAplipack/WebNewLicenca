@@ -1,0 +1,310 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "LicencaApi",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/licencas": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Licenca"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarLicencaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarLicencaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarLicencaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/licencas/{id}": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/licencas/ativas": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/licencas/{id}/desativar": {
+      "patch": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AtualizarLicencaDTO": {
+        "type": "object",
+        "properties": {
+          "numLic": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCliente": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipoLic": {
+            "type": "string",
+            "nullable": true
+          },
+          "macAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataLic": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scade": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attivo": {
+            "type": "boolean"
+          },
+          "idRevenda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaOp": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataAtivacao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tipoPc": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeComputador": {
+            "type": "string",
+            "nullable": true
+          },
+          "software": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "processador": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLicencaChave": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarLicencaDTO": {
+        "type": "object",
+        "properties": {
+          "numLic": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCliente": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipoLic": {
+            "type": "string",
+            "nullable": true
+          },
+          "macAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataLic": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scade": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attivo": {
+            "type": "boolean"
+          },
+          "idRevenda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaOp": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataAtivacao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tipoPc": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeComputador": {
+            "type": "string",
+            "nullable": true
+          },
+          "software": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "processador": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLicencaChave": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
