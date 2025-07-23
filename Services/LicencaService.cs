@@ -13,25 +13,28 @@ namespace LicencaApi.Services;
 
 public class LicencaService : ILicencaService
 {
+    private readonly ILicencaRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly LicencaDbContext  _context;
     private readonly IMapper _mapper;
     private readonly ILogger<LicencaService> _logger;
 
-    public LicencaService(LicencaDbContext context, IMapper mapper, ILogger<LicencaService> logger, IUnitOfWork unitOfWork)
+    public LicencaService(LicencaDbContext context, IMapper mapper, ILogger<LicencaService> logger, IUnitOfWork unitOfWork, ILicencaRepository repository)
     {
         _context = context;
         _mapper = mapper;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _repository = repository;
     }
     public async Task<IEnumerable<LicencaModel>> BuscarTodasAsync()
     {
-        return await _context.Licencas.ToListAsync();
+        //return await _context.Licencas.ToListAsync();
+        return await _repository.BuscarTodasAsync(); // Se usar repositório
     }
     public async Task<LicencaModel?> BuscarPorIdAsync(int id)
     {
-        return await _context.Licencas.FindAsync(id);
+        return await _context.Licencas.FindAsync(id);        
     }
 
     public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()

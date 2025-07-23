@@ -24,7 +24,14 @@ namespace LicencaApi.Helpers
                 Software = dto.Software,
                 Ip = dto.Ip,
                 Processador = dto.Processador,
-                IdLicencaChave = int.TryParse(dto.IdLicencaChave, out var parsedValue) ? parsedValue : 0
+                //IdLicencaChave = int.TryParse(dto.IdLicencaChave, out var parsedValue) ? parsedValue : 0
+                IdLicencaChave = string.IsNullOrEmpty(dto.IdLicencaChave) 
+                    ? null 
+                    : int.TryParse(dto.IdLicencaChave, out var parsedValue) 
+                        ? parsedValue.ToString() 
+                        : dto.IdLicencaChave,
+                Status = "Pedente Analise" // Definindo um status padrão, pode ser alterado conforme a lógica de negócio
+
             };
         }
 
@@ -43,11 +50,16 @@ namespace LicencaApi.Helpers
             model.Software = dto.Software ?? model.Software;
             model.Ip = dto.Ip ?? model.Ip;
             model.Processador = dto.Processador ?? model.Processador;
-            model.IdLicencaChave = string.IsNullOrEmpty(dto.IdLicencaChave) 
+            /*model.IdLicencaChave = string.IsNullOrEmpty(dto.IdLicencaChave) 
                 ? model.IdLicencaChave 
                 : int.TryParse(dto.IdLicencaChave, out var parsedValue) 
                     ? parsedValue 
-                    : model.IdLicencaChave;
+                    : model.IdLicencaChave;*/
+            model.IdLicencaChave = string.IsNullOrEmpty(dto.IdLicencaChave)
+                ? model.IdLicencaChave 
+                : int.TryParse(dto.IdLicencaChave, out var parsedValue) 
+                    ? parsedValue.ToString() 
+                    : dto.IdLicencaChave;
         }
     }
 }

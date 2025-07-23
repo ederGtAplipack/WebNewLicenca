@@ -37,8 +37,9 @@ namespace LicencaApi.Models
         public string? Ip { get; set; } = string.Empty;
         [Column("processador")]
         public string? Processador { get; set; } = string.Empty;
-        //[Column("id_licenca_chave")]
+        [Column("status")]
         public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
-        public string IdLicencaChave { get; internal set; }
+        [Column("id_licenca_chave")]
+        public string? IdLicencaChave { get; internal set; } // Chave de Licença, pode ser um GUID ou outro identificador único
     }
 }

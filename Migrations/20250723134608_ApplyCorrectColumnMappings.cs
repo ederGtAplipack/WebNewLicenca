@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LicencaApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ApplyCorrectColumnMappings : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,10 +16,10 @@ namespace LicencaApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Licenca",
+                name: "licencas",
                 columns: table => new
                 {
-                    NumLic = table.Column<int>(type: "int", nullable: false)
+                    numLic = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdCliente = table.Column<int>(type: "int", nullable: false),
                     TipoLic = table.Column<string>(type: "longtext", nullable: true)
@@ -27,29 +27,30 @@ namespace LicencaApi.Migrations
                     MacAddress = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataLic = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Scade = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Attivo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    scade = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    attivo = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IdRevenda = table.Column<int>(type: "int", nullable: false),
                     SistemaOp = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataAtivacao = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    TipoPc = table.Column<string>(type: "longtext", nullable: true)
+                    tipo_pc = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NomeComputador = table.Column<string>(type: "longtext", nullable: true)
+                    nome_computador = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Software = table.Column<string>(type: "longtext", nullable: true)
+                    software = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ip = table.Column<string>(type: "longtext", nullable: true)
+                    ip = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Processador = table.Column<string>(type: "longtext", nullable: true)
+                    processador = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
+                    Status = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IdLicencaChave = table.Column<int>(type: "int", nullable: false)
+                    idlicencachave = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Licencas", x => x.NumLic);
+                    table.PrimaryKey("PK_licencas", x => x.numLic);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
         }
@@ -58,7 +59,7 @@ namespace LicencaApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Licenca");
+                name: "licencas");
         }
     }
 }

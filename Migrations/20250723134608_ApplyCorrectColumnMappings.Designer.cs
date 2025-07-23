@@ -4,6 +4,7 @@ using LicencaApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LicencaApi.Migrations
 {
     [DbContext(typeof(LicencaDbContext))]
-    partial class LicencaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250723134608_ApplyCorrectColumnMappings")]
+    partial class ApplyCorrectColumnMappings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,8 +48,9 @@ namespace LicencaApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdLicencaChave")
+                        .IsRequired()
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("idlicencachave");
+                        .HasColumnName("id_licenca_chave");
 
                     b.Property<int>("IdRevenda")
                         .HasColumnType("int");
@@ -78,6 +82,7 @@ namespace LicencaApi.Migrations
                         .HasColumnName("software");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("Status");
 

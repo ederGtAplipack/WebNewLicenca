@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TSuNjitlprU=",
+  "dgSpecHash": "Qe2xm2fQvK8=",
   "success": true,
-  "projectFilePath": "C:\\inetpub\\wwwroot\\WebNewLicenca\\LicencaApi\\LicencaApi.csproj",
+  "projectFilePath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\LicencaApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eder.silva\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\eder.silva\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
