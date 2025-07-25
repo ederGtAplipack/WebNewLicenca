@@ -92,5 +92,15 @@ namespace LicencaApi.Controllers
 
             return Ok(new { mensagem = "Licença desativada com sucesso", id });
         }
+
+        [HttpPost("ativar")]
+        /*O parâmetro request é do tipo AtivacaoDispositivoRequestDTO, 
+         * que provavelmente é uma classe definida para representar os dados que o cliente enviará no corpo da requisição (body).*/
+        public async Task<IActionResult> AtivarDispositivo([FromBody] AtivacaoDispositivoRequestDTO request)
+        {
+            var response = await _service.ProcessarAtivacaoDispositivoAsync(request);
+            return Ok(response);
+        }
+
     }
 }

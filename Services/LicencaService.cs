@@ -1,11 +1,12 @@
-﻿using LicencaApi.Data;
+﻿using AutoMapper;
+using LicencaApi.Data;
 using LicencaApi.DTOs;
-using LicencaApi.Models;
-using LicencaApi.Services;
-using LicencaApi.Repositories; 
-using Microsoft.EntityFrameworkCore;
 using LicencaApi.Helpers;
-using AutoMapper;
+using LicencaApi.Models;
+using LicencaApi.Repositories; 
+using LicencaApi.Services;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Threading.RateLimiting;
 
 namespace LicencaApi.Services;
@@ -103,25 +104,44 @@ public class LicencaService : ILicencaService
     {
 
         // 1. Log do Acesso (Registrar cada tentativa de ativação/acesso)
+        /*É necessário verificar se o cliente (IdCliente) já possui o número máximo de licenças ativas, com base no contrato da tabela contrato*/
         // Criar um novo registro na tabela `acessosnew` ou similar
-        // _context.AcessosNew.Add(new AcessoNewModel { ... });
-        // await _context.SaveChangesAsync();
+        var acessoNew = new AcessoNewModel
+        {
+            macaddress = request.MacAddress,
+            software = request.Software,
+            processador = request.Processador,
+            idLicenca = request.IdLicenca,
+            idAcessosNew = request.idAcessosNew,
+            DataHora = request.DateTime,
+            externalIP = request.externalIp,
+
+        };
+        await _context.SaveChangesAsync();
 
         // 2. Buscar Licença Existente:
+        /* Verificar se o dispositivo (MAC + Software) já possui uma licença cadastrada.*/
         // Tentar encontrar uma licença baseada no MacAddress e Software,
         // e, opcionalmente, no IdLicencaChave (serial implícita)
         var licencaExistente = await _context.Licencas
             .FirstOrDefaultAsync(l => l.MacAddress == request.MacAddress && l.Software == request.Software);
 
-        if (licencaExistente != null)
+        _logger.LogInformation("Verificação: Licenca existente para MAC {mac} = {resultado}", request.MacAddress, licencaExistente != null);
+
+
+        if (licencaExistente != null && licencaExistente.NumLic > 0)
         {
+            //AQUI SEM TRATA COMO "LICENÇA EXISTENTE"
             // Dispositivo/Software Conhecido
             // Atualizar dados do dispositivo (IP, Processador, SO, etc.)
-            // licencaExistente.Ip = request.Ip;
-            // licencaExistente.Processador = request.Processador;
-            // ... (outros campos)
-
+            licencaExistente.Ip = request.Ip;
+            licencaExistente.Processador = request.Processador;
+            licencaExistente.SistemaOp = request.SistemaOp; 
+            licencaExistente.Tipo_Pc = request.TipoPc; // Host Type
+            licencaExistente.Nome_Computador = request.NomeComputador; // Hostname
+            
             // 3. Validação da Licença Existente:
+            /*Licença ativa e ainda válida*/
             if (licencaExistente.Attivo && licencaExistente.Scade > DateTime.Now)
             {
                 // Licença Ativa e Válida
@@ -139,6 +159,7 @@ public class LicencaService : ILicencaService
                 // Licença Inativa ou Expirada - Tentar Reativação/Renovação
                 // Regra de Negócio: Verificar se o cliente tem direito a renovação/reativação
                 // Isso pode envolver consultas a outras tabelas (contratos, clientes)
+                /*Licença expirada ou inativa*/
                 bool elegivelRenovacao = true; // Exemplo: Substituir por lógica real
 
                 if (elegivelRenovacao)
@@ -175,42 +196,122 @@ public class LicencaService : ILicencaService
         }
         else
         {
+            // 4. Dispositivo/Software NÃO Cadastrado - Nova Instalação
             // Dispositivo/Software NÃO Cadastrado - Nova Instalação
             // 4. Cadastramento de Novo Dispositivo (Pendente de Análise Comercial):
+            /*É necessário verificar se o cliente (IdCliente) já possui o número máximo de licenças ativas, com base no contrato da tabela contrato*/
+            var contrato = await _context.Contratos
+                .FirstOrDefaultAsync(c => c.IdCliente == request.IdCliente && c.DataInicio <= DateTime.Today && (c.DataFim == null || c.DataFim >= DateTime.Today));
+
+            if (contrato == null) {
+            // Contrato não encontrado ou inválido
+                return new AtivacaoDispositivoResponseDTO
+                {
+                    ChaveLicenca = "",
+                    DataExpiracao = DateTime.MinValue,
+                    StatusLicenca = "Erro",
+                    Mensagem = "Contrato inválido ou inexistente para o cliente."
+                };
+            }
+
+
+            // 5. Criar nova licença
             var novaLicenca = _mapper.Map<LicencaModel>(request); // Mapeia DTO para Model
             novaLicenca.DataLic = DateTime.Now; // Data de registro da solicitação
             novaLicenca.DataAtivacao = DateTime.Now; // Data da primeira tentativa de ativação
             novaLicenca.Attivo = false; // Inicialmente inativa, aguardando aprovação
             novaLicenca.Status = "Pendente Analise"; // Novo status, se adicionado
+            
+            if (contrato != null)
+            {
+                var totalLicencasAtivas = await _context.Licencas
+                    .CountAsync(l => l.IdCliente == request.IdCliente && l.Attivo && l.Scade > DateTime.Now);
+
+                // Verificar se o cliente já atingiu o limite de licenças ativas
+                if (totalLicencasAtivas < contrato.QtdLicencas)
+                {
+                    novaLicenca.Attivo = true; // Ativar licença se ainda houver espaço
+                    novaLicenca.Status = "Ativa"; // Definir status como Ativa
+                    novaLicenca.DataAtivacao = DateTime.Now; // Data de ativação
+                    novaLicenca.Scade = DateTime.Now.AddYears(1); // Exemplo: Definir expiração para 1 ano
+                }
+                else
+                {
+                    // Cliente atingiu o limite de licenças ativas
+                    novaLicenca.Attivo = false; // Manter inativa
+                    novaLicenca.Status = "Pendente Analise"; // Definir status como Pendente Análise
+                    novaLicenca.Scade = DateTime.Now.AddDays(30); // Exemplo: Definir expiração para 30 dias, aguardando análise comercial
+                    _logger.LogWarning("Cliente {IdCliente} atingiu o limite de licenças ativas. Licença pendente de análise comercial.", request.IdCliente);
+                }
+                
+            }
+            else
+            {
+                // Se não houver contrato, definir como pendente de análise
+                novaLicenca.Attivo = false; // Manter inativa
+                novaLicenca.Status = "Pendente Analise"; // Definir status como Pendente Análise
+                novaLicenca.Scade = DateTime.Now.AddDays(30); // Exemplo: Definir expiração para 30 dias, aguardando análise comercial
+                _logger.LogWarning("Nenhum contrato encontrado para o cliente {IdCliente}. Licença pendente de análise comercial.", request.IdCliente);
+            }
+
+
             // Gerar uma IdLicencaChave temporária ou um placeholder
             novaLicenca.IdLicencaChave = "PENDENTE_APROVACAO_" + Guid.NewGuid().ToString();
 
             await _unitOfWork.Licencas.CriarAsync(novaLicenca);
             await _unitOfWork.CompleteAsync();
 
+            _logger.LogInformation("Nova licença criada para o dispositivo com MAC: {MacAddress}, com Status: {Status}, aguardando análise comercial.", request.MacAddress);
             // 5. Acionamento do Controle Comercial:
+            /*Registro da nova licença no banco de dados*/
+
             // Enviar notificação (e-mail, sistema de tickets) para a equipe comercial
             // com os detalhes do request.
+            /*Notificação e resposta final*/
             _logger.LogInformation("Nova solicitação de licença pendente de análise comercial para MAC: {MacAddress}", request.MacAddress);
             // Ex: _notificationService.SendEmailToCommercial(request);
 
             return new AtivacaoDispositivoResponseDTO
             {
                 ChaveLicenca = novaLicenca.IdLicencaChave, // Chave temporária
-                DataExpiracao = DateTime.MinValue, // Ou uma data simbólica
-                StatusLicenca = "Pendente Analise",
-                Mensagem = "Dispositivo não cadastrado. Sua solicitação de licença está sob análise comercial. Uma chave temporária foi emitida."
+                DataExpiracao = novaLicenca.Scade, // Ou uma data simbólica
+                StatusLicenca = novaLicenca.Status,
+                Mensagem = novaLicenca.Status == "Ativa"
+                            ? "Licença ativada com sucesso."
+                            : "Dispositivo novo. A solicitação está sob análise comercial. Uma chave temporária foi emitida."
+
             };
         }
         // Fallback (deve ser coberto pela lógica acima)
         return new AtivacaoDispositivoResponseDTO { StatusLicenca = "Erro", Mensagem = "Erro desconhecido." };
     }
+    private void AtualizarDadosDoDispositivo(LicencaModel licenca, AtivacaoDispositivoRequestDTO request)
+    {
+        licenca.Ip = request.Ip;
+        licenca.Processador = request.Processador;
+        licenca.SistemaOp = request.SistemaOp;
+        licenca.Tipo_Pc = request.TipoPc;
+        licenca.Nome_Computador = request.NomeComputador;
+    }
+
     private string GerarNovaChaveLicenca(AtivacaoDispositivoRequestDTO request)
     {
+        /*request.MacAddress: Representa o endereço MAC do dispositivo, usado para identificar o hardware.
+        request.Software: Provavelmente indica o software relacionado à ativação.
+        DateTime.Now.Ticks: Retorna o número de "ticks" (unidades de tempo) desde 1º de janeiro de 0001, permitindo gerar valores únicos com base no momento atual.*/
         string rawKey = $"{request.MacAddress}-{request.Software}-{DateTime.Now.Ticks}";
         // Implementar lógica de geração de nova chave de licença
         // Exemplo simples: retornar um GUID como string
         return Guid.NewGuid().ToString();
+    }
+
+    private async Task<ContratoModel?> ObterContratoValidoAsync(int idCliente)
+    {
+        // Buscar contrato ativo e válido para o cliente
+        return await _context.Contratos
+            .FirstOrDefaultAsync(c => c.IdCliente == idCliente &&
+            c.DataInicio <= DateTime.Today &&
+            (c.DataFim == null || c.DataFim >= DateTime.Today));
     }
 
 }

@@ -91,6 +91,22 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.LicencaController",
+    "Method": "AtivarDispositivo",
+    "RelativePath": "api/licencas/ativar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "LicencaApi.DTOs.AtivacaoDispositivoRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.LicencaController",
     "Method": "GetAtivas",
     "RelativePath": "api/licencas/ativas",
     "HttpMethod": "GET",

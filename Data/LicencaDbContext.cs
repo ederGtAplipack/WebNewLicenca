@@ -9,6 +9,8 @@ namespace LicencaApi.Data
             : base(options) { }
 
         public DbSet<LicencaModel> Licencas { get; set; }
+        public DbSet<ContratoModel> Contratos { get; set; }
+        public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

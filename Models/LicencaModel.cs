@@ -41,5 +41,7 @@ namespace LicencaApi.Models
         public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
         [Column("id_licenca_chave")]
         public string? IdLicencaChave { get; internal set; } // Chave de Licença, pode ser um GUID ou outro identificador único
+       
+        
     }
 }
