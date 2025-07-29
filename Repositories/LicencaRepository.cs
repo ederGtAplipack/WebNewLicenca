@@ -13,19 +13,19 @@ namespace LicencaApi.Repositories
         }
         public async Task<IEnumerable<LicencaModel>> BuscarTodasAsync()
         {
-            return await _context.Licencas.ToListAsync();
+            return await _context.Licenca.ToListAsync();
         }
         public async Task<LicencaModel?> BuscarPorIdAsync(int id)
         {
-            return await _context.Licencas.FindAsync(id);
+            return await _context.Licenca.FindAsync(id);
         }
         public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()
         {
-            return await _context.Licencas.Where(l => l.Attivo).ToListAsync();
+            return await _context.Licenca.Where(l => l.Attivo).ToListAsync();
         }
         public async Task<LicencaModel> CriarAsync(LicencaModel model)
         {
-            _context.Licencas.Add(model);
+            _context.Licenca.Add(model);
             await _context.SaveChangesAsync();
             return model;
         }
@@ -53,7 +53,7 @@ namespace LicencaApi.Repositories
         }
         private async Task<bool> LicencaExists(int id)
         {
-            return await _context.Licencas.AnyAsync(e => e.NumLic == id);
+            return await _context.Licenca.AnyAsync(e => e.NumLic == id);
         }
     }
 }

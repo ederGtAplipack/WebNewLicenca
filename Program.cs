@@ -41,6 +41,14 @@ internal class Program
 
         builder.Services.AddAutoMapper(typeof(LicencaProfile));
         
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            // Configurações adicionais do Kestrel, se necessário
+            serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // Exemplo: 10 MB
+            serverOptions.ListenAnyIP(8080);
+        });
+
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

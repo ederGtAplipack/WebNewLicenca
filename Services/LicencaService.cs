@@ -35,12 +35,12 @@ public class LicencaService : ILicencaService
     }
     public async Task<LicencaModel?> BuscarPorIdAsync(int id)
     {
-        return await _context.Licencas.FindAsync(id);        
+        return await _context.Licenca.FindAsync(id);        
     }
 
     public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()
     {
-        return await _context.Licencas
+        return await _context.Licenca
             .Where(l => l.Attivo)
             .ToListAsync();
     }
@@ -65,7 +65,7 @@ public class LicencaService : ILicencaService
 
     public async Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto)
     {
-        var licenca = await _context.Licencas.FindAsync(id);
+        var licenca = await _context.Licenca.FindAsync(id);
         if (licenca == null)
             return false;
 
@@ -86,7 +86,7 @@ public class LicencaService : ILicencaService
 
     public async Task<bool> DesativarAsync(int id)
     {
-        var licenca = await _context.Licencas.FindAsync(id);
+        var licenca = await _context.Licenca.FindAsync(id);
         if (licenca == null)
             return false;
 
@@ -97,7 +97,7 @@ public class LicencaService : ILicencaService
 
     private async Task<bool> LicencaExists(int id)
     {
-        return await _context.Licencas.AnyAsync(l => l.NumLic == id);
+        return await _context.Licenca.AnyAsync(l => l.NumLic == id);
     }
 
     public async Task<AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request)
@@ -117,13 +117,14 @@ public class LicencaService : ILicencaService
             externalIP = request.externalIp,
 
         };
+        _context.AcessosNew.Add(acessoNew);
         await _context.SaveChangesAsync();
 
         // 2. Buscar Licença Existente:
         /* Verificar se o dispositivo (MAC + Software) já possui uma licença cadastrada.*/
         // Tentar encontrar uma licença baseada no MacAddress e Software,
         // e, opcionalmente, no IdLicencaChave (serial implícita)
-        var licencaExistente = await _context.Licencas
+        var licencaExistente = await _context.Licenca
             .FirstOrDefaultAsync(l => l.MacAddress == request.MacAddress && l.Software == request.Software);
 
         _logger.LogInformation("Verificação: Licenca existente para MAC {mac} = {resultado}", request.MacAddress, licencaExistente != null);
@@ -212,8 +213,8 @@ public class LicencaService : ILicencaService
                     StatusLicenca = "Erro",
                     Mensagem = "Contrato inválido ou inexistente para o cliente."
                 };
+                _logger.LogWarning("Contrato inválido ou inexistente para o cliente {IdCliente}.", request.IdCliente);
             }
-
 
             // 5. Criar nova licença
             var novaLicenca = _mapper.Map<LicencaModel>(request); // Mapeia DTO para Model
@@ -221,10 +222,28 @@ public class LicencaService : ILicencaService
             novaLicenca.DataAtivacao = DateTime.Now; // Data da primeira tentativa de ativação
             novaLicenca.Attivo = false; // Inicialmente inativa, aguardando aprovação
             novaLicenca.Status = "Pendente Analise"; // Novo status, se adicionado
-            
+
+            if (!contrato.PagamentoEmDia)
+            {
+                novaLicenca.Attivo = false; // Manter inativa se o pagamento não estiver em dia
+                novaLicenca.Status = "Pendente Financeiro"; // Definir status como Pendente Análise
+                novaLicenca.Scade = DateTime.Now.AddDays(15); // Exemplo: Definir expiração para 15 dias, aguardando análise comercial  
+                _logger.LogWarning("Pagamento em atraso para o cliente {IdCliente}. Licença pendente de análise comercial.", request.IdCliente);
+            }
+            if (!contrato.PagamentoEmDia || contrato.StatusContrato == "Suspenso")
+            {
+                return new AtivacaoDispositivoResponseDTO
+                {
+                    ChaveLicenca = "",
+                    DataExpiracao = DateTime.MinValue,
+                    StatusLicenca = "Pendente Financeiro",
+                    Mensagem = "Contrato suspenso ou pagamento em atraso. Licença pendente de análise comercial."
+                };
+            }
+
             if (contrato != null)
             {
-                var totalLicencasAtivas = await _context.Licencas
+                var totalLicencasAtivas = await _context.Licenca
                     .CountAsync(l => l.IdCliente == request.IdCliente && l.Attivo && l.Scade > DateTime.Now);
 
                 // Verificar se o cliente já atingiu o limite de licenças ativas

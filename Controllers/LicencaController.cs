@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+using LicencaApi.Data;
+using LicencaApi.DTOs;
 using LicencaApi.Models;
 using LicencaApi.Services;
-using LicencaApi.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LicencaApi.Controllers
 {
@@ -11,11 +13,13 @@ namespace LicencaApi.Controllers
     {
         private readonly ILicencaService _service;
         private readonly ILogger<LicencaController> _logger;
+        private readonly LicencaDbContext _context;
 
-        public LicencaController(ILicencaService service, ILogger<LicencaController> logger)
+        public LicencaController(ILicencaService service, ILogger<LicencaController> logger, LicencaDbContext context)
         {
             _service = service;
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
@@ -100,6 +104,40 @@ namespace LicencaApi.Controllers
         {
             var response = await _service.ProcessarAtivacaoDispositivoAsync(request);
             return Ok(response);
+        }
+
+        [HttpGet("status/verificar/idCliente")]
+        public async Task<IActionResult> VerificarStatusFinanceiro(int idCliente)
+        {
+            var contrato = await _context.Contratos
+                .FirstOrDefaultAsync(c => c.IdCliente == idCliente);
+
+            if (contrato == null)
+                return NotFound("Contrato não encontrado.");
+
+            return Ok(new
+            {
+                contrato.IdCliente,
+                contrato.PagamentoEmDia,
+                contrato.StatusContrato
+            });
+        }
+
+        [HttpGet("status/atualizar/idCliente")]
+        public async Task<IActionResult> AtualizarStatusFinanceiro(int idCliente, [FromBody] ContratoStatusUpdateDTO dto)
+        {
+            var contrato = await _context.Contratos
+                .FirstOrDefaultAsync(c => c.IdCliente == idCliente);
+
+            if (contrato == null)
+                return NotFound("Contrato não encontrado.");
+
+            contrato.PagamentoEmDia = dto.PagamentoEmDia;
+            contrato.StatusContrato = dto.StatusContrato;
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Status atualizado com sucesso.");
         }
 
     }

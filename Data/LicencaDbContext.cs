@@ -8,7 +8,7 @@ namespace LicencaApi.Data
         public LicencaDbContext(DbContextOptions<LicencaDbContext> options)
             : base(options) { }
 
-        public DbSet<LicencaModel> Licencas { get; set; }
+        public DbSet<LicencaModel> Licenca { get; set; }
         public DbSet<ContratoModel> Contratos { get; set; }
         public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel
 

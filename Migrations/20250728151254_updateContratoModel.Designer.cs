@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LicencaApi.Migrations
 {
     [DbContext(typeof(LicencaDbContext))]
-    [Migration("20250724195246_AddContratoTable")]
-    partial class AddContratoTable
+    [Migration("20250728151254_updateContratoModel")]
+    partial class updateContratoModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,46 @@ namespace LicencaApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("LicencaApi.Models.AcessoNewModel", b =>
+                {
+                    b.Property<string>("idAcessosNew")
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("id_acesso_new");
+
+                    b.Property<DateTime>("DataHora")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("data_hora");
+
+                    b.Property<string>("externalIP")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("external_IP");
+
+                    b.Property<string>("idLicenca")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("id_licenca");
+
+                    b.Property<string>("macaddress")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("mac_address");
+
+                    b.Property<string>("processador")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("processador");
+
+                    b.Property<string>("software")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("software");
+
+                    b.HasKey("idAcessosNew");
+
+                    b.ToTable("acessos_new");
+                });
 
             modelBuilder.Entity("LicencaApi.Models.ContratoModel", b =>
                 {
@@ -39,9 +79,25 @@ namespace LicencaApi.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("data_inicio");
 
+                    b.Property<DateTime?>("DataProximoPagamento")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DataUltimoPagamento")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("IdCliente")
                         .HasColumnType("int")
                         .HasColumnName("id_cliente");
+
+                    b.Property<string>("Observacoes")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PagamentoEmDia")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Periodicidade")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Plano")
                         .HasColumnType("longtext")
@@ -50,6 +106,14 @@ namespace LicencaApi.Migrations
                     b.Property<int>("QtdLicencas")
                         .HasColumnType("int")
                         .HasColumnName("qtd_licencas");
+
+                    b.Property<string>("StatusContrato")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StatusDescricao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("IdContrato");
 
@@ -77,10 +141,6 @@ namespace LicencaApi.Migrations
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
-
-                    b.Property<string>("IdContrato")
-                        .HasColumnType("longtext")
-                        .HasColumnName("id_contrato");
 
                     b.Property<string>("IdLicencaChave")
                         .HasColumnType("varchar(255)")
