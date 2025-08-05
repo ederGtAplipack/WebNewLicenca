@@ -7,41 +7,48 @@ namespace LicencaApi.Models
     public class LicencaModel
     {
         [Key]
-        [Column("numLic")]
+        [Column("NumLic")]
         public int NumLic { get; set; }
-        //[Column("id_cliente")]
+        [Column("IdCliente")]
         public int IdCliente { get; set; }
-        //[Column("tipo_lic")]
+        [Column("TipoLic")]
         public string? TipoLic { get; set; } = string.Empty;
-        //[Column("mac_address")]
+        [Column("MacAddress")]
         public string? MacAddress { get; set; } = string.Empty;
-        //[Column("data_lic")]
+        [Column("DataLic")]
         public DateTime DataLic { get; set; }
-        [Column("scade")]
+        [Column("Scade")]
         public DateTime Scade { get; set; }
-        [Column("attivo")]
+        [Column("Attivo")]
         public bool Attivo { get; set; }
-        //[Column("id_revenda")]
+        [Column("IdRevenda")]
         public int IdRevenda { get; set; }
-        //[Column("sistema_op")]
+        [Column("SistemaOp")]
         public string? SistemaOp { get; set; } = string.Empty;
-        //[Column("data_ativacao")]
+        //[Column("dataativacao")]
         public DateTime? DataAtivacao { get; set; }
-        [Column("tipo_pc")]
+        [Column("Tipo_Pc")]
         public string? Tipo_Pc { get; set; } = string.Empty;
-        [Column("nome_computador")]
+        [Column("Nome_Computador")]
         public string? Nome_Computador { get; set; } = string.Empty;
-        [Column("software")]
+        [Column("Software")]
         public string? Software { get; set; } = string.Empty;
         [Column("ip")]
         public string? Ip { get; set; } = string.Empty;
-        [Column("processador")]
+        [Column("Processador")]
         public string? Processador { get; set; } = string.Empty;
-        [Column("status")]
+        [Column("Status")]
         public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
-        [Column("id_licenca_chave")]
-        public string? IdLicencaChave { get; internal set; } // Chave de Licença, pode ser um GUID ou outro identificador único
+        [Column("idlicencachave")]
+        public int? IdLicencaChave { get;  set; } // Chave de Licença, pode ser um GUID ou outro identificador único
        
-        
+	   // FK
+        /*[ForeignKey("IdCliente")]
+        public virtual AnagraficaModel? Anagrafica { get; set; }
+		[ForeignKey("idlicencachave")]
+        public virtual LicencasChaveModel? LicencasChave { get; set; }
+		[ForeignKey("IdRevenda")]
+        public virtual RevendaModel? Revenda { get; set; }    */
+	   
     }
 }

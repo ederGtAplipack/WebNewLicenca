@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\LicencaApi.csproj": {}
+    "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\LicencaApi.csproj": {
+    "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\LicencaApi.csproj",
+        "projectUniqueName": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj",
         "projectName": "LicencaApi",
-        "projectPath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\LicencaApi.csproj",
+        "projectPath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj",
         "packagesPath": "C:\\Users\\eder.silva\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\WebNewLicenca\\obj\\",
+        "outputPath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -57,15 +57,11 @@
               "target": "Package",
               "version": "[8.0.17, )"
             },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.13, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
+            "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.17, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

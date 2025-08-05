@@ -1,7 +1,6 @@
-@LicencaApi_HostAddress = http://localhost:5062
+@LicencaApi_HostAddress = http://localhost:5182
 
 GET {{LicencaApi_HostAddress}}/weatherforecast/
 Accept: application/json
-
 
 ###

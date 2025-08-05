@@ -11,6 +11,11 @@ namespace LicencaApi.Data
         public DbSet<LicencaModel> Licenca { get; set; }
         public DbSet<ContratoModel> Contratos { get; set; }
         public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel
+        public DbSet<SoftwareModel> Software { get; set; }
+        public DbSet<AnagraficaModel> Anagrafica { get; set; }
+        public DbSet<LicencasChaveModel> LicencasChave { get; set; }
+        public DbSet<RevendaModel> Revendas { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,9 +26,9 @@ namespace LicencaApi.Data
             modelBuilder.Entity<LicencaModel>().HasKey(l => l.NumLic); // Ou qual for sua PK
 
             // Mapeamento para IdLicencaChave, se não for padrão
-            modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)
+            /*modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)
                 .HasColumnName("idlicencachave")
-                .HasColumnType("varchar(255)");
+                .HasColumnType("varchar(255)");*/
 
             // Ajuste o tamanho conforme necessário
             // Mapeamento para o campo Status

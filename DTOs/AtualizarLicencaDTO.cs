@@ -17,6 +17,6 @@
         public string Software { get; set; } = string.Empty;
         public string Ip { get; set; } = string.Empty;
         public string Processador { get; set; } = string.Empty;
-        public string IdLicencaChave { get; set; } = string.Empty;
+        public int? IdLicencaChave { get; set; }
     }
 }
