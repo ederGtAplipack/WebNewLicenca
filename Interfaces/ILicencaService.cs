@@ -13,8 +13,13 @@ namespace LicencaApi.Interfaces
     {
         Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
         Task<LicencaModel?> BuscarPorIdAsync(int id);
-		Task<LicencaModel> CriarAsync(CriarLicencaDTO dto);
+		Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
         Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto);
-        Task<IEnumerable<LicencaModel>> BuscarAtivasAsync();
+        Task<IEnumerable<LicencaModel?>> BuscarAtivasAsync();
+        Task<bool> DesativarAsync(int id);
+        Task <AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request);
+        Task <AtivacaoDispositivoResponseDTO> BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request);
+        Task<bool> DeletarAsync(int id);
+        //Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
     }
 }

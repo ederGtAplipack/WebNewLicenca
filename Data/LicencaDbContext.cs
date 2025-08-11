@@ -3,11 +3,14 @@ using LicencaApi.Models;
 
 namespace LicencaApi.Data
 {
+    //DbContext para a aplicação LicencaApi, representa o contexto do banco de dados
     public class LicencaDbContext : DbContext
     {
+        // Construtor que recebe as opções de configuração do DbContext
         public LicencaDbContext(DbContextOptions<LicencaDbContext> options)
             : base(options) { }
 
+        // DbSets para as entidades do modelo
         public DbSet<LicencaModel> Licenca { get; set; }
         public DbSet<ContratoModel> Contratos { get; set; }
         public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel

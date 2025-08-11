@@ -8,6 +8,7 @@ namespace LicencaApi.Models
     {
         [Key]
         [Column("NumLic")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NumLic { get; set; }
         [Column("IdCliente")]
         public int IdCliente { get; set; }
@@ -27,28 +28,28 @@ namespace LicencaApi.Models
         public string? SistemaOp { get; set; } = string.Empty;
         //[Column("dataativacao")]
         public DateTime? DataAtivacao { get; set; }
-        [Column("Tipo_Pc")]
-        public string? Tipo_Pc { get; set; } = string.Empty;
-        [Column("Nome_Computador")]
-        public string? Nome_Computador { get; set; } = string.Empty;
+        [Column("TipoPc")]
+        public string? TipoPc { get; set; } = string.Empty;
+        [Column("NomeComputador")]
+        public string? NomeComputador { get; set; } = string.Empty;
         [Column("Software")]
         public string? Software { get; set; } = string.Empty;
         [Column("ip")]
-        public string? Ip { get; set; } = string.Empty;
+        public string ip { get; internal set; }
         [Column("Processador")]
         public string? Processador { get; set; } = string.Empty;
         [Column("Status")]
         public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
         [Column("idlicencachave")]
         public int? IdLicencaChave { get;  set; } // Chave de Licença, pode ser um GUID ou outro identificador único
-       
-	   // FK
+        
+        // FK
         /*[ForeignKey("IdCliente")]
         public virtual AnagraficaModel? Anagrafica { get; set; }
 		[ForeignKey("idlicencachave")]
         public virtual LicencasChaveModel? LicencasChave { get; set; }
 		[ForeignKey("IdRevenda")]
         public virtual RevendaModel? Revenda { get; set; }    */
-	   
+
     }
 }

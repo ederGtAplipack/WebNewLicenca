@@ -9,7 +9,7 @@ namespace LicencaApi.Models
     {
         [Key]
         [Column("id_acesso_new")]
-        public int idAcessosNew { get; set; }
+        public int? idAcessosNew { get; set; }
         [Column("data_hora")]
         public DateTime DataHora { get; set; }
         [Column("id_licenca")]

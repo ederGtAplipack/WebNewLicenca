@@ -12,44 +12,64 @@ namespace LicencaApi.Repositories
     public class LicencaRepository : ILicencaRepository
     {
         private readonly LicencaDbContext _context;
-        private readonly ILogger<LicencaService> _logger;
+        private readonly ILogger<LicencaRepository> _logger;
 
-        public LicencaRepository(LicencaDbContext context, ILogger<LicencaService> logger)
+        public LicencaRepository(LicencaDbContext context, ILogger<LicencaRepository> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public LicencaRepository(LicencaDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<IEnumerable<LicencaModel>> BuscarTodasAsync()
         {
+            _logger.LogInformation("Passando pelo LicencaRepository.");
             return await _context.Licenca.ToListAsync();
-            _logger.LogInformation("Buscando todas as licenças.");
+            _logger.LogInformation("Retornando com a Lista do LicencaRepository.");
         }
 
         public async Task<LicencaModel?> BuscarPorIdAsync(int id)
         {
+            _logger.LogInformation("Passando pelo Repository do BuscarPorIdAsync {id}.", id);
             return await _context.Licenca.FindAsync(id);
         }
 
         public async Task CriarAsync(LicencaModel model)
         {
+            _logger.LogInformation("Passando pelo Repository do Create.");
             await _context.Licenca.AddAsync(model);
         }
 
-        public Task AtualizarAsync(LicencaModel model)
+        public void AtualizarAsync(LicencaModel model)
         {
-            _context.Licenca.Update(model);
-            return Task.CompletedTask;
+            _logger.LogInformation("Passando pelo Repository do Update.");
+            _context.Entry(model).State = EntityState.Modified;
+        }
+
+        private async Task<bool> LicencaExists(int id)
+        {
+            _logger.LogInformation("Verificando se a licença existe no Repository.");
+            return await _context.Licenca.AnyAsync(e => e.NumLic == id);           
         }
 
         public async Task SalvarAsync()
         {
            //wait _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()
+        {
+            // Aqui você pode implementar a lógica para buscar licenças ativas
+            _logger.LogInformation("Passando pelo Repository das ativas.");
+            return await _context.Licenca.Where(l => l.Attivo).ToListAsync();
+        }
+
+        public async Task<bool> DesativarAsync(int id)
+        {
+            var licenca = await BuscarPorIdAsync(id);
+            if (licenca == null) return false;
+            licenca.Attivo = false;
+            return true;
+        }
+
     }
 }

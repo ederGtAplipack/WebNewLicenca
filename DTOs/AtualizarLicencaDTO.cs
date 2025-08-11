@@ -2,7 +2,7 @@
 {
     public class AtualizarLicencaDTO
     {
-        public int NumLic { get; set; }
+        //public int NumLic { get; set; }
         public int IdCliente { get; set; }
         public string TipoLic { get; set; } = string.Empty;
         public string MacAddress { get; set; } = string.Empty;  
@@ -18,5 +18,6 @@
         public string Ip { get; set; } = string.Empty;
         public string Processador { get; set; } = string.Empty;
         public int? IdLicencaChave { get; set; }
+        public string? Status { get; set; } = string.Empty;
     }
 }

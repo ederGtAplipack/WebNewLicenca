@@ -19,6 +19,6 @@
         public string? Ip { get; set; } = string.Empty;
         public string? Processador { get; set; } = string.Empty;
         public int? IdLicencaChave { get; set; }
-        public string? Status { get; internal set; }
+        public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
     }
 }

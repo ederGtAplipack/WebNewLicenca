@@ -10,26 +10,6 @@
         "tags": [
           "Licenca"
         ],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -68,6 +48,27 @@
     },
     "/api/licencas/{id}": {
       "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
         "tags": [
           "Licenca"
         ],
@@ -142,17 +143,139 @@
           }
         }
       }
+    },
+    "/api/licencas/{id}/desativar": {
+      "patch": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/licencas/ativar-processar": {
+      "post": {
+        "tags": [
+          "Licenca"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AtivacaoDispositivoRequestDTO": {
+        "type": "object",
+        "properties": {
+          "macAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "nSoftware": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLicencaChave": {
+            "type": "string",
+            "nullable": true
+          },
+          "processador": {
+            "type": "string",
+            "nullable": true
+          },
+          "sistemaOp": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipoPc": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeComputador": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCliente": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "idContrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLicenca": {
+            "type": "string",
+            "nullable": true
+          },
+          "numLic": {
+            "type": "string",
+            "nullable": true
+          },
+          "idAcessosNew": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "versaoSoftware": {
+            "type": "string",
+            "nullable": true
+          },
+          "externalIp": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AtualizarLicencaDTO": {
         "type": "object",
         "properties": {
-          "numLic": {
-            "type": "integer",
-            "format": "int32"
-          },
           "idCliente": {
             "type": "integer",
             "format": "int32"
@@ -211,6 +334,10 @@
           "idLicencaChave": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -285,8 +412,7 @@
           },
           "status": {
             "type": "string",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -1,0 +1,125 @@
+﻿@model IEnumerable<LicencaApi.Models.LicencaModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoLic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MacAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataLic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Scade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdRevenda)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SistemaOp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataAtivacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoPc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeComputador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Software)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Processador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdLicencaChave)
+            </th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoLic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MacAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataLic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Scade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Attivo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdRevenda)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SistemaOp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataAtivacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoPc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeComputador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Software)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Processador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdLicencaChave)
+            </td>            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.NumLic">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.NumLic">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.NumLic">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

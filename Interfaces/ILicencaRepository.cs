@@ -9,8 +9,10 @@ namespace LicencaApi.Interfaces
         //Task<List<LicencaModel>> BuscarComPaginacaoAsync(int page, int pageSize);
         Task<LicencaModel?> BuscarPorIdAsync(int id);
 		Task CriarAsync(LicencaModel model);
-        Task AtualizarAsync(LicencaModel model);
-        Task SalvarAsync();		
-        
+        void AtualizarAsync(LicencaModel model);
+        Task SalvarAsync();	
+        Task<IEnumerable<LicencaModel>> BuscarAtivasAsync();
+        Task<bool> DesativarAsync(int id);
+
     }
 }
