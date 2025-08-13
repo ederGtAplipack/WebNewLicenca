@@ -120,7 +120,6 @@ namespace LicencaApi.Services
                 _logger.LogWarning("Licença com ID {Id} não encontrada para atualização.", id);
                 return false;        
             }
-
             try
             {
                 _mapper.Map(dto, licenca);

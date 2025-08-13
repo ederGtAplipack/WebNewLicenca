@@ -3,6 +3,7 @@ using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using LicencaApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,7 @@ namespace LicencaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         //public ActionResult<IEnumerable<LicencaModel>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         public async Task<IActionResult> GetAll()
         {

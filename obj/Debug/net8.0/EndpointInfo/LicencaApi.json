@@ -1,8 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "LicencaApi",
-    "version": "1.0"
+    "title": "Licenca API",
+    "description": "API for managing licenses",
+    "contact": {
+      "name": "ApliPack",
+      "email": "contato@aplipack.com.br"
+    },
+    "version": "v1"
   },
   "paths": {
     "/api/licencas": {
@@ -417,6 +422,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Insira o token JWT dessa forma: Bearer {seu token}",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

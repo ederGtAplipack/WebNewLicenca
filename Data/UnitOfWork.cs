@@ -17,6 +17,7 @@ namespace LicencaApi.Data
         // A propriedade agora é pública, somente leitura e armazena o repositório.
         public ILicencaRepository Licencas { get; }
 
+
         // O construtor recebe todas as dependências por injeção.
         public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas)
         {

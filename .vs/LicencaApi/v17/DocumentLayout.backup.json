@@ -3,64 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\views\\licencamodels\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:views\\licencamodels\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\views\\licencamodels\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:views\\licencamodels\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\views\\licencamodels\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:views\\licencamodels\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\services\\licencaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:services\\licencaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\dtos\\atualizarlicencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:dtos\\atualizarlicencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\dtos\\licencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:dtos\\licencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\dtos\\criarlicencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:dtos\\criarlicencadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\models\\licencamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:models\\licencamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\models\\contratomodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:models\\contratomodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\controllers\\licencacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:controllers\\licencacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\repositories\\licencarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:repositories\\licencarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\data\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:data\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\configurations\\jwtconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:configurations\\jwtconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\interfaces\\ilicencarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:interfaces\\ilicencarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\data\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:data\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\configurations\\dependencyinjectionconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:configurations\\dependencyinjectionconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\configurations\\swaggerconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:configurations\\swaggerconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\licencaapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:licencaapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\desktop\\wkspc\\licencaapi\\auth\\jwtconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:auth\\jwtconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,197 +50,105 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Details.cshtml",
-              "RelativeDocumentMoniker": "Views\\LicencaModels\\Details.cshtml",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Details.cshtml",
-              "RelativeToolTip": "Views\\LicencaModels\\Details.cshtml",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAawEwAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T17:14:41.99Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\LicencaModels\\Index.cshtml",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Index.cshtml",
-              "RelativeToolTip": "Views\\LicencaModels\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T17:14:27.045Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Delete.cshtml",
-              "RelativeDocumentMoniker": "Views\\LicencaModels\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Views\\LicencaModels\\Delete.cshtml",
-              "RelativeToolTip": "Views\\LicencaModels\\Delete.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T17:14:06.338Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LicencaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\LicencaDTO.cs",
-              "RelativeDocumentMoniker": "DTOs\\LicencaDTO.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\LicencaDTO.cs",
-              "RelativeToolTip": "DTOs\\LicencaDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T17:13:14.097Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "LicencaModel.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Models\\LicencaModel.cs",
-              "RelativeDocumentMoniker": "Models\\LicencaModel.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Models\\LicencaModel.cs",
-              "RelativeToolTip": "Models\\LicencaModel.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAcwCAAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T17:11:39.982Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ContratoModel.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Models\\ContratoModel.cs",
-              "RelativeDocumentMoniker": "Models\\ContratoModel.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Models\\ContratoModel.cs",
-              "RelativeToolTip": "Models\\ContratoModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T17:11:38.744Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "UnitOfWork.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Data\\UnitOfWork.cs",
-              "RelativeDocumentMoniker": "Data\\UnitOfWork.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Data\\UnitOfWork.cs",
-              "RelativeToolTip": "Data\\UnitOfWork.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T13:23:18.318Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ILicencaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Interfaces\\ILicencaRepository.cs",
-              "RelativeDocumentMoniker": "Interfaces\\ILicencaRepository.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Interfaces\\ILicencaRepository.cs",
-              "RelativeToolTip": "Interfaces\\ILicencaRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAUAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T13:20:20.37Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAowCUAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T12:59:44.032Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "CriarLicencaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\CriarLicencaDTO.cs",
-              "RelativeDocumentMoniker": "DTOs\\CriarLicencaDTO.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\CriarLicencaDTO.cs",
-              "RelativeToolTip": "DTOs\\CriarLicencaDTO.cs",
+              "Title": "LicencaApi",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj",
+              "RelativeDocumentMoniker": "LicencaApi.csproj",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\LicencaApi.csproj",
+              "RelativeToolTip": "LicencaApi.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T12:53:16.406Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AtualizarLicencaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\AtualizarLicencaDTO.cs",
-              "RelativeDocumentMoniker": "DTOs\\AtualizarLicencaDTO.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\DTOs\\AtualizarLicencaDTO.cs",
-              "RelativeToolTip": "DTOs\\AtualizarLicencaDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T12:52:28.6Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "LicencaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Repositories\\LicencaRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\LicencaRepository.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Repositories\\LicencaRepository.cs",
-              "RelativeToolTip": "Repositories\\LicencaRepository.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAlwCwAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T12:42:18.873Z",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-13T20:07:26.002Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "LicencaService.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Services\\LicencaService.cs",
-              "RelativeDocumentMoniker": "Services\\LicencaService.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Services\\LicencaService.cs*",
-              "RelativeToolTip": "Services\\LicencaService.cs*",
-              "ViewState": "AgIAALcAAAAAAAAAAAAAwNEAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T12:36:27.633Z",
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-13T20:07:17.774Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "IUnitOfWork.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Data\\IUnitOfWork.cs",
-              "RelativeDocumentMoniker": "Data\\IUnitOfWork.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Data\\IUnitOfWork.cs",
-              "RelativeToolTip": "Data\\IUnitOfWork.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T17:01:59.263Z",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-13T20:05:32.677Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "LicencaController.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Controllers\\LicencaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LicencaController.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Controllers\\LicencaController.cs",
-              "RelativeToolTip": "Controllers\\LicencaController.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAAAAAIMAAAA2AAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "JwtConfig.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\JwtConfig.cs",
+              "RelativeDocumentMoniker": "Configurations\\JwtConfig.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\JwtConfig.cs",
+              "RelativeToolTip": "Configurations\\JwtConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBwAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-08T13:08:55.767Z",
+              "WhenOpened": "2025-08-13T19:22:16.915Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SwaggerConfig.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\SwaggerConfig.cs",
+              "RelativeDocumentMoniker": "Configurations\\SwaggerConfig.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\SwaggerConfig.cs",
+              "RelativeToolTip": "Configurations\\SwaggerConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-13T19:20:56.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "JwtConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Auth\\JwtConfiguration.cs",
+              "RelativeDocumentMoniker": "Auth\\JwtConfiguration.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Auth\\JwtConfiguration.cs",
+              "RelativeToolTip": "Auth\\JwtConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-13T19:08:42.204Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DependencyInjectionConfig.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\DependencyInjectionConfig.cs",
+              "RelativeDocumentMoniker": "Configurations\\DependencyInjectionConfig.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Configurations\\DependencyInjectionConfig.cs",
+              "RelativeToolTip": "Configurations\\DependencyInjectionConfig.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAMwBkAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-13T19:04:22.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\Desktop\\Wkspc\\LicencaApi\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-13T14:29:42.598Z",
               "EditorCaption": ""
             }
           ]

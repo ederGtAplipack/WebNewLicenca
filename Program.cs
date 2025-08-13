@@ -1,9 +1,8 @@
+using LicencaApi.Configurations;
 using LicencaApi.Data;
 using LicencaApi.Helpers;
-using LicencaApi.Interfaces;
-using LicencaApi.Repositories;
-using LicencaApi.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,15 +33,26 @@ builder.WebHost.UseKestrel(serverOptions =>
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(LicencaMapper));
 
-// DI
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// 
+builder.Services.AddAppServices();
+
+/*builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILicencaRepository, LicencaRepository>();
-builder.Services.AddScoped<ILicencaService, LicencaService>();
+builder.Services.AddScoped<ILicencaService, LicencaService>();*/
+
+// Configuração do JWT
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
+/*builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddAuthorization();*/
+
 
 // Controller + Swagger
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers().AddJsonOptions(options=>options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddSwaggerConfiguration();
+
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -54,6 +64,7 @@ if (app.Environment.IsDevelopment())
     //app.MapScalarApiReference();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

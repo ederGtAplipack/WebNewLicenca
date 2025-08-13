@@ -9,7 +9,7 @@ namespace LicencaApi.Data
     public interface IUnitOfWork : IDisposable
     {
         //Uma propriedade chamada Licencas, que expõe um repositório específico (ILicencaRepository) relacionado a licenças.
-        ILicencaRepository Licencas {  get; }
+        ILicencaRepository Licencas { get; }
         Task<int> CompleteAsync();
      }
 }
