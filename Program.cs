@@ -42,9 +42,9 @@ builder.Services.AddScoped<ILicencaService, LicencaService>();*/
 
 // Configuração do JWT
 
-builder.Services.AddJwtAuthentication(builder.Configuration);
-/*builder.Services.AddAuthentication("Bearer").AddJwtBearer();
-builder.Services.AddAuthorization();*/
+//builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddAuthorization();
 
 
 // Controller + Swagger
