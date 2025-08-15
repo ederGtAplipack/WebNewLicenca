@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using LicencaApi.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using LicencaApi.Auth;
 
 namespace LicencaApi.Data
 {
     //DbContext para a aplicação LicencaApi, representa o contexto do banco de dados
-    public class LicencaDbContext : IdentityDbContext<IdentityUser>
+    public class LicencaDbContext : IdentityDbContext<ApplicationUser>
     {
         // Construtor que recebe as opções de configuração do DbContext
         public LicencaDbContext(DbContextOptions<LicencaDbContext> options)
@@ -20,7 +20,6 @@ namespace LicencaApi.Data
         public DbSet<AnagraficaModel> Anagrafica { get; set; }
         public DbSet<LicencasChaveModel> LicencasChave { get; set; }
         public DbSet<RevendaModel> Revenda { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -12,8 +12,8 @@ namespace LicencaApi.DTOs
         public int IdRevenda { get; set; }
         public string? SistemaOp { get; set; }
         public DateTime? DataAtivacao { get; set; }
-        public string? Tipo_Pc { get; set; }
-        public string? Nome_Computador { get; set; }
+        public string? TipoPc { get; set; }
+        public string? NomeComputador { get; set; }
         public string? Software { get; set; }
         public string? Ip { get; set; }
         public string? Processador { get; set; }

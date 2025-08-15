@@ -27,10 +27,9 @@ namespace LicencaApi.Controllers
             _logger = logger;
             _context = context;
         }
-
-        [HttpGet]
+        
+        [HttpGet]      
         [Authorize]
-        //public ActionResult<IEnumerable<LicencaModel>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         public async Task<IActionResult> GetAll()
         {
             try

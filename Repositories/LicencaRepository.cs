@@ -24,7 +24,6 @@ namespace LicencaApi.Repositories
         {
             _logger.LogInformation("Passando pelo LicencaRepository.");
             return await _context.Licenca.ToListAsync();
-            _logger.LogInformation("Retornando com a Lista do LicencaRepository.");
         }
 
         public async Task<LicencaModel?> BuscarPorIdAsync(int id)

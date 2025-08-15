@@ -25,8 +25,9 @@ namespace LicencaApi.Configurations
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["JwtSettings:Issuer"],
-                    ValidAudience = configuration["JwtSettings:Audience"],
+                    ClockSkew = TimeSpan.Zero, // Optional: Set to zero to avoid delay in token expiration
+                    ValidIssuer = configuration["JwtSettings:ValidIssuer"],
+                    ValidAudience = configuration["JwtSettings:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
              });

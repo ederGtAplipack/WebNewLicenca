@@ -59,7 +59,7 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[8.0.3, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
