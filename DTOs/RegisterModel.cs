@@ -14,8 +14,7 @@ namespace LicencaApi.DTOs
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
-
-        [Required(ErrorMessage = "Key is required")]
+        [Required(ErrorMessage = "Confirm Password is required")]
         public string? Key { get; set; }
     }
 }

@@ -18,22 +18,11 @@ namespace LicencaApi.Configurations
             services.AddScoped<ILicencaRepository, LicencaRepository>();    
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(LicencaMapper));
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(policy =>
-                {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                });
-            });
-            //services.AddAuthentication("Bearer").AddJwtBearer();                     
-            services.AddAuthorization();
+                        
+            services.AddAppAuthorization();
             services.AddControllers()
                 .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-
+            
             // Configuração do Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<LicencaDbContext>()

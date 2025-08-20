@@ -1,3 +1,4 @@
+using Asp.Versioning.ApiExplorer;
 using LicencaApi.Configurations;
 using LicencaApi.Data;
 using LicencaApi.Helpers;
@@ -11,48 +12,32 @@ var connectionString = builder.Configuration.GetConnectionString("MySqlConnectio
 builder.Services.AddDbContext<LicencaDbContext>(options =>
            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// CORS
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
-
 // Configuração do Kestrel
 builder.WebHost.UseKestrel(serverOptions =>
 {
-    // Configurações adicionais do Kestrel, se necessário
-    serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // Exemplo: 10 MB
+    serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10 MB
     serverOptions.ListenAnyIP(8080);
 });
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(LicencaMapper));
 
-// 
+// Configuração do CORS
+builder.Services.AddAppCors(builder.Configuration);
+
+// Configuração do Rate Limiting
+builder.Services.AddAppRateLimiting();
+
+// Configuração de Dependências (atenção: remova o AddControllers() de lá!)
 builder.Services.AddAppServices();
 
-/*builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ILicencaRepository, LicencaRepository>();
-builder.Services.AddScoped<ILicencaService, LicencaService>();*/
-
 // Configuração do JWT
-
 builder.Services.AddJwtAuthentication(builder.Configuration);
-/*builder.Services.AddAuthentication("Bearer").AddJwtBearer();
-builder.Services.AddAuthorization();*/
 
-
-// Controller + Swagger
-builder.Services.AddControllers().AddJsonOptions(options=>options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+// Controllers + Swagger
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddSwaggerConfiguration();
-
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -61,9 +46,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.MapScalarApiReference();
 }
 
+app.UseCors();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

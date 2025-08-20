@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace LicencaApi.Controllers
+namespace LicencaApi.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,13 +18,118 @@ namespace LicencaApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(ITokenService tokenService, IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AuthController(ITokenService tokenService, IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AuthController> logger)
         {
             _tokenService = tokenService;
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
+        }
+
+        [Authorize]
+        [HttpPost("CreateRole")]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+            if (roleManager == null)
+            {
+                _logger.LogError("RoleManager service is not available.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "RoleManager service is not available." });
+            }
+            // Verifica se o nome do papel é nulo ou vazio
+            if (await roleManager.RoleExistsAsync(roleName))
+            {
+                _logger.LogWarning("Role {RoleName} already exists.", roleName);
+                return BadRequest(new { Message = "Role already exists." });
+            }
+            var result = await roleManager.CreateAsync(new IdentityRole(roleName));
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Role {RoleName} created successfully.", roleName);
+                return Ok(new { Message = "Role created successfully." });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Error creating role.", result.Errors });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole(RegisterModel assignRoleModel, string roleName)
+        {
+            var user = await _userManager.FindByNameAsync(assignRoleModel.Username);
+            if (user == null)
+            {
+                _logger.LogWarning("User {Username} not found.", assignRoleModel.Username);
+                return NotFound(new { Message = "User not found." });
+            }
+            var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+            if (roleManager == null)
+            {
+                _logger.LogError("RoleManager service is not available.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "RoleManager service is not available." });
+            }
+            // Verifica se o papel existe
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                _logger.LogWarning("Role {RoleName} does not exist.", roleName);
+                return BadRequest(new { Message = "Role does not exist." });
+            }
+            // Verifica se o usuário já tem o papel
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User {Username} assigned to role {RoleName} successfully.", assignRoleModel.Username, roleName);
+                return Ok(new { Message = "User assigned to role successfully." });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Error assigning role.", result.Errors });
+            }
+        }
+        [Authorize]
+        [HttpPost("RemoveRole")]
+        public async Task<IActionResult> RemoveRole(RegisterModel removeRoleModel, string roleName)
+        {
+            var user = await _userManager.FindByNameAsync(removeRoleModel.Username);
+            if (user == null)
+            {
+                _logger.LogWarning("User {Username} not found.", removeRoleModel.Username);
+                return NotFound(new { Message = "User not found." });
+            }
+            var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+            if (roleManager == null)
+            {
+                _logger.LogError("RoleManager service is not available.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "RoleManager service is not available." });
+            }
+            // Verifica se o papel existe
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                _logger.LogWarning("Role {RoleName} does not exist.", roleName);
+                return BadRequest(new { Message = "Role does not exist." });
+            }
+            // Verifica se o usuário tem o papel
+            if (!await _userManager.IsInRoleAsync(user, roleName))
+            {
+                _logger.LogWarning("User {Username} is not in role {RoleName}.", removeRoleModel.Username, roleName);
+                return BadRequest(new { Message = "User is not in the specified role." });
+            }
+            // Remove o papel do usuário
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User {Username} removed from role {RoleName} successfully.", removeRoleModel.Username, roleName);
+                return Ok(new { Message = "User removed from role successfully." });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Error removing role.", result.Errors });
+            }
         }
 
         [HttpPost]
@@ -43,6 +148,7 @@ namespace LicencaApi.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.UserName!),
                     new Claim(ClaimTypes.Email, user.Email!),
+                    new Claim("key", user.key!),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
                 //incluindo as clains/roles na lista desse usuario
@@ -70,7 +176,7 @@ namespace LicencaApi.Controllers
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
-                    refreshToken = refreshToken,
+                    refreshToken,
                     expiration = token.ValidTo
                 });
             }
@@ -137,11 +243,15 @@ namespace LicencaApi.Controllers
                 RefreshToken = newRefreshToken
             });
         }
-        [Authorize]
+        [Authorize(Policy ="AdminOnly")]
         [HttpPost]
         [Route("Revoke/{username}")]
         public async Task<IActionResult> Revoke()
         {
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized(new { Status = "Error", Message = "Unauthorized" });
+            }
             var username = User.Identity?.Name;
             var user = await _userManager.FindByNameAsync(username!);
             if (user == null)

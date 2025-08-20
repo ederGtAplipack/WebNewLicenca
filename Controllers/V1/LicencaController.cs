@@ -5,9 +5,10 @@ using LicencaApi.Models;
 using LicencaApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
-namespace LicencaApi.Controllers
+namespace LicencaApi.Controllers.V1
 {
     /* * O LicencaController é responsável por gerenciar as operações relacionadas às licenças.
      * Ele permite buscar, criar, atualizar e desativar licenças, além de processar ativações de dispositivos.
@@ -28,15 +29,16 @@ namespace LicencaApi.Controllers
             _context = context;
         }
         
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]      
-        [Authorize]
+        [EnableRateLimiting("fixed")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
                 _logger.LogInformation("Iniciando busca por todas as licenças");
                 var licencas = await _service.BuscarTodasAsync();
-                //var licencas = _context.Licenca.ToList();
+
                 _logger.LogInformation("Fim da Busca por todas licenças");
                 return Ok(licencas);
             }
