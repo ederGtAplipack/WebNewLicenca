@@ -2,7 +2,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "AssignRole",
-    "RelativePath": "api/Auth/AssignRole",
+    "RelativePath": "api/v1/Auth/AssignRole",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -23,7 +23,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "CreateRole",
-    "RelativePath": "api/Auth/CreateRole",
+    "RelativePath": "api/v1/Auth/CreateRole",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -39,7 +39,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "Login",
-    "RelativePath": "api/Auth/Login",
+    "RelativePath": "api/v1/Auth/Login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -55,7 +55,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "RefreshToken",
-    "RelativePath": "api/Auth/Refresh-Token",
+    "RelativePath": "api/v1/Auth/Refresh-Token",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -71,7 +71,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "Register",
-    "RelativePath": "api/Auth/Register",
+    "RelativePath": "api/v1/Auth/Register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -87,7 +87,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "RemoveRole",
-    "RelativePath": "api/Auth/RemoveRole",
+    "RelativePath": "api/v1/Auth/RemoveRole",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -108,7 +108,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "Revoke",
-    "RelativePath": "api/Auth/Revoke/{username}",
+    "RelativePath": "api/v1/Auth/Revoke/{username}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -124,7 +124,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetAll",
-    "RelativePath": "api/licencas",
+    "RelativePath": "api/v1/Licenca",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -134,7 +134,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Create",
-    "RelativePath": "api/licencas",
+    "RelativePath": "api/v1/Licenca",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -150,7 +150,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetById",
-    "RelativePath": "api/licencas/{id}",
+    "RelativePath": "api/v1/Licenca/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -166,7 +166,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Deletar",
-    "RelativePath": "api/licencas/{id}",
+    "RelativePath": "api/v1/Licenca/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -182,7 +182,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Desativar",
-    "RelativePath": "api/licencas/{id}/desativar",
+    "RelativePath": "api/v1/Licenca/{id}/desativar",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -198,7 +198,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "ProcessarAtivacaoDispositivo",
-    "RelativePath": "api/licencas/ativar-processar",
+    "RelativePath": "api/v1/Licenca/ativar-processar",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -214,7 +214,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetAtivas",
-    "RelativePath": "api/licencas/ativas",
+    "RelativePath": "api/v1/Licenca/ativas",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -224,7 +224,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Update",
-    "RelativePath": "api/licencas/atualizar/{id}",
+    "RelativePath": "api/v1/Licenca/atualizar/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -240,6 +240,26 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "GetAllWithDetails",
+    "RelativePath": "api/v1/Licenca/GetAllWithDetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V2.LicencasController",
+    "Method": "GetEstatisticas",
+    "RelativePath": "api/v1/Licencas/estatisticas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

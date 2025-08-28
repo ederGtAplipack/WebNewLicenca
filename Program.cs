@@ -2,6 +2,7 @@ using Asp.Versioning.ApiExplorer;
 using LicencaApi.Configurations;
 using LicencaApi.Data;
 using LicencaApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -34,9 +35,15 @@ builder.Services.AddAppServices();
 // Configuração do JWT
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+//Habilita o uso do IAuthorizationMiddlewareResultHandler personalizado
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+
 // Controllers + Swagger
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+// Configuração de Versionamento de API
+builder.Services.AddVersioningConfiguration();
 builder.Services.AddSwaggerConfiguration();
 
 var app = builder.Build();
@@ -45,7 +52,19 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+        foreach (var description in provider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint(
+                $"/swagger/{description.GroupName}/swagger.json",
+                 $"Licenca API { description.GroupName.ToUpperInvariant()}"
+            );
+        }
+        options.RoutePrefix = "swagger";// Swagger na raiz
+    });
 }
 
 app.UseCors();

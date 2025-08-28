@@ -20,6 +20,7 @@ namespace LicencaApi.Data
         public DbSet<AnagraficaModel> Anagrafica { get; set; }
         public DbSet<LicencasChaveModel> LicencasChave { get; set; }
         public DbSet<RevendaModel> Revenda { get; set; }
+        public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,8 @@ namespace LicencaApi.Data
 
             // Garanta a chave primária
             modelBuilder.Entity<LicencaModel>().HasKey(l => l.NumLic); // Ou qual for sua PK
+
+            modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave primária para LicencaDetalhadaDTO
 
             // Mapeamento para IdLicencaChave, se não for padrão
             /*modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)

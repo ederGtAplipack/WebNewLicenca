@@ -20,6 +20,8 @@ namespace LicencaApi.Interfaces
         Task <AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request);
         Task <AtivacaoDispositivoResponseDTO> BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request);
         Task<bool> DeletarAsync(int id);
+        Task<IEnumerable<LicencaDetalhadaDTO>>  ObterTodasComDetalhesAsync();        
         //Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
+
     }
 }

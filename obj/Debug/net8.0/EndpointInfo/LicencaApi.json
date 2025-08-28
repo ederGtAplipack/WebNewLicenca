@@ -10,7 +10,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Auth/CreateRole": {
+    "/api/v1/Auth/CreateRole": {
       "post": {
         "tags": [
           "Auth"
@@ -31,47 +31,7 @@
         }
       }
     },
-    "/api/Auth/AssignRole": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "parameters": [
-          {
-            "name": "roleName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Auth/RemoveRole": {
+    "/api/v1/Auth/AssignRole": {
       "post": {
         "tags": [
           "Auth"
@@ -111,7 +71,47 @@
         }
       }
     },
-    "/api/Auth/Login": {
+    "/api/v1/Auth/RemoveRole": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "roleName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Auth/Login": {
       "post": {
         "tags": [
           "Auth"
@@ -142,7 +142,7 @@
         }
       }
     },
-    "/api/Auth/Register": {
+    "/api/v1/Auth/Register": {
       "post": {
         "tags": [
           "Auth"
@@ -173,7 +173,7 @@
         }
       }
     },
-    "/api/Auth/Refresh-Token": {
+    "/api/v1/Auth/Refresh-Token": {
       "post": {
         "tags": [
           "Auth"
@@ -204,7 +204,7 @@
         }
       }
     },
-    "/api/Auth/Revoke/{username}": {
+    "/api/v1/Auth/Revoke/{username}": {
       "post": {
         "tags": [
           "Auth"
@@ -226,7 +226,7 @@
         }
       }
     },
-    "/api/licencas": {
+    "/api/v1/Licenca": {
       "get": {
         "tags": [
           "Licenca"
@@ -267,7 +267,19 @@
         }
       }
     },
-    "/api/licencas/{id}": {
+    "/api/v1/Licenca/GetAllWithDetails": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Licenca/{id}": {
       "get": {
         "tags": [
           "Licenca"
@@ -311,7 +323,7 @@
         }
       }
     },
-    "/api/licencas/ativas": {
+    "/api/v1/Licenca/ativas": {
       "get": {
         "tags": [
           "Licenca"
@@ -323,7 +335,7 @@
         }
       }
     },
-    "/api/licencas/atualizar/{id}": {
+    "/api/v1/Licenca/atualizar/{id}": {
       "put": {
         "tags": [
           "Licenca"
@@ -365,7 +377,7 @@
         }
       }
     },
-    "/api/licencas/{id}/desativar": {
+    "/api/v1/Licenca/{id}/desativar": {
       "patch": {
         "tags": [
           "Licenca"
@@ -388,7 +400,7 @@
         }
       }
     },
-    "/api/licencas/ativar-processar": {
+    "/api/v1/Licenca/ativar-processar": {
       "post": {
         "tags": [
           "Licenca"
@@ -412,6 +424,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Licencas/estatisticas": {
+      "get": {
+        "tags": [
+          "Licencas"
+        ],
         "responses": {
           "200": {
             "description": "OK"

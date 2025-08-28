@@ -35,6 +35,14 @@ namespace LicencaApi.Services
             return licencas.Select(l => _mapper.Map<LicencaModel>(l));
         }
 
+        public async Task<IEnumerable<LicencaDetalhadaDTO>> ObterTodasComDetalhesAsync()
+        {
+            _logger.LogInformation("Passando pelo Service do ObterTodasComDetalhesAsync.");
+            var licencasDetalhadas = await _repository.ObterTodasComDetalhesAsync();
+            return licencasDetalhadas;
+        }
+
+
         public async Task<LicencaModel?> BuscarPorIdAsync(int id)
         {
             _logger.LogInformation("Passando pelo LicencaService");

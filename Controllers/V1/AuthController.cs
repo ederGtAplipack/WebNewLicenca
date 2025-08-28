@@ -10,8 +10,9 @@ using System.Security.Claims;
 
 namespace LicencaApi.Controllers.V1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly ITokenService _tokenService;

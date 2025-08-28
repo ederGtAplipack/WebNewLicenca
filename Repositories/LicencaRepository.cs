@@ -1,8 +1,15 @@
-﻿using LicencaApi.Data;
+﻿using Dapper;
+using LicencaApi.Data;
+using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
+using LicencaApi.MSSQL.Builders;
+using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using LicencaApi.Services;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using System.Net.WebSockets;
 
 /*A classe LicencaRepository é responsável por realizar operações CRUD (Create, Read, Update, Delete) na tabela Licenca. Ela implementa os métodos definidos na interface ILicencaRepository, garantindo que outras partes do sistema possam interagir com os dados sem precisar conhecer os detalhes da implementação.
 
@@ -13,17 +20,38 @@ namespace LicencaApi.Repositories
     {
         private readonly LicencaDbContext _context;
         private readonly ILogger<LicencaRepository> _logger;
+        //private readonly string _connectionString; <- se usar Dapper
 
-        public LicencaRepository(LicencaDbContext context, ILogger<LicencaRepository> logger)
+        public LicencaRepository(LicencaDbContext context, ILogger<LicencaRepository> logger, IConfiguration config )
         {
             _context = context;
             _logger = logger;
+            //_connectionString = config.GetConnectionString("MySqlConnection"); <- se usar Dapper
         }
 
         public async Task<IEnumerable<LicencaModel>> BuscarTodasAsync()
         {
             _logger.LogInformation("Passando pelo LicencaRepository.");
             return await _context.Licenca.ToListAsync();
+        }
+
+        public async Task<IEnumerable<LicencaDetalhadaDTO>> ObterTodasComDetalhesAsync()
+        {
+            _logger.LogInformation("Passando pelo Repository do ObterTodasComDetalhesAsync.");
+
+            var sql = LicencaSqlBuilder.GetAllWithDetailsSql();
+            return await _context.Set<LicencaDetalhadaDTO>().FromSqlRaw(sql).ToListAsync();
+
+            // Pega a conexão que o EF já gerencia
+            /*var connection = _context.Database.GetDbConnection();
+            // Se a conexão estiver fechada, abre ela
+            if (connection.State == System.Data.ConnectionState.Closed)
+                await connection.OpenAsync();
+            // Usa Dapper para executar a consulta SQL                        
+            var sql = LicencaSqlBuilder.GetAllWithDetailsSql();
+            // Executa a consulta e mapeia os resultados para a lista de LicencaDetalhadaDTO
+            return await connection.QueryAsync<LicencaDetalhadaDTO>(sql);  */
+
         }
 
         public async Task<LicencaModel?> BuscarPorIdAsync(int id)
@@ -37,6 +65,14 @@ namespace LicencaApi.Repositories
             _logger.LogInformation("Passando pelo Repository do Create.");
             await _context.Licenca.AddAsync(model);
         }
+
+        /*public async Task CreateSql(LicencaDetalhadaDTO licencaDetalhadaDTO)
+        {
+            _logger.LogInformation("Criando Nova Licenca");
+            var sql = LicencaSqlBuilder.CreateSql();
+            await _context.Set<LicencaDetalhadaDTO>().AddAsync(licencaDetalhadaDTO);
+        }*/
+
 
         public void AtualizarAsync(LicencaModel model)
         {
