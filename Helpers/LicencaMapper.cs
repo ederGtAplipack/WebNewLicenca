@@ -9,8 +9,10 @@ namespace LicencaApi.Helpers
         public LicencaMapper()
         {
             CreateMap<CriarLicencaDTO, LicencaModel>();
+            CreateMap<LicencaDetalhadaDTO, LicencaModel>();
             CreateMap<AtualizarLicencaDTO, LicencaModel>();
             CreateMap<LicencaModel, LicencaDTO>();
+            CreateMap<CriarAnagraficaDTO, AnagraficaModel>();
         }
 
     }

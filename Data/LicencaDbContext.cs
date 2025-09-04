@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+using LicencaApi.Auth;
+using LicencaApi.DTOs;
 using LicencaApi.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using LicencaApi.Auth;
+using Microsoft.EntityFrameworkCore;
 
 namespace LicencaApi.Data
 {
@@ -17,10 +18,11 @@ namespace LicencaApi.Data
         public DbSet<ContratoModel> Contratos { get; set; }
         public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel
         public DbSet<SoftwareModel> Software { get; set; }
-        public DbSet<AnagraficaModel> Anagrafica { get; set; }
+        //public DbSet<AnagraficaModel> Anagrafica { get; set; }
         public DbSet<LicencasChaveModel> LicencasChave { get; set; }
         public DbSet<RevendaModel> Revenda { get; set; }
         public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
+        public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +34,9 @@ namespace LicencaApi.Data
 
             modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave primária para LicencaDetalhadaDTO
 
+            modelBuilder.Entity<CriarAnagraficaDTO>().HasKey(a => a.IdAnagrafica); // Definindo a chave primária para AnagraficaModel
+
+            modelBuilder.Entity<AnagraficaModel>().HasKey(a => a.IdAnagrafica); // Definindo a chave primária para AnagraficaModel
             // Mapeamento para IdLicencaChave, se não for padrão
             /*modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)
                 .HasColumnName("idlicencachave")

@@ -49,23 +49,12 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
-
-        /* Método para obter todas as licenças com detalhes adicionais.
-         * Retorna uma lista de LicencaDetalhadaDTO que inclui informações detalhadas sobre cada licença.
-         */
-        [HttpGet("GetAllWithDetails")]        
-        public async Task<IActionResult> GetAllWithDetails()
-        {
-            var licencas = await _service.ObterTodasComDetalhesAsync();
-            return Ok(licencas);
-        }
-
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             _logger.LogInformation("Iniciando busca por ID de licenças");
-            var licenca = await _service.BuscarPorIdAsync(id);
+            var licenca = await _service.BuscarPorIdLicenca(id);
             if (licenca == null)
                 return NotFound();
             _logger.LogWarning("Licença com ID {Id} encontrada", id);
@@ -126,44 +115,7 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno do servidor.");
             }
         }
-        /*
-        [HttpPost("CreateNewLin")]
-        public async Task<IActionResult> CreateNewLin([FromBody] LicencaDetalhadaDTO dto)
-        {
-            try
-            {
-                // Verificação inicial do modelo
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                _logger.LogInformation("Iniciando a criação de nova licença.");
-                var novaLicenca = await _service.CriarNovaLinhaAsync(dto);
-                // O retorno CreatedAtAction é o padrão RESTful para criação bem-sucedida.
-                _logger.LogInformation("Licença criada com sucesso: {NumLic}", novaLicenca.NumLic);
-                return CreatedAtAction(nameof(GetById), new { id = novaLicenca.NumLic }, novaLicenca);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Captura um erro específico do serviço (como falha no mapeamento) e retorna 400 Bad Request.
-                _logger.LogError(ex, "Erro de validação ou operação: {Message}", ex.Message);
-                return BadRequest(ex.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                // Captura erros específicos do banco de dados (por exemplo, violação de chave primária).
-                _logger.LogError(ex, "Erro de banco de dados ao criar licença.");
-                return StatusCode(500, "Erro ao salvar a licença. Verifique os dados e tente novamente.");
-            }
-            catch (Exception ex)
-            {
-                // Captura qualquer outra exceção inesperada.
-                _logger.LogError(ex, "Erro interno do servidor ao criar licença.");
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-        }*/
-
-
+        
         /*
          * O método Update é responsável por atualizar uma licença existente.
          * Ele recebe o ID da licença e os dados atualizados como parâmetros.
@@ -204,31 +156,11 @@ namespace LicencaApi.Controllers.V1
             return Ok(new { mensagem = "Licença desativada com sucesso", id });
         }
 
-        /*
-         * O método ProcessarAtivacaoDispositivo é responsável por processar a ativação de um dispositivo.
-         * Ele recebe um objeto AtivacaoDispositivoRequestDTO contendo os dados necessários para a ativação.
-         * Se a ativação for bem-sucedida, retorna um objeto AtivacaoDispositivoResponseDTO com os detalhes da licença ativada.
-         * Em caso de erro, retorna um status 500 (Internal Server Error).
-         */
-        [HttpPost("ativar-processar")]
-        public async Task<IActionResult> ProcessarAtivacaoDispositivo([FromBody] AtivacaoDispositivoRequestDTO request)
-        {
-            try
-            {
-                var response = await _service.ProcessarAtivacaoDispositivoAsync(request);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao processar ativação de dispositivo");
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
-
+       
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Deletar(int id)
         {
-            var licenca = await _service.BuscarPorIdAsync(id);
+            var licenca = await _service.BuscarPorIdLicenca(id);
             if (licenca == null)
                 return NotFound("Licença não encontrada."); 
             _logger.LogInformation("Iniciando deleção de licença com ID {Id}", id);

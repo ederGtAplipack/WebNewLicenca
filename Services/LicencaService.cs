@@ -5,6 +5,7 @@ using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 /*A classe LicencaService atua como intermediária entre a camada de repositório (que interage com o banco de dados) e a camada de apresentação (que consome os DTOs). 
  * Ela encapsula a lógica de negócios, garantindo que os dados sejam manipulados corretamente antes de serem enviados ou recebidos pela aplicação.*/
@@ -43,7 +44,7 @@ namespace LicencaApi.Services
         }
 
 
-        public async Task<LicencaModel?> BuscarPorIdAsync(int id)
+        public async Task<LicencaModel?> BuscarPorIdLicenca(int id)
         {
             _logger.LogInformation("Passando pelo LicencaService");
             var Licencas = await _repository.BuscarPorIdAsync(id);
@@ -53,8 +54,6 @@ namespace LicencaApi.Services
                 return null;
             }
             return Licencas;
-
-            _logger.LogInformation("Retornando todas {id} as licenças", id);
 
             /*var licenca = await _repository.BuscarPorIdAsync(id);
             return licenca == null ? null : _mapper.Map<LicencaModel>(licenca);*/
@@ -87,7 +86,7 @@ namespace LicencaApi.Services
                 _logger.LogError("Cliente com ID {IdCliente} não encontrado.", dto.IdCliente);
                 throw new KeyNotFoundException($"Cliente com ID {dto.IdCliente} não encontrado.");
             }
-            
+
             // 1. Mapear o DTO para o modelo de domínio.
             // O Mapper já deve ter sido configurado para lidar com essa conversão.
             var licenca = _mapper.Map<LicencaModel>(dto);
@@ -116,7 +115,7 @@ namespace LicencaApi.Services
                 // Re-lança a exceção para que o Controller possa capturá-la.
                 throw;
             }
-        }
+        }        
 
         public async Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto)
         {
@@ -126,7 +125,7 @@ namespace LicencaApi.Services
             if (licenca == null)
             {
                 _logger.LogWarning("Licença com ID {Id} não encontrada para atualização.", id);
-                return false;        
+                return false;
             }
             try
             {
@@ -137,7 +136,7 @@ namespace LicencaApi.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogError(ex,"Erro de concorrência ao atualizar a licença com ID {Id}.", id);
+                _logger.LogError(ex, "Erro de concorrência ao atualizar a licença com ID {Id}.", id);
                 // O repositório não tem o método LicencaExists, o Service tem acesso ao UnitOfWork
                 // para buscar a licença
                 if (await _unitOfWork.Licencas.BuscarPorIdAsync(id) == null)
@@ -379,6 +378,82 @@ namespace LicencaApi.Services
         Task<AtivacaoDispositivoResponseDTO> ILicencaService.BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
+        {
+            _logger.LogInformation("Passando pelo LicencaService");
+            var anagrafica = await _repository.BuscarTodasAnagrafica();
+            _logger.LogInformation("Retornando todos Clientes");
+            return anagrafica.Select(l => _mapper.Map<AnagraficaModel>(l));
+        }
+
+        public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
+        {
+            _logger.LogInformation("Passando pelo LicencaService");
+            var anagrafica = await _repository.BuscarPorIdAnagrafica(id);
+            if (anagrafica == null)
+            {
+                _logger.LogWarning("Licença com ID {id} não encontrada", id);
+                return null;
+            }
+            return anagrafica;
+        }
+
+        public async Task<AnagraficaModel?> CriarNovaAnagrafica(CriarAnagraficaDTO dto)
+        {
+            _logger.LogWarning("Iniciando Método CriarNovaAnagrafica");
+            var clienteExiste = await _context.Anagrafica.AnyAsync(c => c.IdAnagrafica == dto.IdAnagrafica);
+            if (clienteExiste)
+            {
+                _logger.LogError("Cliente com ID {IdCliente} já existe.", dto.IdAnagrafica);
+                throw new InvalidOperationException($"Cliente com ID {dto.IdAnagrafica} já existe.");
+            }
+            var anagrafica = _mapper.Map<AnagraficaModel>(dto);
+
+
+            if (anagrafica == null)
+            {
+                _logger.LogError("Erro de mapeamento: O AutoMapper retornou um objeto nulo para o DTO.");
+                throw new InvalidOperationException("Não foi possível mapear o DTO para o modelo Anagrafica.");
+            }
+
+            try
+            {
+                await _repository.CreateNewAnagrafica(anagrafica);
+       
+                await _unitOfWork.CompleteAsync();
+
+                //await _context.SaveChangesAsync();
+                _logger.LogInformation("Cliente criado com sucesso. ID do Cliente: {IdAnagrafica}", anagrafica.IdAnagrafica);
+
+                return anagrafica;
+
+            }catch (Exception ex){
+                _logger.LogError(ex, "Ocorreu um erro ao salvar a Anagrafica no banco de dados.");
+                // Re-lança a exceção para que o Controller possa capturá-la.
+                throw;
+            }
+        }
+
+        public async Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto)
+        {
+            _logger.LogInformation("Iniciando criação de licença complexa");
+
+            // Validar cliente
+            var clienteExiste = await _context.Anagrafica.AnyAsync(c => c.IdAnagrafica == dto.IdCliente);
+            if (!clienteExiste)
+                throw new InvalidOperationException($"Cliente {dto.IdCliente} não encontrado");
+
+            // Mapear DTO → Model
+            var model = _mapper.Map<LicencaModel>(dto);
+
+            // Chamar repositório
+            await _repository.CreateSql(model);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Licença complexa criada com ID {NumLic}", model.NumLic);
+
+            return model;
         }
     }
 }

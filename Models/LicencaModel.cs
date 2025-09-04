@@ -42,7 +42,7 @@ namespace LicencaApi.Models
         public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
         [Column("idlicencachave")]
         public int? IdLicencaChave { get;  set; } // Chave de Licença, pode ser um GUID ou outro identificador único
-        
+
         // FK
         /*[ForeignKey("IdCliente")]
         public virtual AnagraficaModel? Anagrafica { get; set; }

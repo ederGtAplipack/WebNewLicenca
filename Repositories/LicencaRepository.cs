@@ -39,7 +39,9 @@ namespace LicencaApi.Repositories
         {
             _logger.LogInformation("Passando pelo Repository do ObterTodasComDetalhesAsync.");
 
+            // Usando EF Core para executar a consulta SQL diretamente e mapear para LicencaDetalhadaDTO
             var sql = LicencaSqlBuilder.GetAllWithDetailsSql();
+            /* Usando FromSqlRaw para executar a consulta SQL e mapear os resultados para LicencaDetalhadaDTO */
             return await _context.Set<LicencaDetalhadaDTO>().FromSqlRaw(sql).ToListAsync();
 
             // Pega a conexão que o EF já gerencia
@@ -66,13 +68,12 @@ namespace LicencaApi.Repositories
             await _context.Licenca.AddAsync(model);
         }
 
-        /*public async Task CreateSql(LicencaDetalhadaDTO licencaDetalhadaDTO)
+        public async Task CreateSql(LicencaModel licencaDetalhadaDTO)
         {
             _logger.LogInformation("Criando Nova Licenca");
             var sql = LicencaSqlBuilder.CreateSql();
-            await _context.Set<LicencaDetalhadaDTO>().AddAsync(licencaDetalhadaDTO);
-        }*/
-
+            await _context.Set<LicencaModel>().AddAsync(licencaDetalhadaDTO);
+        }
 
         public void AtualizarAsync(LicencaModel model)
         {
@@ -106,5 +107,22 @@ namespace LicencaApi.Repositories
             return true;
         }
 
+        public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
+        {
+            _logger.LogInformation("Passando pelo LicencaRepository.");
+            return await _context.Anagrafica.ToListAsync();
+        }
+
+        public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
+        {
+            _logger.LogInformation("Passando pelo Repository do BuscarPorIdAnagrafica {id}.", id);
+            return await _context.Anagrafica.FindAsync(id);
+        }
+
+        public async Task CreateNewAnagrafica(AnagraficaModel anagraficaModel)
+        {
+            _logger.LogInformation("Passando pelo Repository do CreateNewAnagrafica.");
+            await _context.Anagrafica.AddAsync(anagraficaModel);
+        }
     }
 }
