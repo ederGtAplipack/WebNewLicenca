@@ -1,4 +1,4 @@
-﻿using LicencaApi.Interfaces;
+using LicencaApi.Interfaces;
 using LicencaApi.Repositories;
 using System;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ namespace LicencaApi.Data
     {
         //Uma propriedade chamada Licencas, que expõe um repositório específico (ILicencaRepository) relacionado a licenças.
         ILicencaRepository Licencas { get; }
+
+        IClienteRepository Cliente { get; }
         Task<int> CompleteAsync();
      }
 }

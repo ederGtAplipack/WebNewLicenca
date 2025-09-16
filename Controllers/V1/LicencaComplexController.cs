@@ -1,4 +1,4 @@
-﻿using LicencaApi.Data;
+using LicencaApi.Data;
 using LicencaApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace LicencaApi.Controllers.V1
             _context = context;
         }
 
-        [HttpPost("CreateNewLin")]
+        /*[HttpPost("CreateNewLin")]
         public async Task<IActionResult> CreateNewLin([FromBody] LicencaDetalhadaDTO dto)
         {
             try
@@ -64,6 +64,6 @@ namespace LicencaApi.Controllers.V1
 
             return Ok(licenca);
 
-        }
+        }*/
     }
 }

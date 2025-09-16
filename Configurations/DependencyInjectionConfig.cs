@@ -1,4 +1,4 @@
-﻿using LicencaApi.Auth;
+using LicencaApi.Auth;
 using LicencaApi.Data;
 using LicencaApi.Helpers;
 using LicencaApi.Interfaces;
@@ -15,7 +15,9 @@ namespace LicencaApi.Configurations
         {
 
             services.AddScoped<ILicencaService, LicencaService>();
+            services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ILicencaRepository, LicencaRepository>();    
+            services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(LicencaMapper));
                         

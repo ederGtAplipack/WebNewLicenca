@@ -1,4 +1,4 @@
-﻿using LicencaApi.Auth;
+using LicencaApi.Auth;
 using LicencaApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -58,9 +58,9 @@ namespace LicencaApi.Controllers.V1
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("AssignRole")]
-        public async Task<IActionResult> AssignRole(RegisterModel assignRoleModel, string roleName)
+        public async Task<IActionResult> AssignRole(AssignRoleModel assignRoleModel, string roleName)
         {
             var user = await _userManager.FindByNameAsync(assignRoleModel.Username);
             if (user == null)
@@ -244,7 +244,7 @@ namespace LicencaApi.Controllers.V1
                 RefreshToken = newRefreshToken
             });
         }
-        [Authorize(Policy ="AdminOnly")]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         [Route("Revoke/{username}")]
         public async Task<IActionResult> Revoke()
@@ -264,6 +264,62 @@ namespace LicencaApi.Controllers.V1
             user.RefreshTokenExpiryTime = DateTime.MinValue;
             await _userManager.UpdateAsync(user);
             return NoContent();
+        }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = _userManager.Users.ToList(); // pega todos do AspNetUsers
+
+                var userList = new List<object>();
+
+                foreach (var user in users)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    userList.Add(new
+                    {
+                        user.Id,
+                        user.UserName,
+                        user.Email,
+                        user.key,      // se essa propriedade existir no seu IdentityUser extendido
+                        Roles = roles
+                    });
+                }
+
+                return Ok(userList);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetAllRoles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            try
+            {
+                var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+                if (roleManager == null)
+                {
+                    _logger.LogError("RoleManager service is not available.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "RoleManager service is not available." });
+                }
+                var roles = roleManager.Roles.ToList();
+                var roleList = roles.Select(role => new
+                {
+                    role.Id,
+                    role.Name
+                });
+                return Ok(roleList);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Status = "Error", Message = ex.Message });
+            }
+
         }
     }
 }

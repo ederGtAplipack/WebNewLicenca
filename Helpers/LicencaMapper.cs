@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using LicencaApi.DTOs;
 using LicencaApi.Models;
 
@@ -13,6 +13,7 @@ namespace LicencaApi.Helpers
             CreateMap<AtualizarLicencaDTO, LicencaModel>();
             CreateMap<LicencaModel, LicencaDTO>();
             CreateMap<CriarAnagraficaDTO, AnagraficaModel>();
+            CreateMap<AtualizarAnagraficaDTO, AnagraficaModel>(); 
         }
 
     }

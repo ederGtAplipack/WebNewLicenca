@@ -76,6 +76,71 @@
         }
       }
     },
+    "/api/v1/Anagrafica/UpdateAnagrafica/{id}": {
+      "put": {
+        "tags": [
+          "Anagrafica"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarAnagraficaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarAnagraficaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarAnagraficaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Anagrafica/DeleteAnagrafica/{id}": {
+      "delete": {
+        "tags": [
+          "Anagrafica"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ativar-processar": {
       "post": {
         "tags": [
@@ -146,17 +211,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
+                "$ref": "#/components/schemas/AssignRoleModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
+                "$ref": "#/components/schemas/AssignRoleModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterModel"
+                "$ref": "#/components/schemas/AssignRoleModel"
               }
             }
           }
@@ -315,6 +380,30 @@
               "type": "string"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Auth/GetAllUsers": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Auth/GetAllRoles": {
+      "get": {
+        "tags": [
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -485,60 +574,6 @@
         }
       }
     },
-    "/CreateNewLin": {
-      "post": {
-        "tags": [
-          "LicencaComplex"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LicencaDetalhadaDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LicencaDetalhadaDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LicencaDetalhadaDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/{id}": {
-      "get": {
-        "tags": [
-          "LicencaComplex"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/v1/LicencaQuery/GetAllWithDetails": {
       "get": {
         "tags": [
@@ -566,6 +601,16 @@
   },
   "components": {
     "schemas": {
+      "AssignRoleModel": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AtivacaoDispositivoRequestDTO": {
         "type": "object",
         "properties": {
@@ -632,6 +677,73 @@
             "nullable": true
           },
           "externalIp": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarAnagraficaDTO": {
+        "type": "object",
+        "properties": {
+          "idAnagrafica": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "razaoSocial": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeFantasia": {
+            "type": "string",
+            "nullable": true
+          },
+          "contato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cep": {
+            "type": "string",
+            "nullable": true
+          },
+          "endereco": {
+            "type": "string",
+            "nullable": true
+          },
+          "bairro": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidade": {
+            "type": "string",
+            "nullable": true
+          },
+          "uf": {
+            "type": "string",
+            "nullable": true
+          },
+          "cnpj": {
+            "type": "string",
+            "nullable": true
+          },
+          "ie": {
+            "type": "string",
+            "nullable": true
+          },
+          "telefone": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "idRevenda": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "senha": {
             "type": "string",
             "nullable": true
           }
@@ -843,89 +955,6 @@
             "nullable": true
           },
           "status": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "LicencaDetalhadaDTO": {
-        "type": "object",
-        "properties": {
-          "numLic": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "idCliente": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nomeCliente": {
-            "type": "string",
-            "nullable": true
-          },
-          "tipoLic": {
-            "type": "string",
-            "nullable": true
-          },
-          "macAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataLic": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "scade": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "attivo": {
-            "type": "boolean"
-          },
-          "idRevenda": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sistemaOp": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataAtivacao": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "tipoPc": {
-            "type": "string",
-            "nullable": true
-          },
-          "nomeComputador": {
-            "type": "string",
-            "nullable": true
-          },
-          "software": {
-            "type": "string",
-            "nullable": true
-          },
-          "ip": {
-            "type": "string",
-            "nullable": true
-          },
-          "processador": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "idLicencaChave": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "chaveLicenca": {
             "type": "string",
             "nullable": true
           }

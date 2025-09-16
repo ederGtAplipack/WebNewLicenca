@@ -1,4 +1,4 @@
-﻿// LicencaApi/Data/UnitOfWork.cs
+// LicencaApi/Data/UnitOfWork.cs
 
 using LicencaApi.Interfaces;
 using LicencaApi.Repositories;
@@ -16,15 +16,17 @@ namespace LicencaApi.Data
 
         // A propriedade agora é pública, somente leitura e armazena o repositório.
         public ILicencaRepository Licencas { get; }
+        public IClienteRepository Cliente {  get; }
 
 
         // O construtor recebe todas as dependências por injeção.
-        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas)
+        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas, IClienteRepository cliente)
         {
             _context = context;
             _logger = logger;
             // Atribua o repositório injetado à propriedade.
             this.Licencas = licencas;
+            this.Cliente = cliente;
         }
 
         public async Task<int> CompleteAsync()

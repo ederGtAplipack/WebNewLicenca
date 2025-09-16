@@ -1,4 +1,4 @@
-﻿using LicencaApi.DTOs;
+using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,12 +10,12 @@ namespace LicencaApi.Controllers.V1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class AnagraficaController : ControllerBase
     {
-        private readonly ILogger<AnagraficaController> _logger;
-        private readonly ILicencaService _service;
-        public AnagraficaController(ILogger<AnagraficaController> logger, ILicencaService service)
+        private readonly ILogger<AnagraficaController> _logger;        
+        private readonly IClienteService _clienteService;
+        public AnagraficaController(ILogger<AnagraficaController> logger, IClienteService clienteService)
         {
             _logger = logger;
-            _service = service;
+            _clienteService = clienteService;
         }
 
         [HttpGet("AllAnagrafica")]
@@ -24,7 +24,7 @@ namespace LicencaApi.Controllers.V1
             try
             {
                 _logger.LogInformation("Iniciando busca por todos Clientes");
-                var anagrafica = await _service.BuscarTodasAnagrafica();
+                var anagrafica = await _clienteService.BuscarTodosClientes();                
 
                 _logger.LogInformation("Fim da Busca por todos Clientes");
                 return Ok(anagrafica);
@@ -41,7 +41,7 @@ namespace LicencaApi.Controllers.V1
             try
             {
                 _logger.LogInformation("AnagraficaController GetById method called with id: {Id}", id);
-                var anagrafica = await _service.BuscarPorIdAnagrafica(id);
+                var anagrafica = await _clienteService.BuscarPorIdCliente(id);
 
                 if (anagrafica == null)
                     return NotFound();
@@ -63,7 +63,7 @@ namespace LicencaApi.Controllers.V1
             try
             {
                 _logger.LogInformation("AnagraficaController CreateAnagrafica method called");
-                var novaAnagrafica = await _service.CriarNovaAnagrafica(dtoAnagrafica);
+                var novaAnagrafica = await _clienteService.CriarNovoCliente(dtoAnagrafica);
                 if (novaAnagrafica == null)
                 {
                     _logger.LogWarning("Falha ao criar nova Anagrafica");
@@ -77,6 +77,38 @@ namespace LicencaApi.Controllers.V1
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+        [HttpPut("UpdateAnagrafica/{id:int}")]
+        public async Task<IActionResult> UpdateAnagrafica(int id, AtualizarAnagraficaDTO dto)
+        {
+            _logger.LogInformation("Iniciando atualização de Cliente com ID {Id}", id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            /*if (id != dto.NumLic)
+                return BadRequest("ID de licença inválido.");*/
+
+            var atualizado = await _clienteService.AtualizarAsync(id, dto);
+            if (!atualizado)
+                return NotFound();
+
+            _logger.LogInformation("Cliente com ID {Id} atualizada com sucesso", id);
+            return NoContent();
+        }
+
+        [HttpDelete("DeleteAnagrafica/{id:int}")]
+        public async Task<IActionResult> DeleteAnagrafica(int id)
+        {
+            var anagrafica = await _clienteService.BuscarPorIdCliente(id);
+            if (anagrafica == null)
+                return NotFound("Cliente não Encontrado");
+            _logger.LogInformation("Cliente não encontrado");
+
+            var deletado = await _clienteService.DeletarCliente(id);
+            if (!deletado)
+                return NotFound();
+            _logger.LogInformation("Cliente com ID {id} removido !");
+            return Ok(new { mensagem = "Cliente Removido", id });
         }
     }
 }

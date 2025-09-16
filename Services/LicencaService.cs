@@ -380,14 +380,16 @@ namespace LicencaApi.Services
             throw new NotImplementedException();
         }
 
+        /*METODO REMOVIDO PARA O CLIENTESERVICE
         public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
         {
             _logger.LogInformation("Passando pelo LicencaService");
             var anagrafica = await _repository.BuscarTodasAnagrafica();
             _logger.LogInformation("Retornando todos Clientes");
             return anagrafica.Select(l => _mapper.Map<AnagraficaModel>(l));
-        }
+        }*/
 
+        /*METODO REMOVIDO PARA O CLIENTESERVICE
         public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
         {
             _logger.LogInformation("Passando pelo LicencaService");
@@ -398,8 +400,9 @@ namespace LicencaApi.Services
                 return null;
             }
             return anagrafica;
-        }
+        }*/
 
+        /*METODO REMOVIDO PARA O CLIENTESERVICE
         public async Task<AnagraficaModel?> CriarNovaAnagrafica(CriarAnagraficaDTO dto)
         {
             _logger.LogWarning("Iniciando Método CriarNovaAnagrafica");
@@ -434,7 +437,7 @@ namespace LicencaApi.Services
                 // Re-lança a exceção para que o Controller possa capturá-la.
                 throw;
             }
-        }
+        }*/
 
         public async Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto)
         {
@@ -455,5 +458,6 @@ namespace LicencaApi.Services
 
             return model;
         }
+
     }
 }

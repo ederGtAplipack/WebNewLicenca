@@ -1,21 +1,5 @@
 [
   {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaComplexController",
-    "Method": "GetById",
-    "RelativePath": "{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "LicencaApi.Controllers.V1.AnagraficaController",
     "Method": "GetByIdAnagrafica",
     "RelativePath": "api/v1/Anagrafica/{id}",
@@ -58,6 +42,43 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.AnagraficaController",
+    "Method": "DeleteAnagrafica",
+    "RelativePath": "api/v1/Anagrafica/DeleteAnagrafica/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.AnagraficaController",
+    "Method": "UpdateAnagrafica",
+    "RelativePath": "api/v1/Anagrafica/UpdateAnagrafica/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.AtualizarAnagraficaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.AuthController",
     "Method": "AssignRole",
     "RelativePath": "api/v1/Auth/AssignRole",
@@ -67,7 +88,7 @@
     "Parameters": [
       {
         "Name": "assignRoleModel",
-        "Type": "LicencaApi.DTOs.RegisterModel",
+        "Type": "LicencaApi.DTOs.AssignRoleModel",
         "IsRequired": true
       },
       {
@@ -92,6 +113,26 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.AuthController",
+    "Method": "GetRoles",
+    "RelativePath": "api/v1/Auth/GetAllRoles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.AuthController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/v1/Auth/GetAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -315,22 +356,6 @@
       {
         "Name": "request",
         "Type": "LicencaApi.DTOs.AtivacaoDispositivoRequestDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaComplexController",
-    "Method": "CreateNewLin",
-    "RelativePath": "CreateNewLin",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "LicencaDetalhadaDTO",
         "IsRequired": true
       }
     ],
