@@ -412,6 +412,18 @@
         }
       }
     },
+    "/api/v1/Contrato/AllContrato": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca": {
       "get": {
         "tags": [

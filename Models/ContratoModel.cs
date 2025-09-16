@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,21 +8,21 @@ namespace LicencaApi.Models
     public class ContratoModel
     {
         [Key]
-        [Column("id_contrato")]
-        public string IdContrato { get; set; } = string.Empty;
-        [Column("id_cliente")]
+        [Column("idContrato")]
+        public int IdContrato { get; set; }
+        [Column("idCliente")]
         public int IdCliente { get; set; }
 
         [Column("plano")]
         public string? Plano { get; set; }
 
-        [Column("qtd_licencas")]
+        [Column("qtdLicencas")]
         public int QtdLicencas { get; set; }
 
-        [Column("data_inicio")]
+        [Column("dataInicio")]
         public DateTime DataInicio { get; set; }
 
-        [Column("data_fim")]
+        [Column("dataFim")]
         public DateTime? DataFim { get; set; }
         public string Periodicidade { get; set; } = "Mensal"; // ou Anual, Trimestral, Vitalício
         public bool PagamentoEmDia { get; set; } = true; // novo campo

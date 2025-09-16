@@ -221,6 +221,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/Contrato/AllContrato",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetAll",
     "RelativePath": "api/v1/Licenca",

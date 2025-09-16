@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LicencaApi.Data
 {
-    //DbContext para a aplicaÁ„o LicencaApi, representa o contexto do banco de dados
+    //DbContext para a aplica√ß√£o LicencaApi, representa o contexto do banco de dados
     public class LicencaDbContext : IdentityDbContext<ApplicationUser>
     {
-        // Construtor que recebe as opÁıes de configuraÁ„o do DbContext
+        // Construtor que recebe as op√ß√µes de configura√ß√£o do DbContext
         public LicencaDbContext(DbContextOptions<LicencaDbContext> options)
             : base(options) { }
 
@@ -26,34 +26,36 @@ namespace LicencaApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Garanta que o nome da tabela seja "licencas" (plural e min˙sculo, conforme o erro indica 'l.Status')
+            // Garanta que o nome da tabela seja "licencas" (plural e min√∫sculo, conforme o erro indica 'l.Status')
             //modelBuilder.Entity<LicencaModel>().ToTable("licenca");
 
-            // Garanta a chave prim·ria
+            // Garanta a chave prim√°ria
             modelBuilder.Entity<LicencaModel>().HasKey(l => l.NumLic); // Ou qual for sua PK
 
-            modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave prim·ria para LicencaDetalhadaDTO
+            modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave prim√°ria para LicencaDetalhadaDTO
 
-            modelBuilder.Entity<CriarAnagraficaDTO>().HasKey(a => a.IdAnagrafica); // Definindo a chave prim·ria para AnagraficaModel
+            modelBuilder.Entity<CriarAnagraficaDTO>().HasKey(a => a.IdAnagrafica); // Definindo a chave prim√°ria para AnagraficaModel
 
-            modelBuilder.Entity<AnagraficaModel>().HasKey(a => a.IdAnagrafica); // Definindo a chave prim·ria para AnagraficaModel
-            // Mapeamento para IdLicencaChave, se n„o for padr„o
+            modelBuilder.Entity<CriarContratoDTO>().HasKey(a => a.idContrato);
+
+            modelBuilder.Entity<AnagraficaModel>().HasKey(a => a.IdAnagrafica); // Definindo a chave prim√°ria para AnagraficaModel
+            // Mapeamento para IdLicencaChave, se n√£o for padr√£o
             /*modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)
                 .HasColumnName("idlicencachave")
                 .HasColumnType("varchar(255)");*/
 
-            // Ajuste o tamanho conforme necess·rio
+            // Ajuste o tamanho conforme necess√°rio
             // Mapeamento para o campo Status
             modelBuilder.Entity<LicencaModel>().Property(l => l.Status)
-                .HasColumnName("Status") // O nome da coluna no DB ser· "Status"
-                .HasColumnType("varchar(50)"); // Um tamanho razo·vel para o status
+                .HasColumnName("Status") // O nome da coluna no DB ser√° "Status"
+                .HasColumnType("varchar(50)"); // Um tamanho razo√°vel para o status
 
-            // Mapeamentos para as colunas renomeadas no Migrations, se necess·rio:
-            // Se vocÍ renomeou "Software" para "software" no DB via migraÁ„o
+            // Mapeamentos para as colunas renomeadas no Migrations, se necess√°rio:
+            // Se voc√™ renomeou "Software" para "software" no DB via migra√ß√£o
             // e quer manter a propriedade "Software" no Model, adicione:
             // modelBuilder.Entity<LicencaModel>().Property(l => l.Software).HasColumnName("software");
             // Repita para todas as colunas que foram renomeadas (Scade, Processador, etc.)
-            // ou se o seu modelo j· usa os nomes exatos das colunas (snake_case/lowercase).
+            // ou se o seu modelo j√° usa os nomes exatos das colunas (snake_case/lowercase).
 
             base.OnModelCreating(modelBuilder);
         }

@@ -17,16 +17,18 @@ namespace LicencaApi.Data
         // A propriedade agora é pública, somente leitura e armazena o repositório.
         public ILicencaRepository Licencas { get; }
         public IClienteRepository Cliente {  get; }
+        public IContratoRepository Contrato { get; }
 
 
         // O construtor recebe todas as dependências por injeção.
-        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas, IClienteRepository cliente)
+        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas, IClienteRepository cliente, IContratoRepository contrato)
         {
             _context = context;
             _logger = logger;
             // Atribua o repositório injetado à propriedade.
             this.Licencas = licencas;
             this.Cliente = cliente;
+            this.Contrato = contrato;
         }
 
         public async Task<int> CompleteAsync()

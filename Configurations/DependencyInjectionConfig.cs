@@ -15,7 +15,11 @@ namespace LicencaApi.Configurations
         {
 
             services.AddScoped<ILicencaService, LicencaService>();
-            services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IClienteService, ClienteService>(); 
+
+            services.AddScoped<IContratoService, ContratoService>();
+            services.AddScoped<IContratoRepository, ContratoRepository>();
+            
             services.AddScoped<ILicencaRepository, LicencaRepository>();    
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
