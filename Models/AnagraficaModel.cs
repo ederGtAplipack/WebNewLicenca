@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LicencaApi.Models
@@ -10,10 +10,10 @@ namespace LicencaApi.Models
         [Column("idanagrafica")]
         public int IdAnagrafica { get; set; }
 
-        [Column("razao_social")]
+        [Column("razaoSocial")]
         public string? RazaoSocial { get; set; } = string.Empty;
 
-        [Column("nome_fantasia")]
+        [Column("nomeFantasia")]
         public string? NomeFantasia { get; set; } = string.Empty;
 
         [Column("contato")]

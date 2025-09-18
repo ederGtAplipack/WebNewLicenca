@@ -389,8 +389,8 @@ namespace LicencaApi.Services
             return anagrafica.Select(l => _mapper.Map<AnagraficaModel>(l));
         }*/
 
-        /*METODO REMOVIDO PARA O CLIENTESERVICE
-        public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
+        /*METODO REMOVIDO PARA O CLIENTESERVICE*/
+        /*public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
         {
             _logger.LogInformation("Passando pelo LicencaService");
             var anagrafica = await _repository.BuscarPorIdAnagrafica(id);

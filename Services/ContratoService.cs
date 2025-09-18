@@ -32,6 +32,7 @@ namespace LicencaApi.Services
         public async Task<IEnumerable<ContratoModel>> BuscarTodosContratos()
         {
             _logger.LogInformation("Passando pelo ContratoService BuscarTodosContratos.");
+                //VAI PARA public interface IContratoRepository CTRL + CLIQUE
             return await _contratoRepository.BuscarTodasContratos();
         }
 

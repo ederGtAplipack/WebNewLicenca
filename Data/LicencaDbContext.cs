@@ -38,6 +38,8 @@ namespace LicencaApi.Data
 
             modelBuilder.Entity<CriarContratoDTO>().HasKey(a => a.idContrato);
 
+            modelBuilder.Entity<CriarRevendaDTO>().HasKey(a => a.idRevenda);
+
             modelBuilder.Entity<AnagraficaModel>().HasKey(a => a.IdAnagrafica); // Definindo a chave primária para AnagraficaModel
             // Mapeamento para IdLicencaChave, se não for padrão
             /*modelBuilder.Entity<LicencaModel>().Property(l => l.IdLicencaChave)

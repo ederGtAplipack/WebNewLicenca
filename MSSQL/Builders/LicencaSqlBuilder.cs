@@ -1,4 +1,4 @@
-﻿namespace LicencaApi.MSSQL.Builders
+namespace LicencaApi.MSSQL.Builders
 {
     public class LicencaSqlBuilder
     {        
@@ -8,7 +8,7 @@
                 SELECT 
                     l.NumLic,
                     l.IdCliente,
-                    a.Nome_Fantasia AS NomeCliente,  -- Join com Anagrafica
+                    a.NomeFantasia AS NomeCliente,  -- Join com Anagrafica
                     l.TipoLic,
                     l.MacAddress,
                     l.DataLic,
@@ -38,7 +38,7 @@
                 SELECT 
                     l.NumLic,
                     l.IdCliente,
-                    a.Nome_Fantasia AS NomeCliente,  -- Join com Anagrafica
+                    a.NomeFantasia AS NomeCliente,  -- Join com Anagrafica
                     l.TipoLic,
                     l.MacAddress,
                     l.DataLic,
@@ -70,7 +70,7 @@
                 SELECT 
                     l.NumLic,
                     l.IdCliente,
-                    a.Nome_Fantasia AS NomeCliente,  -- Join com Anagrafica
+                    a.NomeFantasia AS NomeCliente,  -- Join com Anagrafica
                     l.TipoLic,
                     l.MacAddress,
                     l.DataLic,

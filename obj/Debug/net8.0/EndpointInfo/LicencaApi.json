@@ -609,6 +609,18 @@
           }
         }
       }
+    },
+    "/api/v1/Revenda/AllRevenda": {
+      "get": {
+        "tags": [
+          "Revenda"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

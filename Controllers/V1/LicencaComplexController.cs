@@ -57,7 +57,7 @@ namespace LicencaApi.Controllers.V1
         public async Task<IActionResult> GetById(int id)
         {
             _logger.LogInformation("Iniciando busca por ID de licenças");
-            var licenca = await _service.BuscarPorIdAnagrafica(id);
+            var licenca = await _service.BuscarPorIdLicenca(id);
             if (licenca == null)
                 return NotFound();
             _logger.LogWarning("Licença com ID {Id} encontrada", id);

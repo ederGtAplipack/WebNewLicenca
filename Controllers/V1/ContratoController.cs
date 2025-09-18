@@ -23,6 +23,7 @@ namespace LicencaApi.Controllers.V1
             try
             {
                 _logger.LogInformation("Iniciando Busca por Contratos");
+                            //VAI PARA O public interface IContratoService
                 var contrato = await _contratoService.BuscarTodosContratos();
 
                 _logger.LogInformation("Fim da Busca por contratos");

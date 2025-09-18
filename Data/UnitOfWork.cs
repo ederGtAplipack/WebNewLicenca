@@ -18,10 +18,11 @@ namespace LicencaApi.Data
         public ILicencaRepository Licencas { get; }
         public IClienteRepository Cliente {  get; }
         public IContratoRepository Contrato { get; }
+        public IRevendaRepository Revenda { get; }
 
 
         // O construtor recebe todas as dependências por injeção.
-        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas, IClienteRepository cliente, IContratoRepository contrato)
+        public UnitOfWork(LicencaDbContext context, ILogger<UnitOfWork> logger, ILicencaRepository licencas, IClienteRepository cliente, IContratoRepository contrato, IRevendaRepository revenda)
         {
             _context = context;
             _logger = logger;
@@ -29,6 +30,7 @@ namespace LicencaApi.Data
             this.Licencas = licencas;
             this.Cliente = cliente;
             this.Contrato = contrato;
+            Revenda = revenda;
         }
 
         public async Task<int> CompleteAsync()

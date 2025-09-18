@@ -356,6 +356,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.RevendaController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/Revenda/AllRevenda",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.AtivacaoController",
     "Method": "ProcessarAtivacaoDispositivo",
     "RelativePath": "ativar-processar",

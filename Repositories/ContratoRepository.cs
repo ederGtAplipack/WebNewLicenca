@@ -26,6 +26,7 @@ namespace LicencaApi.Repositories
         public async Task<IEnumerable<ContratoModel>> BuscarTodasContratos()
         {
             _logger.LogInformation("Passando pelo ClienteRepository BuscarTodasContrato.");
+            //FIM
             return await _context.Contratos.ToListAsync();
         }
 

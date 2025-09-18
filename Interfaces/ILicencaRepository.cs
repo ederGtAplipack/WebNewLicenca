@@ -1,4 +1,4 @@
-﻿using LicencaApi.DTOs;
+using LicencaApi.DTOs;
 using LicencaApi.Models;
 
 namespace LicencaApi.Interfaces
@@ -7,11 +7,11 @@ namespace LicencaApi.Interfaces
     {
         Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
         Task<LicencaModel?> BuscarPorIdAsync(int id);
-        Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id);
+        //Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id);
 
 		Task CriarAsync(LicencaModel model);   
         Task CreateSql(LicencaModel licencaDetalhadaDTO);
-        Task CreateNewAnagrafica(AnagraficaModel anagraficaModel);
+        //Task CreateNewAnagrafica(AnagraficaModel anagraficaModel);
 
         void AtualizarAsync(LicencaModel model);
         Task SalvarAsync();	
@@ -22,6 +22,6 @@ namespace LicencaApi.Interfaces
          * a partir dos dados fornecidos no modelo LicencaModel.
          * Ele retorna uma tarefa assíncrona que representa a operação de criação.
          */
-        Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica();
+        //Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica();
     }
 }

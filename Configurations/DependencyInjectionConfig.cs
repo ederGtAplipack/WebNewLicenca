@@ -22,6 +22,10 @@ namespace LicencaApi.Configurations
             
             services.AddScoped<ILicencaRepository, LicencaRepository>();    
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            
+            services.AddScoped<IRevendaService, RevendaService>();
+            services.AddScoped<IRevendaRepository, RevendaRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(LicencaMapper));
                         
