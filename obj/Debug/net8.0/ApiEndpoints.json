@@ -366,6 +366,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.RevendaController",
+    "Method": "CreateRevenda",
+    "RelativePath": "api/v1/Revenda/CreateNewRevenda",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.CriarRevendaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.AtivacaoController",
     "Method": "ProcessarAtivacaoDispositivo",
     "RelativePath": "ativar-processar",

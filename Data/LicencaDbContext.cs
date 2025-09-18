@@ -21,6 +21,7 @@ namespace LicencaApi.Data
         //public DbSet<AnagraficaModel> Anagrafica { get; set; }
         public DbSet<LicencasChaveModel> LicencasChave { get; set; }
         public DbSet<RevendaModel> Revenda { get; set; }
+        public DbSet<RevendaUserModel> RevendaUser { get; set; }
         public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
         public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
 
@@ -38,7 +39,29 @@ namespace LicencaApi.Data
 
             modelBuilder.Entity<CriarContratoDTO>().HasKey(a => a.idContrato);
 
-            modelBuilder.Entity<CriarRevendaDTO>().HasKey(a => a.idRevenda);
+            modelBuilder.Entity<CriarRevendaDTO>().HasKey(crv => crv.idRevenda);
+
+            modelBuilder.Entity<RevendaUserModel>().ToTable("revenda_user");
+
+            // Configura a chave primária composta
+            modelBuilder.Entity<RevendaUserModel>()
+                .HasKey(ru => new { ru.idRevenda, ru.idUser });
+
+            // Configura a chave estrangeira para RevendaModel
+            modelBuilder.Entity<RevendaUserModel>()
+                .HasOne(ru => ru.Revenda) // Mapeia para a propriedade de navegação
+                .WithMany() // Revenda pode ter muitos RevendaUser
+                .HasForeignKey(ru => ru.idRevenda); // Usa a propriedade idRevenda como FK
+
+            // Configura a chave estrangeira para o usuário.
+            // Assumindo que você tem uma classe de usuário, como 'ApplicationUser'.
+            modelBuilder.Entity<RevendaUserModel>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(ru => ru.idUser);
+
+
+            modelBuilder.Entity<RevendaUserModel>().HasKey(rv => rv.idRevenda);
 
             modelBuilder.Entity<AnagraficaModel>().HasKey(a => a.IdAnagrafica); // Definindo a chave primária para AnagraficaModel
             // Mapeamento para IdLicencaChave, se não for padrão

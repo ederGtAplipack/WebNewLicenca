@@ -621,6 +621,37 @@
           }
         }
       }
+    },
+    "/api/v1/Revenda/CreateNewRevenda": {
+      "post": {
+        "tags": [
+          "Revenda"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarRevendaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarRevendaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarRevendaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -979,6 +1010,20 @@
             "nullable": true
           },
           "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarRevendaDTO": {
+        "type": "object",
+        "properties": {
+          "idRevenda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "razaoSocial": {
             "type": "string",
             "nullable": true
           }

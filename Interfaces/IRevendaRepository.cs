@@ -4,6 +4,8 @@ namespace LicencaApi.Interfaces
 {
     public interface IRevendaRepository
     {
-        Task<IEnumerable<RevendaModel>> BuscarTodasAnagrafica();
+        Task<IEnumerable<RevendaModel>> BuscarTodasRevendas();
+        Task CreateNewRevenda(RevendaModel revenda);
+        Task AssociateRevendaUser(RevendaUserModel revendaUser);
     }
 }
