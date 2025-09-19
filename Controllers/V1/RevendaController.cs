@@ -2,6 +2,7 @@ using Humanizer;
 using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
+using LicencaApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -21,6 +22,27 @@ namespace LicencaApi.Controllers.V1
             _logger = logger;
             _revendaService = revendaService;
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdRevenda(int id)
+        {
+            try
+            {
+                _logger.LogInformation("RevendaController GetById method called with id: {Id}", id);
+                var revenda = await _revendaService.BuscarPorIdRevenda(id);
+
+                if (revenda == null)
+                    return NotFound();
+                _logger.LogWarning("Revenda com ID {Id} encontrada", id);
+
+                return Ok(revenda);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
 
         [HttpGet("AllRevenda")]
         public async Task<IActionResult> GetAll()
@@ -63,5 +85,37 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
+
+        [HttpPut("UpdateRevenda/{id:int}")]
+        public async Task<IActionResult> UpdateRevenda(int id, AtualizarRevendaDTO dto)
+        {
+            _logger.LogInformation("Iniciando atualização de Revenda com ID {Id}", id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var atualizado = await _revendaService.AtualizarAsync(id, dto);
+            if (!atualizado)
+                return NotFound();
+
+            _logger.LogInformation("Revenda com ID {Id} atualizada com sucesso", id);
+            return NoContent();
+        }
+
+
+        [HttpDelete("DeleteRevenda/{id:int}")]
+        public async Task<IActionResult> DeleteRevenda(int id)
+        {
+            var revenda = await _revendaService.BuscarPorIdRevenda(id);
+            if (revenda == null)
+                return NotFound("Revenda não Encontrado");
+            _logger.LogInformation("Revenda não encontrado");
+
+            var deletado = await _revendaService.DeletarRevenda(id);
+            if (!deletado)
+                return NotFound();
+            _logger.LogInformation("Revenda com ID {id} removido !");
+            return Ok(new { mensagem = "Revenda Removido", id });
+        }
+
     }
 }

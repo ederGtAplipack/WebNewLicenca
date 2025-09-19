@@ -14,6 +14,8 @@ namespace LicencaApi.Data
         IClienteRepository Cliente { get; }
 
         IContratoRepository Contrato { get; }
+
+        IRevendaRepository Revenda { get; }
         Task<int> CompleteAsync();
      }
 }

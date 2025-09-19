@@ -6,6 +6,7 @@ using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using LicencaApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LicencaApi.Services
 {
@@ -23,6 +24,12 @@ namespace LicencaApi.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        public async Task<RevendaModel?> BuscarPorIdRevenda(int id)
+        {
+            _logger.LogInformation("Passando pelo ClienteService.BuscarPorIdCliente.");
+            return await _revendaRepository.BuscarPorIdRevenda(id);
+        }
+
         public async Task<IEnumerable<RevendaModel>> BuscarTodasRevendas()
         {
             _logger.LogInformation("Passando pelo RevendasService.BuscarTodasRevendas.");
@@ -49,6 +56,47 @@ namespace LicencaApi.Services
 
             _logger.LogInformation("Revenda criada e associada ao usuário com sucesso. ID: {IdRevenda}", revenda.idRevenda);
             return revenda;
+        }
+
+        public async Task<bool> AtualizarAsync(int id, AtualizarRevendaDTO dto)
+        {
+            _logger.LogInformation("Passando pelo Serviço de Atualização de Revenda com ID {Id}", id);
+            var revenda = await _unitOfWork.Revenda.BuscarPorIdRevenda(id);
+
+            if (revenda == null)
+            {
+                _logger.LogWarning("Revenda com ID {Id} não encontrado para atualização.", id);
+                return false;
+            }
+
+            try
+            {
+                _mapper.Map(dto, revenda);
+                await _unitOfWork.CompleteAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogError(ex, "Erro de concorrência ao atualizar o Revenda com ID {Id}.", id);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao mapear DTO para Revendamodel.");
+                throw;
+            }
+
+        }
+
+        public async Task<bool> DeletarRevenda(int id)
+        {
+            _logger.LogInformation("Inciando deletação de Revenda com ID, {id}", id);
+            var revenda = await _revendaRepository.BuscarPorIdRevenda(id);
+            if (revenda == null)
+                return false;
+            _revendaRepository.DeleteRevendaAsync(revenda);
+            await _unitOfWork.CompleteAsync();
+            return true;
         }
     }
 }

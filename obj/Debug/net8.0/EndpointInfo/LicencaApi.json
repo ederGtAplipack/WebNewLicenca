@@ -610,6 +610,29 @@
         }
       }
     },
+    "/api/v1/Revenda/{id}": {
+      "get": {
+        "tags": [
+          "Revenda"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Revenda/AllRevenda": {
       "get": {
         "tags": [
@@ -642,6 +665,48 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CriarRevendaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Revenda/UpdateRevenda/{id}": {
+      "put": {
+        "tags": [
+          "Revenda"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarRevendaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarRevendaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarRevendaDTO"
               }
             }
           }
@@ -869,6 +934,16 @@
             "nullable": true
           },
           "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarRevendaDTO": {
+        "type": "object",
+        "properties": {
+          "razaoSocial": {
             "type": "string",
             "nullable": true
           }

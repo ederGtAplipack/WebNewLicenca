@@ -45,7 +45,7 @@ namespace LicencaApi.Controllers.V1
 
                 if (anagrafica == null)
                     return NotFound();
-                _logger.LogWarning("Licença com ID {Id} encontrada", id);
+                _logger.LogWarning("Cliente com ID {Id} encontrada", id);
 
                 return Ok(anagrafica);
 

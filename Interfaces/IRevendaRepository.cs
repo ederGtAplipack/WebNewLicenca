@@ -7,5 +7,7 @@ namespace LicencaApi.Interfaces
         Task<IEnumerable<RevendaModel>> BuscarTodasRevendas();
         Task CreateNewRevenda(RevendaModel revenda);
         Task AssociateRevendaUser(RevendaUserModel revendaUser);
+        Task<RevendaModel?> BuscarPorIdRevenda(int id);
+        void DeleteRevendaAsync(RevendaModel revenda);
     }
 }
