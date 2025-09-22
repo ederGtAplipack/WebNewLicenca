@@ -23,6 +23,7 @@ namespace LicencaApi.Data
         public DbSet<RevendaModel> Revenda { get; set; }
         public DbSet<RevendaUserModel> RevendaUser { get; set; }
         public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
+        public DbSet<ContratoDetalhadoDTO> contratoDetalhadoDTOs { get; set; }
         public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,9 +36,11 @@ namespace LicencaApi.Data
 
             modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave primária para LicencaDetalhadaDTO
 
+            modelBuilder.Entity<ContratoDetalhadoDTO>().HasKey(ctr => ctr.idContrato);
+
             modelBuilder.Entity<CriarAnagraficaDTO>().HasKey(a => a.IdAnagrafica); // Definindo a chave primária para AnagraficaModel
 
-            modelBuilder.Entity<CriarContratoDTO>().HasKey(a => a.idContrato);
+            //modelBuilder.Entity<CriarContratoDTO>().HasKey(ctr => ctr.idContrato);
 
             modelBuilder.Entity<CriarRevendaDTO>().HasKey(crv => crv.idRevenda);
 

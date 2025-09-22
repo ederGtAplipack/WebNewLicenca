@@ -412,10 +412,129 @@
         }
       }
     },
+    "/api/v1/Contrato/{id}": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Contrato/AllContrato": {
       "get": {
         "tags": [
           "Contrato"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Contrato/CreateNewControta": {
+      "post": {
+        "tags": [
+          "Contrato"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContratoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContratoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarContratoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Contrato/UpdateContrato/{id}": {
+      "put": {
+        "tags": [
+          "Contrato"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarContratoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarContratoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarContratoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Contrato/DeleteContrato/{id}": {
+      "delete": {
+        "tags": [
+          "Contrato"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -717,6 +836,29 @@
           }
         }
       }
+    },
+    "/api/v1/Revenda/DeleteRevenda/{id}": {
+      "delete": {
+        "tags": [
+          "Revenda"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -870,6 +1012,61 @@
         },
         "additionalProperties": false
       },
+      "AtualizarContratoDTO": {
+        "type": "object",
+        "properties": {
+          "idCliente": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plano": {
+            "type": "string",
+            "nullable": true
+          },
+          "qtdlicencas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "datafim": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "periodicidade": {
+            "type": "string",
+            "nullable": true
+          },
+          "pagamentoEmdia": {
+            "type": "boolean"
+          },
+          "statusContrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusDescricao": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataUltimoPagamento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataProximoPagamento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "observacoes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AtualizarLicencaDTO": {
         "type": "object",
         "properties": {
@@ -1005,12 +1202,62 @@
             "type": "string",
             "nullable": true
           },
-          "idRevenda": {
+          "senha": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarContratoDTO": {
+        "type": "object",
+        "properties": {
+          "idCliente": {
             "type": "integer",
-            "format": "int32",
+            "format": "int32"
+          },
+          "plano": {
+            "type": "string",
             "nullable": true
           },
-          "senha": {
+          "qtdlicencas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "datafim": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "periodicidade": {
+            "type": "string",
+            "nullable": true
+          },
+          "pagamentoEmdia": {
+            "type": "boolean"
+          },
+          "statusContrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusDescricao": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataUltimoPagamento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataProximoPagamento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "observacoes": {
             "type": "string",
             "nullable": true
           }

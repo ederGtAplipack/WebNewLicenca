@@ -1,4 +1,4 @@
-﻿public class LicencaDetalhadaDTO
+public class LicencaDetalhadaDTO
 {
     public int NumLic { get; set; }
     public int IdCliente { get; set; }

@@ -1,0 +1,153 @@
+namespace LicencaApi.MSSQL.Builders
+{
+    public class ContratoSqlBuilder
+    {        
+        public static string GetAllContratosDetailsSql()
+        {
+            return @"
+                SELECT c.idContrato, 
+                c.idCliente, 
+                c.plano, 
+                c.qtdLicencas, 
+                c.dataInicio, 
+                c.dataFim, 
+                c.Periodicidade, 
+                c.PagamentoEmDia, 
+                c.StatusContrato, 
+                c.DataProximoPagamento, 
+                c.DataUltimoPagamento, 
+                c.Observacoes, 
+                c.StatusDescricao,
+                a.idanagrafica, 
+                a.razaoSocial, 
+                a.nomeFantasia, 
+                a.contato, 
+                a.cep, 
+                a.endereco, 
+                a.bairro, 
+                a.cidade, 
+                a.uf, 
+                a.cnpj, 
+                a.ie, 
+                a.telefone, 
+                a.email, 
+                a.idrevenda, 
+                a.Senha            
+            FROM 
+                licencas.contrato c, licencas.anagrafica a 
+            WHERE 
+	            c.idCliente = a.idanagrafica";
+        }
+        public static string GetByIdSql()
+        {
+            return @"
+                SELECT 
+                    l.NumLic,
+                    l.IdCliente,
+                    a.NomeFantasia AS NomeCliente,  -- Join com Anagrafica
+                    l.TipoLic,
+                    l.MacAddress,
+                    l.DataLic,
+                    l.Scade,
+                    l.Attivo,
+                    l.IdRevenda,
+                    l.SistemaOp,
+                    l.DataAtivacao,
+                    l.TipoPc,
+                    l.NomeComputador,
+                    l.Software,
+                    l.Ip,
+                    l.Processador,
+                    l.Status,
+                    l.IdLicencaChave,
+                    lc.Chave AS ChaveLicenca  -- Join com LicencasChave
+                FROM 
+                    Licenca l
+                LEFT JOIN 
+                    Anagrafica a ON l.IdCliente = a.IdAnagrafica
+                LEFT JOIN 
+                    LicencasChave lc ON l.IdLicencaChave = lc.IdLicencaChave
+                WHERE 
+                    l.NumLic = @NumLic";
+        }
+        public static string GetAtivasSql()
+        {
+            return @"
+                SELECT 
+                    l.NumLic,
+                    l.IdCliente,
+                    a.NomeFantasia AS NomeCliente,  -- Join com Anagrafica
+                    l.TipoLic,
+                    l.MacAddress,
+                    l.DataLic,
+                    l.Scade,
+                    l.Attivo,
+                    l.IdRevenda,
+                    l.SistemaOp,
+                    l.DataAtivacao,
+                    l.TipoPc,
+                    l.NomeComputador,
+                    l.Software,
+                    l.Ip,
+                    l.Processador,
+                    l.Status,
+                    l.IdLicencaChave,
+                    lc.Chave AS ChaveLicenca  -- Join com LicencasChave
+                FROM 
+                    Licenca l
+                LEFT JOIN 
+                    Anagrafica a ON l.IdCliente = a.IdAnagrafica
+                LEFT JOIN 
+                    LicencasChave lc ON l.IdLicencaChave = lc.IdLicencaChave
+                WHERE 
+                    l.Attivo = 1"; // Considerando que 'Ativas' significa Attivo = true (1)
+        }
+        public static string CreateSql()
+        {
+            return @"
+                INSERT INTO Licenca 
+                (IdCliente, TipoLic, MacAddress, DataLic, Scade, Attivo, IdRevenda, SistemaOp, DataAtivacao, TipoPc, NomeComputador, Software, Ip, Processador, Status, IdLicencaChave) 
+                VALUES 
+                (@IdCliente, @TipoLic, @MacAddress, @DataLic, @Scade, @Attivo, @IdRevenda, @SistemaOp, @DataAtivacao, @TipoPc, @NomeComputador, @Software, @Ip, @Processador, @Status, @IdLicencaChave);
+                SELECT CAST(SCOPE_IDENTITY() as int)";
+        }
+        public static string UpdateSql()
+        {
+            return @"
+                UPDATE Licenca SET 
+                    IdCliente = @IdCliente,
+                    TipoLic = @TipoLic,
+                    MacAddress = @MacAddress,
+                    DataLic = @DataLic,
+                    Scade = @Scade,
+                    Attivo = @Attivo,
+                    IdRevenda = @IdRevenda,
+                    SistemaOp = @SistemaOp,
+                    DataAtivacao = @DataAtivacao,
+                    TipoPc = @TipoPc,
+                    NomeComputador = @NomeComputador,
+                    Software = @Software,
+                    Ip = @Ip,
+                    Processador = @Processador,
+                    Status = @Status,
+                    IdLicencaChave = @IdLicencaChave
+                WHERE 
+                    NumLic = @NumLic";
+        }
+        public static string DeactivateSql()
+        {
+            return @"
+                UPDATE Licenca SET 
+                    Attivo = 0
+                WHERE 
+                    NumLic = @NumLic";
+        }
+        public static string DeleteSql()
+        {
+            return @"
+                DELETE FROM Licenca 
+                WHERE 
+                    NumLic = @NumLic";
+        }
+    }
+}

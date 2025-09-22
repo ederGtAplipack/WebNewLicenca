@@ -29,11 +29,12 @@ namespace LicencaApi.Services
             return await _contratoRepository.BuscarPorIdContrato(id);
         }
 
-        public async Task<IEnumerable<ContratoModel>> BuscarTodosContratos()
+        public async Task<IEnumerable<ContratoDetalhadoDTO>> BuscarTodosContratos()
         {
             _logger.LogInformation("Passando pelo ContratoService BuscarTodosContratos.");
                 //VAI PARA public interface IContratoRepository CTRL + CLIQUE
-            return await _contratoRepository.BuscarTodasContratos();
+                var contratoDetails = await _contratoRepository.BuscarTodasContratos();
+            return contratoDetails;
         }
 
         public async Task<ContratoModel> CriarNovoContrato(CriarContratoDTO dto)

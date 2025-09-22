@@ -222,12 +222,81 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "GetByIdContrato",
+    "RelativePath": "api/v1/Contrato/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
     "Method": "GetAll",
     "RelativePath": "api/v1/Contrato/AllContrato",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "CreateContrato",
+    "RelativePath": "api/v1/Contrato/CreateNewControta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.CriarContratoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "DeleteContrato",
+    "RelativePath": "api/v1/Contrato/DeleteContrato/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "UpdateContrato",
+    "RelativePath": "api/v1/Contrato/UpdateContrato/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.AtualizarContratoDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -392,6 +461,22 @@
       {
         "Name": "dto",
         "Type": "LicencaApi.DTOs.CriarRevendaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.RevendaController",
+    "Method": "DeleteRevenda",
+    "RelativePath": "api/v1/Revenda/DeleteRevenda/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

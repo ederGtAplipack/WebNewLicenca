@@ -15,17 +15,17 @@ namespace LicencaApi.Configurations
         {
 
             services.AddScoped<ILicencaService, LicencaService>();
-            services.AddScoped<IClienteService, ClienteService>(); 
-
-            services.AddScoped<IContratoService, ContratoService>();
-            services.AddScoped<IContratoRepository, ContratoRepository>();
-            
             services.AddScoped<ILicencaRepository, LicencaRepository>();    
+
+            services.AddScoped<IClienteService, ClienteService>(); 
             services.AddScoped<IClienteRepository, ClienteRepository>();
             
             services.AddScoped<IRevendaService, RevendaService>();
             services.AddScoped<IRevendaRepository, RevendaRepository>();
-
+            
+            services.AddScoped<IContratoService, ContratoService>();
+            services.AddScoped<IContratoRepository, ContratoRepository>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(LicencaMapper));
                         

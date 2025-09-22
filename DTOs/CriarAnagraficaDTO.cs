@@ -1,4 +1,4 @@
-﻿namespace LicencaApi.DTOs
+namespace LicencaApi.DTOs
 {
     public class CriarAnagraficaDTO
     {
@@ -15,7 +15,7 @@
         public string? Ie { get; set; } = string.Empty;
         public string? Telefone { get; set; } = string.Empty;
         public string? Email { get; set; } = string.Empty;
-        public int? IdRevenda { get; set; }
+        //public int? IdRevenda { get; set; }
         public string? Senha { get; set; } = string.Empty;
     }
 }

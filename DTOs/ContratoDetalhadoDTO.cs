@@ -1,8 +1,8 @@
 namespace LicencaApi.DTOs
 {
-    public class AtualizarContratoDTO
+    public class ContratoDetalhadoDTO
     {
-        //public int idContrato { get; set; }
+        public int idContrato { get; set; }
         public int idCliente { get; set; }
         public string? plano { get; set; } = string.Empty;
         public int qtdlicencas { get; set; }
@@ -14,7 +14,9 @@ namespace LicencaApi.DTOs
         public string? statusDescricao { get; set; } = string.Empty;
         public DateTime dataUltimoPagamento { get; set; }
         public DateTime dataProximoPagamento { get; set; }
-        public string? observacoes { get; set; } = string.Empty;
-
+        public string? observacoes {  get; set; } = string.Empty;
+        public int? idanagrafica {  get; set; }
+        public string? razaoSocial { get; set; }
+        public int? idrevenda { get; set; } 
     }
 }

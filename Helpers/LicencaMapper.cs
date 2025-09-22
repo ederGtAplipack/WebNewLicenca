@@ -16,6 +16,8 @@ namespace LicencaApi.Helpers
             CreateMap<AtualizarAnagraficaDTO, AnagraficaModel>(); 
             CreateMap<CriarRevendaDTO, RevendaModel>();
             CreateMap<AtualizarRevendaDTO, RevendaModel>();
+            CreateMap<CriarContratoDTO, ContratoModel>();
+            CreateMap<AtualizarContratoDTO, ContratoModel>();
         }
 
     }

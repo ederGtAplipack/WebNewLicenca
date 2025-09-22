@@ -1,6 +1,8 @@
 using LicencaApi.Data;
+using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
+using LicencaApi.MSSQL.Builders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -23,11 +25,12 @@ namespace LicencaApi.Repositories
             return await _context.Contratos.FindAsync(id);
         }
 
-        public async Task<IEnumerable<ContratoModel>> BuscarTodasContratos()
+        public async Task<IEnumerable<ContratoDetalhadoDTO>> BuscarTodasContratos()
         {
             _logger.LogInformation("Passando pelo ClienteRepository BuscarTodasContrato.");
             //FIM
-            return await _context.Contratos.ToListAsync();
+            var sql = ContratoSqlBuilder.GetAllContratosDetailsSql();
+            return await _context.Set<ContratoDetalhadoDTO>().FromSqlRaw(sql).ToListAsync();
         }
 
         public async Task CreateNewContrato(ContratoModel contratoModel)
