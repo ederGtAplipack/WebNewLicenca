@@ -45,5 +45,14 @@ namespace LicencaApi.Repositories
             _logger.LogInformation("Passando pelo Repository do DeleteRevenda.");
             _context.Revenda.Remove(revenda);
         }
+
+        public async Task<IEnumerable<AnagraficaModel>> ListarClientesPorRevendaAsync(int idRevenda)
+        {
+            _logger.LogInformation("Buscando clientes para a revenda com ID {idRevenda}.", idRevenda);
+            return await _context.Anagrafica
+                .Where(c => c.IdRevenda == idRevenda)
+                .ToListAsync();
+
+        }
     }
 }

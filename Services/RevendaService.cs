@@ -98,5 +98,11 @@ namespace LicencaApi.Services
             await _unitOfWork.CompleteAsync();
             return true;
         }
+
+        public async Task<IEnumerable<AnagraficaModel>> ListarClientesPorRevendaAsync(int idRevenda)
+        {
+            _logger.LogInformation("Serviço de Revenda: buscando clientes por ID da revenda.");
+            return await _revendaRepository.ListarClientesPorRevendaAsync(idRevenda);
+        }
     }
 }

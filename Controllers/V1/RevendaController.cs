@@ -116,6 +116,29 @@ namespace LicencaApi.Controllers.V1
             _logger.LogInformation("Revenda com ID {id} removido !");
             return Ok(new { mensagem = "Revenda Removido", id });
         }
+        /*Para retornar todos os clientes associados a uma revenda específica.*/
+        [HttpGet("{idRevenda}/ClientForRevenda")]
+        public async Task<IActionResult> ListarClientesPorRevenda(int idRevenda)
+        {
+            _logger.LogInformation("RevendaController: buscando clientes para a revenda com ID {idRevenda}.", idRevenda);
+            try
+            {
+                var clientes = await _revendaService.ListarClientesPorRevendaAsync(idRevenda);
 
+                if (clientes == null || !clientes.Any())
+                {
+                    _logger.LogWarning("Nenhum cliente encontrado para a revenda com ID {idRevenda}.", idRevenda);
+                    return NotFound("Nenhum cliente encontrado para esta revenda.");
+                }
+
+                _logger.LogInformation("Clientes encontrados para a revenda {idRevenda}.", idRevenda);
+                return Ok(clientes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar clientes por revenda.");
+                return StatusCode(500, "Erro interno do servidor ao buscar clientes.");
+            }
+        }
     }
 }

@@ -249,7 +249,7 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
     "Method": "CreateContrato",
-    "RelativePath": "api/v1/Contrato/CreateNewControta",
+    "RelativePath": "api/v1/Contrato/CreateNewContrato",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -434,6 +434,22 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.RevendaController",
+    "Method": "ListarClientesPorRevenda",
+    "RelativePath": "api/v1/Revenda/{idRevenda}/ClientForRevenda",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idRevenda",
         "Type": "System.Int32",
         "IsRequired": true
       }

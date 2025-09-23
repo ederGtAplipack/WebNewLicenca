@@ -11,5 +11,6 @@ namespace LicencaApi.Interfaces
         Task<IEnumerable<RevendaModel>> BuscarTodasRevendas();
         Task<RevendaModel> CriarNewRevenda(CriarRevendaDTO criarRevendaDTO, string idUser);
         Task<bool> DeletarRevenda(int id);
+        Task<IEnumerable<AnagraficaModel>> ListarClientesPorRevendaAsync(int idRevenda);
     }
 }

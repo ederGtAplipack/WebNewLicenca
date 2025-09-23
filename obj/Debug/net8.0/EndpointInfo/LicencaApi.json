@@ -447,7 +447,7 @@
         }
       }
     },
-    "/api/v1/Contrato/CreateNewControta": {
+    "/api/v1/Contrato/CreateNewContrato": {
       "post": {
         "tags": [
           "Contrato"
@@ -859,6 +859,29 @@
           }
         }
       }
+    },
+    "/api/v1/Revenda/{idRevenda}/ClientForRevenda": {
+      "get": {
+        "tags": [
+          "Revenda"
+        ],
+        "parameters": [
+          {
+            "name": "idRevenda",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1220,7 +1243,7 @@
             "type": "string",
             "nullable": true
           },
-          "qtdlicencas": {
+          "qtdLicencas": {
             "type": "integer",
             "format": "int32"
           },
@@ -1237,9 +1260,6 @@
           "periodicidade": {
             "type": "string",
             "nullable": true
-          },
-          "pagamentoEmdia": {
-            "type": "boolean"
           },
           "statusContrato": {
             "type": "string",

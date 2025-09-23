@@ -9,5 +9,6 @@ namespace LicencaApi.Interfaces
         Task AssociateRevendaUser(RevendaUserModel revendaUser);
         Task<RevendaModel?> BuscarPorIdRevenda(int id);
         void DeleteRevendaAsync(RevendaModel revenda);
+        Task<IEnumerable<AnagraficaModel>> ListarClientesPorRevendaAsync(int idRevenda);
     }
 }
