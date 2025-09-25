@@ -543,6 +543,29 @@
         }
       }
     },
+    "/api/v1/Contrato/{idContrato}/status": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "parameters": [
+          {
+            "name": "idContrato",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca": {
       "get": {
         "tags": [

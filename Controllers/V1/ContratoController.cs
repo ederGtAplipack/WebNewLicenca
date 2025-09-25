@@ -49,7 +49,7 @@ namespace LicencaApi.Controllers.V1
             try
             {
                 _logger.LogInformation("Iniciando Busca por Contratos");
-                            //VAI PARA O public interface IContratoService
+                //VAI PARA O public interface IContratoService
                 var contrato = await _contratoService.BuscarTodosContratos();
 
                 _logger.LogInformation("Fim da Busca por contratos");
@@ -69,12 +69,12 @@ namespace LicencaApi.Controllers.V1
         {
             try
             {
-               _logger.LogInformation("ContratoController CreateContrato method called");
-               var contrato = await _contratoService.CriarNovoContrato(dto);
+                _logger.LogInformation("ContratoController CreateContrato method called");
+                var contrato = await _contratoService.CriarNovoContrato(dto);
                 if (contrato == null)
                 {
-                      _logger.LogWarning("Falha ao criar nova Contrato");
-                      return StatusCode(500, "Erro ao criar Contrato");
+                    _logger.LogWarning("Falha ao criar nova Contrato");
+                    return StatusCode(500, "Erro ao criar Contrato");
                 }
                 _logger.LogInformation("Novo Contrato criada com sucesso, ID: {Id}", contrato);
                 return CreatedAtAction(nameof(GetByIdContrato), new { id = contrato.IdContrato }, contrato);
@@ -116,6 +116,38 @@ namespace LicencaApi.Controllers.V1
                 return NotFound();
             _logger.LogInformation("Contrato com ID {id} removido !");
             return Ok(new { mensagem = "Contrato Removido", id });
+        }
+
+        [HttpGet("{idContrato}/status")]
+        public async Task<IActionResult> GetStatusContrato(int idContrato)
+        {
+            try
+            {
+                _logger.LogInformation("Iniciando verificação de status do Contrato com ID {Id}", idContrato);
+                var status = await _contratoService.VerificarStatusContrato(idContrato);
+                if (status == "Não encontrado")
+                {
+                    return NotFound(new { idContrato, statusContrato = status });
+                }
+
+                return Ok(new
+                {
+                    idContrato,
+                    statusContrato = status,
+                    statusDescricao = status switch
+                    {
+                        "Ativo" => "Contrato válido e em execução",
+                        "A vencer" => "Contrato próximo do vencimento",
+                        "Vencido" => "Contrato expirado",
+                        _ => "Status indefinido"
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao verificar status do Contrato com ID {Id}", idContrato);
+                return StatusCode(500, "Erro interno do servidor");
+            }
         }
     }
 }

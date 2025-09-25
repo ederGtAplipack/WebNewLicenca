@@ -95,5 +95,28 @@ namespace LicencaApi.Services
             await _unitOfWork.CompleteAsync();
             return true;
         }
+
+        public async Task<string> VerificarStatusContrato(int idContrato)
+        {
+            _logger.LogInformation($"Verificando status do contrato ID: {idContrato}");
+            var StatusContrato = await _contratoRepository.BuscarPorIdContrato(idContrato);
+
+            if (StatusContrato == null)
+            {
+                _logger.LogWarning($"Contrato com ID {idContrato} não encontrado.");
+                return "Não encontrado";
+            }
+
+            if (StatusContrato.DataFim.HasValue && StatusContrato.DataFim.Value < DateTime.UtcNow)
+            {
+                return "Vencido";
+            }
+
+            if (StatusContrato.DataFim.HasValue && (StatusContrato.DataFim.Value - DateTime.UtcNow).TotalDays <= 30)
+            {
+                return "A vencer";
+            }
+            return "Ativo";
+        }
     }
 }

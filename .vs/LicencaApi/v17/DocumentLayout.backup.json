@@ -3,28 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\data\\licencadbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:data\\licencadbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\controllers\\v1\\contratocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:controllers\\v1\\contratocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\repositories\\revendarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:repositories\\revendarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\interfaces\\irevendarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:interfaces\\irevendarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\services\\revendaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:services\\revendaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\interfaces\\irevendaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:interfaces\\irevendaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\controllers\\v1\\revendacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:controllers\\v1\\revendacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|c:\\users\\eder.silva\\onedrive - americana sistemas de identificacao para embalagens ltda\\\u00E1rea de trabalho\\wkspc\\licencaapi\\services\\contratoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F52C3D8-31C4-A313-2611-997397F4AD68}|LicencaApi.csproj|solutionrelative:services\\contratoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,88 +18,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 372,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "LicencaDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Data\\LicencaDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\LicencaDbContext.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Data\\LicencaDbContext.cs",
-              "RelativeToolTip": "Data\\LicencaDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T13:16:58.15Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "RevendaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Repositories\\RevendaRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\RevendaRepository.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Repositories\\RevendaRepository.cs",
-              "RelativeToolTip": "Repositories\\RevendaRepository.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAqwDUAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T13:14:48.708Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IRevendaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Interfaces\\IRevendaRepository.cs",
-              "RelativeDocumentMoniker": "Interfaces\\IRevendaRepository.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Interfaces\\IRevendaRepository.cs",
-              "RelativeToolTip": "Interfaces\\IRevendaRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T13:14:14.449Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RevendaService.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Services\\RevendaService.cs",
-              "RelativeDocumentMoniker": "Services\\RevendaService.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Services\\RevendaService.cs",
-              "RelativeToolTip": "Services\\RevendaService.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAcwGgAAABJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T13:12:59.004Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IRevendaService.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Interfaces\\IRevendaService.cs",
-              "RelativeDocumentMoniker": "Interfaces\\IRevendaService.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Interfaces\\IRevendaService.cs",
-              "RelativeToolTip": "Interfaces\\IRevendaService.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAawA0AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T13:10:49.371Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RevendaController.cs",
-              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Controllers\\V1\\RevendaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\V1\\RevendaController.cs",
-              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Controllers\\V1\\RevendaController.cs",
-              "RelativeToolTip": "Controllers\\V1\\RevendaController.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAUwH0AAABSAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ContratoService.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Services\\ContratoService.cs",
+              "RelativeDocumentMoniker": "Services\\ContratoService.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Services\\ContratoService.cs",
+              "RelativeToolTip": "Services\\ContratoService.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAswG8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T12:59:39.366Z",
+              "WhenOpened": "2025-09-25T18:32:08.588Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ContratoController.cs",
+              "DocumentMoniker": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Controllers\\V1\\ContratoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\V1\\ContratoController.cs",
+              "ToolTip": "C:\\Users\\eder.silva\\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\\\u00C1rea de Trabalho\\Wkspc\\LicencaApi\\Controllers\\V1\\ContratoController.cs",
+              "RelativeToolTip": "Controllers\\V1\\ContratoController.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAAAIMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T18:25:55.589Z",
               "EditorCaption": ""
             }
           ]

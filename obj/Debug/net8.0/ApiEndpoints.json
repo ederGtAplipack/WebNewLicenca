@@ -238,6 +238,22 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "GetStatusContrato",
+    "RelativePath": "api/v1/Contrato/{idContrato}/status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idContrato",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
     "Method": "GetAll",
     "RelativePath": "api/v1/Contrato/AllContrato",
     "HttpMethod": "GET",

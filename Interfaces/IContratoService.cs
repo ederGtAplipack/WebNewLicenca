@@ -10,5 +10,6 @@ namespace LicencaApi.Interfaces
         Task<IEnumerable<ContratoDetalhadoDTO>> BuscarTodosContratos();
         Task<ContratoModel?> CriarNovoContrato(CriarContratoDTO dto);
         Task<bool> DeletarContrato(int id);
+        Task<string> VerificarStatusContrato(int idContrato);
     }
 }
