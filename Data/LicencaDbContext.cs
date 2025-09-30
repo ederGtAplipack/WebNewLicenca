@@ -25,6 +25,8 @@ namespace LicencaApi.Data
         public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
         public DbSet<ContratoDetalhadoDTO> contratoDetalhadoDTOs { get; set; }
         public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
+        public DbSet<SoftwareModel> Softwares { get; set; } // DbSet para SoftwareModel
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

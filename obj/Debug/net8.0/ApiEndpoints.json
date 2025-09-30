@@ -536,6 +536,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
+    "Method": "GetAllSoftware",
+    "RelativePath": "api/v1/Software/AllSoftware",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.AtivacaoController",
     "Method": "ProcessarAtivacaoDispositivo",
     "RelativePath": "ativar-processar",

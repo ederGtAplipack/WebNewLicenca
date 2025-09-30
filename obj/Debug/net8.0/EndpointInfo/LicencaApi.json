@@ -905,6 +905,18 @@
           }
         }
       }
+    },
+    "/api/v1/Software/AllSoftware": {
+      "get": {
+        "tags": [
+          "Software"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

@@ -13,12 +13,13 @@ namespace LicencaApi.Helpers
             CreateMap<AtualizarLicencaDTO, LicencaModel>();
             CreateMap<LicencaModel, LicencaDTO>();
             CreateMap<CriarAnagraficaDTO, AnagraficaModel>();
-            CreateMap<AtualizarAnagraficaDTO, AnagraficaModel>(); 
+            CreateMap<AtualizarAnagraficaDTO, AnagraficaModel>();
             CreateMap<CriarRevendaDTO, RevendaModel>();
             CreateMap<AtualizarRevendaDTO, RevendaModel>();
             CreateMap<CriarContratoDTO, ContratoModel>();
             CreateMap<AtualizarContratoDTO, ContratoModel>();
+            CreateMap<CriarSoftwareDTO, SoftwareModel>();
+            CreateMap<AtualizarSoftwareDTO, SoftwareModel>();
         }
-
     }
 }
