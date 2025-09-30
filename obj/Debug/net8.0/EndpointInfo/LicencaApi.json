@@ -906,10 +906,129 @@
         }
       }
     },
+    "/api/v1/Software/{id}": {
+      "get": {
+        "tags": [
+          "Software"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Software/AllSoftware": {
       "get": {
         "tags": [
           "Software"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Software/CreateNewSoftware": {
+      "post": {
+        "tags": [
+          "Software"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarSoftwareDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarSoftwareDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarSoftwareDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Software/UpdateSoftware/{id}": {
+      "put": {
+        "tags": [
+          "Software"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarSoftwareDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarSoftwareDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarSoftwareDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Software/DeleteSoftware/{id}": {
+      "delete": {
+        "tags": [
+          "Software"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1205,6 +1324,20 @@
         },
         "additionalProperties": false
       },
+      "AtualizarSoftwareDTO": {
+        "type": "object",
+        "properties": {
+          "nSoftware": {
+            "type": "string",
+            "nullable": true
+          },
+          "descricao": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CriarAnagraficaDTO": {
         "type": "object",
         "properties": {
@@ -1401,6 +1534,20 @@
             "format": "int32"
           },
           "razaoSocial": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarSoftwareDTO": {
+        "type": "object",
+        "properties": {
+          "nSoftware": {
+            "type": "string",
+            "nullable": true
+          },
+          "descricao": {
             "type": "string",
             "nullable": true
           }

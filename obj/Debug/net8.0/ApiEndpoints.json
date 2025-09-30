@@ -537,12 +537,81 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/Software/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
     "Method": "GetAllSoftware",
     "RelativePath": "api/v1/Software/AllSoftware",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
+    "Method": "CreateSoftware",
+    "RelativePath": "api/v1/Software/CreateNewSoftware",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.CriarSoftwareDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
+    "Method": "DeleteSoftware",
+    "RelativePath": "api/v1/Software/DeleteSoftware/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.SoftwareController",
+    "Method": "UpdateSoftware",
+    "RelativePath": "api/v1/Software/UpdateSoftware/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.AtualizarSoftwareDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

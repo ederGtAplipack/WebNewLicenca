@@ -101,7 +101,6 @@ namespace LicencaApi.Controllers.V1
             return NoContent();
         }
 
-
         [HttpDelete("DeleteRevenda/{id:int}")]
         public async Task<IActionResult> DeleteRevenda(int id)
         {
@@ -116,6 +115,7 @@ namespace LicencaApi.Controllers.V1
             _logger.LogInformation("Revenda com ID {id} removido !");
             return Ok(new { mensagem = "Revenda Removido", id });
         }
+
         /*Para retornar todos os clientes associados a uma revenda específica.*/
         [HttpGet("{idRevenda}/ClientForRevenda")]
         public async Task<IActionResult> ListarClientesPorRevenda(int idRevenda)
