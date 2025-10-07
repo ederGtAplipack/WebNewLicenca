@@ -165,11 +165,7 @@ namespace LicencaApi.Repositories
         public async Task<LicencaDispositivoModel> GetDeviceByFingerprintAsync(int numLic, string deviceFingerprint)
         {
             var device = await _context.LicencaDispositivo
-                .FirstOrDefaultAsync(d => d.numLic == numLic && d.DeviceFingerprint == deviceFingerprint);
-            if (device == null)
-            {
-                throw new KeyNotFoundException($"Dispositivo com fingerprint '{deviceFingerprint}' para a licença '{numLic}' não encontrado.");
-            }
+                .FirstOrDefaultAsync(d => d.numLic == numLic && d.DeviceFingerprint == deviceFingerprint);            
             return device;
         }
 

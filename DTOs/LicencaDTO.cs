@@ -20,6 +20,6 @@ namespace LicencaApi.DTOs
         public string? Processador { get; set; }
         public string? Status { get; set; }
         public int? IdLicencaChave { get; set; }
-        
+        public string Mensagem { get; set; }        
     }
 }

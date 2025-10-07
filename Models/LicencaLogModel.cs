@@ -18,5 +18,6 @@ namespace LicencaApi.Models
        public int responseCode { get; set; }
        public string ClienteIp { get; set; }
        public DateTime createdAt { get; set; }
+       public string mensagem { get; set; }
     }
 }
