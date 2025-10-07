@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers",
+    "\\Controllers\\V1"
   ],
-  "SelectedNode": "\\LicencaApi.sln",
   "PreviewInSolutionExplorer": false
 }

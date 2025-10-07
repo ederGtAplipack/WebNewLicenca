@@ -8,6 +8,7 @@ namespace LicencaApi.Models
     {
         [Key]
         [Column("idSoftware")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdSoftware { get; set; }
 
         [Column("nSoftware")]

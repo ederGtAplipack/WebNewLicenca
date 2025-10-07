@@ -141,37 +141,6 @@
         }
       }
     },
-    "/ativar-processar": {
-      "post": {
-        "tags": [
-          "Ativacao"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AtivacaoDispositivoRequestDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/v1/Auth/CreateRole": {
       "post": {
         "tags": [
@@ -566,17 +535,69 @@
         }
       }
     },
-    "/api/v1/Licenca": {
-      "get": {
+    "/api/v1/Licenca/activate": {
+      "post": {
         "tags": [
           "Licenca"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateLicenseDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateLicenseDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateLicenseDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/v1/Licenca/validate": {
+      "post": {
+        "tags": [
+          "Licenca"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateLicenseDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateLicenseDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateLicenseDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Licenca/createNewLicenca": {
       "post": {
         "tags": [
           "Licenca"
@@ -607,70 +628,14 @@
         }
       }
     },
-    "/api/v1/Licenca/{id}": {
-      "get": {
-        "tags": [
-          "Licenca"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Licenca"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/Licenca/ativas": {
-      "get": {
-        "tags": [
-          "Licenca"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/Licenca/atualizar/{id}": {
+    "/api/v1/Licenca/{numLic}/status": {
       "put": {
         "tags": [
           "Licenca"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "numLic",
             "in": "path",
             "required": true,
             "schema": {
@@ -683,17 +648,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+                "$ref": "#/components/schemas/UpdateStatusDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+                "$ref": "#/components/schemas/UpdateStatusDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+                "$ref": "#/components/schemas/UpdateStatusDTO"
               }
             }
           }
@@ -705,14 +670,37 @@
         }
       }
     },
-    "/api/v1/Licenca/{id}/desativar": {
-      "patch": {
+    "/api/v1/Licenca/{numLic}/devices": {
+      "get": {
         "tags": [
           "Licenca"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "numLic",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Licenca/{numLic}/logs": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "numLic",
             "in": "path",
             "required": true,
             "schema": {
@@ -1040,82 +1028,27 @@
   },
   "components": {
     "schemas": {
-      "AssignRoleModel": {
+      "ActivateLicenseDTO": {
         "type": "object",
         "properties": {
-          "username": {
+          "chave": {
             "type": "string",
             "nullable": true
+          },
+          "deviceFingerprint": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceInfo": {
+            "$ref": "#/components/schemas/DeviceInfoDTO"
           }
         },
         "additionalProperties": false
       },
-      "AtivacaoDispositivoRequestDTO": {
+      "AssignRoleModel": {
         "type": "object",
         "properties": {
-          "macAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "nSoftware": {
-            "type": "string",
-            "nullable": true
-          },
-          "idLicencaChave": {
-            "type": "string",
-            "nullable": true
-          },
-          "processador": {
-            "type": "string",
-            "nullable": true
-          },
-          "sistemaOp": {
-            "type": "string",
-            "nullable": true
-          },
-          "tipoPc": {
-            "type": "string",
-            "nullable": true
-          },
-          "nomeComputador": {
-            "type": "string",
-            "nullable": true
-          },
-          "ip": {
-            "type": "string",
-            "nullable": true
-          },
-          "idCliente": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "idContrato": {
-            "type": "string",
-            "nullable": true
-          },
-          "idLicenca": {
-            "type": "string",
-            "nullable": true
-          },
-          "numLic": {
-            "type": "string",
-            "nullable": true
-          },
-          "idAcessosNew": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "dateTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "versaoSoftware": {
-            "type": "string",
-            "nullable": true
-          },
-          "externalIp": {
+          "username": {
             "type": "string",
             "nullable": true
           }
@@ -1219,7 +1152,8 @@
             "nullable": true
           },
           "pagamentoEmdia": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32"
           },
           "statusContrato": {
             "type": "string",
@@ -1238,76 +1172,6 @@
             "format": "date-time"
           },
           "observacoes": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AtualizarLicencaDTO": {
-        "type": "object",
-        "properties": {
-          "idCliente": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tipoLic": {
-            "type": "string",
-            "nullable": true
-          },
-          "macAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataLic": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "scade": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "attivo": {
-            "type": "boolean"
-          },
-          "idRevenda": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sistemaOp": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataAtivacao": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "tipoPc": {
-            "type": "string",
-            "nullable": true
-          },
-          "nomeComputador": {
-            "type": "string",
-            "nullable": true
-          },
-          "software": {
-            "type": "string",
-            "nullable": true
-          },
-          "ip": {
-            "type": "string",
-            "nullable": true
-          },
-          "processador": {
-            "type": "string",
-            "nullable": true
-          },
-          "idLicencaChave": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "status": {
             "type": "string",
             "nullable": true
           }
@@ -1461,7 +1325,8 @@
           },
           "idCliente": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "tipoLic": {
             "type": "string",
@@ -1479,10 +1344,20 @@
             "type": "string",
             "format": "date-time"
           },
+          "maxDevices": {
+            "type": "integer",
+            "format": "int32"
+          },
           "attivo": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32"
           },
           "idRevenda": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "idSoftware": {
             "type": "integer",
             "format": "int32"
           },
@@ -1554,6 +1429,32 @@
         },
         "additionalProperties": false
       },
+      "DeviceInfoDTO": {
+        "type": "object",
+        "properties": {
+          "mac": {
+            "type": "string",
+            "nullable": true
+          },
+          "hostname": {
+            "type": "string",
+            "nullable": true
+          },
+          "os": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "processor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginModel": {
         "required": [
           "password",
@@ -1609,6 +1510,34 @@
             "nullable": true
           },
           "refreshToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateStatusDTO": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidateLicenseDTO": {
+        "type": "object",
+        "properties": {
+          "chave": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceFingerprint": {
             "type": "string",
             "nullable": true
           }

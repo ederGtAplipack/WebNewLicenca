@@ -18,6 +18,7 @@ namespace LicencaApi.Data
         IRevendaRepository Revenda { get; }
 
         ISoftwareRepository Software { get; }
+
         Task<int> CompleteAsync();
      }
 }

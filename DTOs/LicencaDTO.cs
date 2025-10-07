@@ -3,12 +3,13 @@ namespace LicencaApi.DTOs
     public class LicencaDTO
     {
         public int NumLic { get; set; }
+        public string Chave { get; set; }
         public int IdCliente { get; set; }
         public string? TipoLic { get; set; }
         public string? MacAddress { get; set; }
         public DateTime DataLic { get; set; }
         public DateTime Scade { get; set; }
-        public bool Attivo { get; set; }
+        public int Attivo { get; set; }
         public int IdRevenda { get; set; }
         public string? SistemaOp { get; set; }
         public DateTime? DataAtivacao { get; set; }

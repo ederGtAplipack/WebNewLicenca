@@ -8,6 +8,7 @@ namespace LicencaApi.Models
     {
         [Key]
         [Column("idLicencaChave")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdLicencaChave { get; set; }
 
         [Column("Chave")]
@@ -33,6 +34,12 @@ namespace LicencaApi.Models
 
         [Column("EntreguePara")]
         public string? EntreguePara { get; set; }
+
+        [Column("CreatedAt")]
+        public DateTime? CreatedAt { get; set; }
+
+        [Column("Status")]
+        public string? Status { get; set; }
 
         // Navegação
         /*[ForeignKey("idSoftware")]

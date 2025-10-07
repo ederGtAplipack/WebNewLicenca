@@ -18,7 +18,7 @@ namespace LicencaApi.Controllers.V1
         * Ele recebe um objeto AtivacaoDispositivoRequestDTO contendo os dados necessários para a ativação.
         * Se a ativação for bem-sucedida, retorna um objeto AtivacaoDispositivoResponseDTO com os detalhes da licença ativada.
         * Em caso de erro, retorna um status 500 (Internal Server Error).
-        */
+        
         [HttpPost("ativar-processar")]
         public async Task<IActionResult> ProcessarAtivacaoDispositivo([FromBody] AtivacaoDispositivoRequestDTO request)
         {
@@ -32,6 +32,6 @@ namespace LicencaApi.Controllers.V1
                 _logger.LogError(ex, "Erro ao processar ativação de dispositivo");
                 return StatusCode(500, "Erro interno do servidor");
             }
-        }
+        }*/
     }
 }

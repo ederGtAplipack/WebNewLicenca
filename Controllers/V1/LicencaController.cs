@@ -1,3 +1,4 @@
+using LicencaApi.Controllers.V2;
 using LicencaApi.Data;
 using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Licenses;
 
 namespace LicencaApi.Controllers.V1
 {
@@ -19,174 +21,99 @@ namespace LicencaApi.Controllers.V1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class LicencaController : ControllerBase
     {
-        private readonly ILicencaService _service;
         private readonly ILogger<LicencaController> _logger;
-        private readonly LicencaDbContext _context;
+        private readonly ILicencaService _licencaService;
 
-        public LicencaController(ILicencaService service, ILogger<LicencaController> logger, LicencaDbContext context)
+        public LicencaController(ILogger<LicencaController> logger, ILicencaService licencaService)
         {
-            _service = service;
             _logger = logger;
-            _context = context;
+            _licencaService = licencaService;
         }
-        
-        /*[Authorize(Policy = "AdminOnly")]*/
-        [HttpGet]      
-        [EnableRateLimiting("fixed")]
-        public async Task<IActionResult> GetAll()
+
+        [HttpPost("activate")]
+        public async Task<IActionResult> Activate(ActivateLicenseDTO dto)
         {
             try
             {
-                _logger.LogInformation("Iniciando busca por todas as licenças");
-                var licencas = await _service.BuscarTodasAsync();
-
-                _logger.LogInformation("Fim da Busca por todas licenças");
-                return Ok(licencas);
+                var result = await _licencaService.ActivateAsync(dto);
+                if (!result.Success)
+                    return StatusCode(result.StatusCode, result.Message);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao buscar licenças");
-                return StatusCode(500, "Erro interno do servidor");
+                _logger.LogError(ex, "Erro Activate");
+                return StatusCode(500, "Erro interno");
             }
         }
-        
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            _logger.LogInformation("Iniciando busca por ID de licenças");
-            var licenca = await _service.BuscarPorIdLicenca(id);
-            if (licenca == null)
-                return NotFound();
-            _logger.LogWarning("Licença com ID {Id} encontrada", id);
-
-            return Ok(licenca);
-
-        }
-
-        [HttpGet("ativas")]
-        public async Task<IActionResult> GetAtivas()
-        {
-            _logger.LogInformation("Iniciando busca por Ativas");
-            var licencas = await _service.BuscarAtivasAsync();
-            return Ok(licencas);
-        }
-
-        /*
-         * O método Create é responsável por criar uma nova licença.
-         * Ele recebe os dados da licença como parâmetro e chama o serviço para realizar a criação.
-         * Se a licença for criada com sucesso, retorna um status 201 (Created) com a nova licença.
-         * Se ocorrer algum erro, retorna um status 500 (Internal Server Error).
-         */
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CriarLicencaDTO dto)
+        [HttpPost("validate")]
+        public async Task<IActionResult> Validate(ValidateLicenseDTO dto)
         {
             try
             {
-                // Verificação inicial do modelo
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                _logger.LogInformation("Iniciando a criação de nova licença.");
-
-                var novaLicenca = await _service.CriarAsync(dto);
-
-                // O retorno CreatedAtAction é o padrão RESTful para criação bem-sucedida.
-                _logger.LogInformation("Licença criada com sucesso: {NumLic}", novaLicenca.NumLic);
-                return CreatedAtAction(nameof(GetById), new { id = novaLicenca.NumLic }, novaLicenca);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Captura um erro específico do serviço (como falha no mapeamento) e retorna 400 Bad Request.
-                _logger.LogError(ex, "Erro de validação ou operação: {Message}", ex.Message);
-                return BadRequest(ex.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                // Captura erros específicos do banco de dados (por exemplo, violação de chave primária).
-                _logger.LogError(ex, "Erro de banco de dados ao criar licença.");
-                return StatusCode(500, "Erro ao salvar a licença. Verifique os dados e tente novamente.");
+                var clientIp = HttpContext.Connection.RemoteIpAddress?.ToString();
+                var result = await _licencaService.ValidateAsync(dto, clientIp);
+                if (!result.Valid) return Unauthorized(result);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                // Captura qualquer outra exceção inesperada.
-                _logger.LogError(ex, "Erro interno do servidor ao criar licença.");
-                return StatusCode(500, "Erro interno do servidor.");
+                _logger.LogError(ex, "Erro em Validate");
+                return StatusCode(500, "Erro interno");
             }
+        }        
+        [HttpPost("createNewLicenca")]
+        public async Task<IActionResult> Create(CriarLicencaDTO dto)
+        {
+            var result = await _licencaService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetDevices), new { numLic = result.NumLic }, result);
         }
         
-        /*
-         * O método Update é responsável por atualizar uma licença existente.
-         * Ele recebe o ID da licença e os dados atualizados como parâmetros.
-         * Se a licença for atualizada com sucesso, retorna um status 204 (No Content).
-         * Se o ID não corresponder ao ID da licença, retorna um status 400 (Bad Request).
-         * Se a licença não for encontrada, retorna um status 404 (Not Found).
-         */
-        [HttpPut("atualizar/{id:int}")]
-        public async Task<IActionResult> Update(int id, AtualizarLicencaDTO dto)
+        [HttpPut("{numLic}/status")]
+        /*[Authorize(Roles = "Admin")]*/
+        public async Task<IActionResult> UpdateStatus(int numLic, UpdateStatusDTO dto)
         {
-            _logger.LogInformation("Iniciando atualização de licença com ID {Id}", id);
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            /*if (id != dto.NumLic)
-                return BadRequest("ID de licença inválido.");*/
-
-            var atualizado = await _service.AtualizarAsync(id, dto);
-            if (!atualizado)
-                return NotFound();
-
-            _logger.LogInformation("Licença com ID {Id} atualizada com sucesso", id);
-            return NoContent();
+            try
+            {
+                var ok = await _licencaService.UpdateStatusAsync(numLic, dto.Status, dto.Reason);
+                if (!ok) return NotFound();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em UpdateStatus");
+                return StatusCode(500, "Erro interno");
+            }
         }
-        /*
-         * O método Desativar é responsável por desativar uma licença específica.
-         * Ele recebe o ID da licença como parâmetro e chama o serviço para realizar a desativação.
-         * Se a licença for desativada com sucesso, retorna um status 200 (OK) com uma mensagem de sucesso.
-         * Se a licença não for encontrada, retorna um status 404 (Not Found).
-         */
-        [HttpPatch("{id:int}/desativar")]
-        public async Task<IActionResult> Desativar(int id)
+        [HttpGet("{numLic}/devices")]
+        /*[Authorize(Roles = "Admin")]*/
+        public async Task<IActionResult> GetDevices(int numLic)
         {
-            var desativado = await _service.DesativarAsync(id);
-            if (!desativado)
-                return NotFound();
-
-            return Ok(new { mensagem = "Licença desativada com sucesso", id });
+            try
+            {
+                var devices = await _licencaService.GetDevicesAsync(numLic);
+                return Ok(devices);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em GetDevices");
+                return StatusCode(500, "Erro interno");
+            }
         }
-
-       
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Deletar(int id)
+        [HttpGet("{numLic}/logs")]
+        /*[Authorize(Roles = "Admin")]*/
+        public async Task<IActionResult> GetLogs(int numLic)
         {
-            var licenca = await _service.BuscarPorIdLicenca(id);
-            if (licenca == null)
-                return NotFound("Licença não encontrada."); 
-            _logger.LogInformation("Iniciando deleção de licença com ID {Id}", id);
-            
-            var deletado = await _service.DeletarAsync(id);
-            if (!deletado)
-                return NotFound();
-            _logger.LogInformation("Licença com ID {Id} deletada com sucesso", id);
-            return Ok(new { mensagem = "Licença deletada com sucesso", id });
+            try
+            {
+                var logs = await _licencaService.GetLogsAsync(numLic);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em GetLogs");
+                return StatusCode(500, "Erro interno");
+            }
         }
-
-
-        /*[HttpGet("buscar-existente")]
-        public async Task<IActionResult> BuscarLicencaExistente([FromQuery] AtivacaoDispositivoRequestDTO request)
-        {
-            var response = await _service.BuscarLicencaExistenteAsync(request);
-            if (request == null)
-                return BadRequest("Parâmetros obrigatórios: macAddress e software.");
-
-            var licenca = await _service.BuscarLicencaExistenteAsync(request);
-
-            if (licenca == null)
-                return NotFound("Licença não encontrada.");
-
-            return Ok(licenca);
-        }*/
-
     }
 }

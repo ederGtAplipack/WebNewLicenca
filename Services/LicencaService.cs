@@ -1,11 +1,16 @@
 using AutoMapper;
+using Humanizer;
 using LicencaApi.Data;
 using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx.Crud;
+using MySqlX.XDevAPI;
+using NuGet.Packaging.Licenses;
 using System.ComponentModel;
+using System.Text.Json;
 
 /*A classe LicencaService atua como intermediária entre a camada de repositório (que interage com o banco de dados) e a camada de apresentação (que consome os DTOs). 
  * Ela encapsula a lógica de negócios, garantindo que os dados sejam manipulados corretamente antes de serem enviados ou recebidos pela aplicação.*/
@@ -41,38 +46,7 @@ namespace LicencaApi.Services
             _logger.LogInformation("Passando pelo Service do ObterTodasComDetalhesAsync.");
             var licencasDetalhadas = await _repository.ObterTodasComDetalhesAsync();
             return licencasDetalhadas;
-        }
-
-
-        public async Task<LicencaModel?> BuscarPorIdLicenca(int id)
-        {
-            _logger.LogInformation("Passando pelo LicencaService");
-            var Licencas = await _repository.BuscarPorIdAsync(id);
-            if (Licencas == null)
-            {
-                _logger.LogWarning("Licença com ID {id} não encontrada", id);
-                return null;
-            }
-            return Licencas;
-
-            /*var licenca = await _repository.BuscarPorIdAsync(id);
-            return licenca == null ? null : _mapper.Map<LicencaModel>(licenca);*/
-        }
-        public async Task<IEnumerable<LicencaModel?>> BuscarAtivasAsync()
-        {
-            _logger.LogInformation("Passando por Service das ativas");
-            var licencasAtivas = await _repository.BuscarAtivasAsync();
-            if (licencasAtivas == null || !licencasAtivas.Any())
-            {
-                _logger.LogWarning("Nenhuma licença ativa encontrada");
-                return Enumerable.Empty<LicencaModel>();
-            }
-            _logger.LogInformation("Retornando {count} licenças ativas", licencasAtivas.Count());
-            /*return await _context.Licenca
-                .Where(l => l.Attivo)
-                .ToListAsync();         */
-            return licencasAtivas;
-        }
+        }       
 
         /*Esse método tem a responsabilidade de criar (inserir) uma nova licença no banco de dados a partir dos dados recebidos (DTO).*/
         public async Task<LicencaModel> CriarAsync(CriarLicencaDTO dto)
@@ -115,232 +89,9 @@ namespace LicencaApi.Services
                 // Re-lança a exceção para que o Controller possa capturá-la.
                 throw;
             }
-        }        
+        }       
 
-        public async Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto)
-        {
-            _logger.LogInformation("Passando pelo Service de atualização de licença");
-            var licenca = await _unitOfWork.Licencas.BuscarPorIdAsync(id);
-
-            if (licenca == null)
-            {
-                _logger.LogWarning("Licença com ID {Id} não encontrada para atualização.", id);
-                return false;
-            }
-            try
-            {
-                _mapper.Map(dto, licenca);
-                _unitOfWork.Licencas.AtualizarAsync(licenca);
-                await _unitOfWork.CompleteAsync();
-                return true;
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                _logger.LogError(ex, "Erro de concorrência ao atualizar a licença com ID {Id}.", id);
-                // O repositório não tem o método LicencaExists, o Service tem acesso ao UnitOfWork
-                // para buscar a licença
-                if (await _unitOfWork.Licencas.BuscarPorIdAsync(id) == null)
-                {
-                    return false;
-                }
-                throw; // Relança a exceção de concorrência para o Controller
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao mapear DTO para LicencaModel");
-                throw;
-            }
-        }
-
-
-        public async Task<bool> DesativarAsync(int id)
-        {
-            var licenca = await _context.Licenca.FindAsync(id);
-            if (licenca == null)
-                return false;
-            licenca.Attivo = false;
-            await _context.SaveChangesAsync();
-
-
-            return true;
-
-        }
-
-        public async Task<bool> DeletarAsync(int id)
-        {
-            _logger.LogInformation("Iniciando deleção de licença com ID {Id}", id);
-            var licenca = await _context.Licenca.FindAsync(id);
-            if (licenca == null)
-                return false;
-            _context.Licenca.Remove(licenca);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        private async Task<bool> LicencaExists(int id)
-        {
-            return await _context.Licenca.AnyAsync(e => e.NumLic == id);
-        }
-
-        public async Task<AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request)
-        {
-            // Validação dos dados de entrada
-            await RegistrarAcesso(request);
-
-            var licencaExistente = await BuscarLicencaExistenteAsync(request);
-            if (licencaExistente != null && licencaExistente.NumLic > 0)
-            {
-                AtualizarDadosDoDispositivo(licencaExistente, request);
-
-                if (licencaExistente.Attivo && licencaExistente.Scade > DateTime.Now)
-                {
-                    await _unitOfWork.CompleteAsync();
-                    return GerarResposta(licencaExistente, "Ativa", "Licença já está ativa e válida.");
-                }
-                else
-                {
-                    return await RenovarLicencaAsync(licencaExistente);
-                }
-            }
-
-            //return await RegistrarNovoDispositivoAsync(request);
-            return GerarErro("Dispositivo não registrado. Contate o suporte.", "Dispositivo Não Registrado");
-        }
-
-        private void AtualizarDadosDoDispositivo(LicencaModel licencaExistente, AtivacaoDispositivoRequestDTO request)
-        {
-            licencaExistente.Processador = request.Processador;
-            licencaExistente.NomeComputador = request.NomeComputador;
-            licencaExistente.SistemaOp = request.SistemaOp;
-            licencaExistente.ip = request.ip;
-            licencaExistente.MacAddress = request.MacAddress;
-            licencaExistente.Software = request.nSoftware;
-            licencaExistente.DataAtivacao = DateTime.Now;
-
-        }
-
-        private async Task<AtivacaoDispositivoResponseDTO> RegistrarAcesso(AtivacaoDispositivoRequestDTO request)
-        {
-            var acessoNew = new AcessoNewModel
-            {
-                macaddress = request.MacAddress,
-                software = request.nSoftware,
-                processador = request.Processador,
-                idLicenca = request.IdLicenca,
-                idAcessosNew = request.idAcessosNew,
-                DataHora = request.DateTime,
-                externalIP = request.externalIp,
-            };
-
-            _context.AcessosNew.Add(acessoNew);
-            await _context.SaveChangesAsync();
-
-            return new AtivacaoDispositivoResponseDTO
-            {
-                StatusLicenca = "Registrado",
-                Mensagem = "Acesso registrado com sucesso."
-            };
-        }
-
-
-        private async Task<LicencaModel?> BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request)
-        {
-            var licenca = await _context.Licenca
-                .FirstOrDefaultAsync(l => l.MacAddress == request.MacAddress && l.Software == request.nSoftware);
-            _logger.LogInformation("Verificacao: Licenca existente para MAC {mac} = {resultado}", request.MacAddress, licenca != null);
-            return licenca;
-        }
-
-        private async Task<AtivacaoDispositivoResponseDTO> RenovarLicencaAsync(LicencaModel licenca)
-        {
-            licenca.Attivo = true;
-            licenca.DataAtivacao = DateTime.Now;
-            await _unitOfWork.CompleteAsync();
-
-            return GerarResposta(licenca, "Renovada", "Licença renovada com sucesso.");
-        }
-
-        /*private async Task<AtivacaoDispositivoResponseDTO> RegistrarNovoDispositivoAsync(AtivacaoDispositivoRequestDTO request)
-        {
-            var contrato = await ObterContratoValidoAsync(request.IdCliente);
-            if (contrato == null)
-            {
-                _logger.LogWarning("Contrato inválido ou inexistente para o cliente {IdCliente}.", request.IdCliente);
-                return GerarErro("Contrato inválido ou inexistente para o cliente.", "Erro");
-            }
-
-            var cliente = await _context.Anagrafica.FindAsync(request.IdCliente);
-            if (cliente == null)
-                return GerarErro("Cliente não encontrado.", "Erro");
-
-            var softwareDb = await _context.Software.FirstOrDefaultAsync(s => s.nSoftware == request.nSoftware);
-            if (softwareDb == null)
-                return GerarErro("Software não encontrado no banco de dados.", "Erro");
-
-            var novaLicenca = _mapper.Map<LicencaModel>(request);
-            novaLicenca.DataLic = DateTime.Now;
-            novaLicenca.DataAtivacao = DateTime.Now;
-            novaLicenca.Attivo = false;
-            novaLicenca.Status = "Pendente Analise";
-            novaLicenca.IdRevenda = cliente.IdRevenda ?? 0;
-            novaLicenca.Scade = contrato.PagmentoEmDia
-                ? DateTime.Now.AddYears(1)
-                : DateTime.Now.AddDays(15);
-
-            if (!contrato.PagamentoEmDia || contrato.StatusContrato == "Suspenso")
-            {
-                novaLicenca.Status = "Pendente Financeiro";
-                novaLicenca.Scade = DateTime.Now.AddDays(15);
-                return GerarErro("Contrato suspenso ou pagamento em atraso. Licença pendente de análise comercial.", "Pendente Financeiro");
-            }
-
-            var totalLicencasAtivas = await _context.Licenca.CountAsync(l => l.IdCliente == request.IdCliente && l.Attivo && l.Scade > DateTime.Now);
-
-            if (totalLicencasAtivas < contrato.QtdLicencas)
-            {
-                novaLicenca.Attivo = true;
-                novaLicenca.Status = "Ativa";
-                novaLicenca.Scade = DateTime.Now.AddYears(1);
-            }
-            else
-            {
-                novaLicenca.Status = "Pendente Analise";
-                novaLicenca.Scade = DateTime.Now.AddDays(30);
-            }
-
-            await _unitOfWork.Licencas.CriarAsync(novaLicenca);
-            await _unitOfWork.CompleteAsync();
-
-            var novaChave = new LicencasChaveModel
-            {
-                Chave = GerarNovaChaveLicenca(request),
-                IdSoftware = softwareDb.IdSoftware,
-                IdRevenda = cliente.IdRevenda ?? 0,
-                NumLic = novaLicenca.NumLic,
-                DataInser = DateTime.Now,
-                TipoLic = novaLicenca.TipoLic ?? "INDEFINIDO",
-                Entregue = 0,
-                EntreguePara = cliente.NomeFantasia ?? cliente.RazaoSocial
-            };
-
-            _context.LicencasChave.Add(novaChave);
-            await _context.SaveChangesAsync();
-
-            novaLicenca.IdLicencaChave = novaChave.IdLicencaChave;
-            await _unitOfWork.CompleteAsync();
-
-            return new AtivacaoDispositivoResponseDTO
-            {
-                ChaveLicenca = novaChave.Chave,
-                DataExpiracao = novaLicenca.Scade,
-                StatusLicenca = novaLicenca.Status,
-                Mensagem = novaLicenca.Status == "Ativa"
-                            ? "Licença ativada com sucesso."
-                            : "Dispositivo novo. A solicitação está sob análise comercial. Uma chave foi emitida."
-            };
-        }*/
-
-        private object GerarNovaChaveLicenca(AtivacaoDispositivoRequestDTO request)
+        /*private object GerarNovaChaveLicenca(AtivacaoDispositivoRequestDTO request)
         {
             return Guid.NewGuid().ToString();
         }
@@ -373,91 +124,537 @@ namespace LicencaApi.Services
                 StatusLicenca = status,
                 Mensagem = mensagem
             };
+        }*/
+        
+
+        public async Task<ActivationResultDTO> ActivateAsync(ActivateLicenseDTO licenseDTO, string clienteIp = null)
+        {
+            if (licenseDTO == null || string.IsNullOrWhiteSpace(licenseDTO.Chave))
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 400,
+                    Message = "Payload inválido"
+                };
+            var chave = await _repository.GetLicencaChaveByChaveAsync(licenseDTO.Chave);
+            if (chave == null)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = null,
+                    chave = licenseDTO.Chave,
+                    endPoint = "activate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 404,
+                    ClienteIp = clienteIp
+                });
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 404,
+                    Message = "Chave não encontrada"
+                };
+            }
+
+            var licenca = await _repository.GetLicencaByIdLicencaChaveAsync(chave.IdLicencaChave);
+            if (licenca == null)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = null,
+                    chave = licenseDTO.Chave,
+                    endPoint = "activate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 404,
+                    ClienteIp = clienteIp
+                });
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 404,
+                    Message = "Licença não encontrada para a chave"
+                };
+            }
+
+            // verifica se a licença está ativa e não expirada
+            if (!string.IsNullOrEmpty(licenca.Status) && licenca.Status.ToLower() != "active" && licenca.Attivo == 0)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "activate",
+                    /*RequestPayload = JsonSerializer.Serialize(dto),*/
+                    responseCode = 403,
+                    ClienteIp = clienteIp
+                });
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = $"Licença está {licenca.Status}"
+                };
+            }
+            if (licenca.Scade < DateTime.Now)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "activate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 403,
+                    ClienteIp = clienteIp
+                });
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = "Licença expirada"
+                };
+            }
+
+            // verifica se já existe um dispositivo com o mesmo MAC
+            var count = await _repository.CountActiveDevicesAsync(licenca.NumLic);
+            var max = licenca.MaxDevices > 0 ? licenca.MaxDevices : 1;
+
+            var existing = await _repository.GetDeviceByFingerprintAsync(licenca.NumLic, licenseDTO.DeviceFingerprint);
+
+            if (existing == null && count >= max)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "activate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    /*RequestPayload = licenseDTO.DeviceFingerprint != null
+                        ? System.Text.Json.JsonSerializer.Serialize(licenseDTO.DeviceFingerprint)
+                        : null,*/
+                    responseCode = 403,
+                    ClienteIp = clienteIp
+                });
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = "Limite de dispositivos atingido"
+                };
+            }
+
+            if (existing == null)
+            {
+                // registra novo dispositivo
+                var device = new LicencaDispositivoModel
+                {
+                    numLic = licenca.NumLic,
+                    DeviceFingerprint = licenseDTO.DeviceFingerprint,
+                    ActivatedAt = DateTime.Now,
+                    LastSeenAt = DateTime.Now,
+                    IsActive = 1
+                };
+                await _repository.AddDeviceAsync(device);
+            }
+            else
+            {
+                // atualiza último acesso
+                existing.LastSeenAt = DateTime.Now;
+                existing.DeviceInfo = licenseDTO.DeviceInfo != null
+                    ? System.Text.Json.JsonSerializer.Serialize(licenseDTO.DeviceInfo)
+                    : null; // atualiza info do dispositivo
+                await _repository.UpdateDeviceAsync(existing);
+            }
+
+            // Atualiza DataAtivacao se nulo
+            if (!licenca.DataAtivacao.HasValue)
+            {
+                licenca.DataAtivacao = DateTime.Now;
+                await _repository.UpdateLicencaAsync(licenca);
+            }
+
+            // log seccess 
+            await _repository.LogAsync(new LicencaLogModel
+            {
+                numLic = licenca.NumLic,
+                chave = licenseDTO.Chave,
+                endPoint = "activate",
+                RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                responseCode = 200,
+                ClienteIp = clienteIp   
+            });
+
+            // calcula vagas restantes
+            var remaining = Math.Max(0, max - (existing == null ? count + 1 : count));
+
+            return new ActivationResultDTO
+            {
+                Success = true,
+                StatusCode = 200,
+                Message = "Ativação efetuada",
+                NumLic = licenca.NumLic,
+                ExpiresAt = licenca.Scade,
+                RemainingSlots = remaining
+            };
+
         }
 
-        Task<AtivacaoDispositivoResponseDTO> ILicencaService.BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request)
+        public async Task<ValidationResultDTO> ValidateAsync(ValidateLicenseDTO licenseDTO, string clienteIp = null)
         {
-            throw new NotImplementedException();
+            if (licenseDTO == null || string.IsNullOrWhiteSpace(licenseDTO.Chave))
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Message = "Payload inválido"
+                };
+            var chave = await _repository.GetLicencaChaveByChaveAsync(licenseDTO.Chave);
+            if (chave == null)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = null,
+                    chave = licenseDTO.Chave,
+                    endPoint = "validate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 404,
+                    ClienteIp = clienteIp
+                });
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Message = "Chave não encontrada"
+                };
+            }
+
+            var licenca = await _repository.GetLicencaByIdLicencaChaveAsync(chave.IdLicencaChave);
+            if (licenca == null)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = null,
+                    chave = licenseDTO.Chave,
+                    endPoint = "validate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 404,
+                    ClienteIp = clienteIp
+                });
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Message = "Licença não encontrada para a chave"
+                };
+            }
+
+            // verifica se a licença está ativa e não expirada
+            if (!string.IsNullOrEmpty(licenca.Status) && licenca.Status.ToLower() != "active" && licenca.Attivo == 0)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "validate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 403,
+                    ClienteIp = clienteIp
+                });
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Message = $"Licença está {licenca.Status}"
+                };
+            }
+            if (licenca.Scade < DateTime.Now)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "validate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 403,
+                    ClienteIp = clienteIp
+                });
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Status = "Expired",
+                    Message = "Licença expirada"
+                };
+            }
+
+            var device = await _repository.GetDeviceByFingerprintAsync(licenca.NumLic, licenseDTO.DeviceFingerprint);
+            if (device == null || device.IsActive == 0)
+            {
+                await _repository.LogAsync(new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = licenseDTO.Chave,
+                    endPoint = "validate",
+                    RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                    responseCode = 401,
+                    ClienteIp = clienteIp
+                });
+                return new ValidationResultDTO
+                {
+                    Valid = false,
+                    Message = "Dispositivo não Ativo"
+                };
+            }
+
+            // atualiza último acesso
+            device.LastSeenAt = DateTime.Now;
+            await _repository.UpdateDeviceAsync(device);
+
+            // log seccess
+            await _repository.LogAsync(new LicencaLogModel
+            {
+                numLic = licenca.NumLic,
+                chave = licenseDTO.Chave,
+                endPoint = "validate",
+                RequestPayload = JsonSerializer.Serialize(licenseDTO),
+                responseCode = 200,
+                ClienteIp = clienteIp
+            });
+            return new ValidationResultDTO
+            {
+                Valid = true,
+                Message = "Licença válida",
+                Status = licenca.Status ?? "Active",
+                ExpiresAt = licenca.Scade
+            };
         }
 
-        /*METODO REMOVIDO PARA O CLIENTESERVICE
-        public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
+        public async Task<LicencaDTO> CreateAsync(CriarLicencaDTO dto)
         {
-            _logger.LogInformation("Passando pelo LicencaService");
-            var anagrafica = await _repository.BuscarTodasAnagrafica();
-            _logger.LogInformation("Retornando todos Clientes");
-            return anagrafica.Select(l => _mapper.Map<AnagraficaModel>(l));
-        }*/
+            // 1) Validações iniciais
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            if (dto.IdSoftware <= 0) throw new ArgumentException("IdSoftware inválido.", nameof(dto.IdSoftware));
+            if (dto.IdCliente == null || dto.IdCliente <= 0) throw new ArgumentException("IdCliente inválido.", nameof(dto.IdCliente));
 
-        /*METODO REMOVIDO PARA O CLIENTESERVICE*/
-        /*public async Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id)
-        {
-            _logger.LogInformation("Passando pelo LicencaService");
-            var anagrafica = await _repository.BuscarPorIdAnagrafica(id);
-            if (anagrafica == null)
+            // Obtem contrato ativo e válido do cliente (inclui verificação de existência do cliente)
+            var contrato = await _context.Contratos
+                .FirstOrDefaultAsync(c =>
+                    c.IdCliente == dto.IdCliente &&
+                    c.StatusContrato == "Ativo" &&
+                    c.PagamentoEmDia == 1);
+
+            if (contrato == null)
             {
-                _logger.LogWarning("Licença com ID {id} não encontrada", id);
-                return null;
-            }
-            return anagrafica;
-        }*/
-
-        /*METODO REMOVIDO PARA O CLIENTESERVICE
-        public async Task<AnagraficaModel?> CriarNovaAnagrafica(CriarAnagraficaDTO dto)
-        {
-            _logger.LogWarning("Iniciando Método CriarNovaAnagrafica");
-            var clienteExiste = await _context.Anagrafica.AnyAsync(c => c.IdAnagrafica == dto.IdAnagrafica);
-            if (clienteExiste)
-            {
-                _logger.LogError("Cliente com ID {IdCliente} já existe.", dto.IdAnagrafica);
-                throw new InvalidOperationException($"Cliente com ID {dto.IdAnagrafica} já existe.");
-            }
-            var anagrafica = _mapper.Map<AnagraficaModel>(dto);
-
-
-            if (anagrafica == null)
-            {
-                _logger.LogError("Erro de mapeamento: O AutoMapper retornou um objeto nulo para o DTO.");
-                throw new InvalidOperationException("Não foi possível mapear o DTO para o modelo Anagrafica.");
+                var clienteExiste = await _context.Anagrafica.AnyAsync(a => a.IdAnagrafica == dto.IdCliente);
+                if (!clienteExiste)
+                    throw new KeyNotFoundException($"Cliente {dto.IdCliente} não encontrado.");
+                throw new InvalidOperationException("Cliente não possui contrato ativo, pago e válido.");
             }
 
+
+            if (contrato.QtdLicencas <= 0)
+                throw new InvalidOperationException("Contrato sem licenças disponíveis.");
+
+            // === Preparação das entidades (não salvamos ainda — tudo dentro da transação abaixo) ===
+
+            var chave = CriarLicencaChaveModel(dto, contrato);
+
+            var scade = CalcularScade(dto.Scade, dto.DataLic, contrato.DataFim, contrato.Plano);
+
+            var licenca = CriarLicencaModel(dto, contrato, chave, scade);
+
+
+            // === Operação transacional: inserir chave, licença, decrementar contrato e atualizar chave com NumLic ===
+            using (var tx = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Adiciona a chave (sem salvar se o repositório seguir padrão UnitOfWork)
+                    await _repository.CreateLicencaChaveAsync(chave); // deve apenas Add() no contexto
+
+                    // Garanta que a chave está com Id gerado após SaveChanges (se CreateLicencaChaveAsync salvar, ok).
+                    // Se CreateLicencaChaveAsync não salvar, a chave terá Id depois do CompleteAsync abaixo.
+
+                    // Vincula a chave à licença (IdLicencaChave pode estar preenchido ou será preenchido após o Save)
+                    licenca.IdLicencaChave = chave.IdLicencaChave;
+
+                    // Adiciona licença
+                    await _repository.CreateLicencaAsync(licenca); // deve apenas Add() no contexto
+
+                    // Decrementa qtdLicencas do contrato
+                    _logger.LogInformation("Decrementando QtdLicencas do contrato ID {IdContrato}. Antes: {QtdAntes}", contrato.IdContrato, contrato.QtdLicencas);
+                    contrato.QtdLicencas = Math.Max(0, contrato.QtdLicencas - 1);
+                    _context.Contratos.Update(contrato);
+
+                    // Se o Id da licença foi gerado (licenca.NumLic), atualiza a chave
+                    chave.NumLic = licenca.NumLic;
+                    _context.LicencasChave.Update(chave);
+
+                    // Persiste tudo via UnitOfWork (atomicamente)
+                    await _unitOfWork.CompleteAsync();
+
+                    // Confirma transação
+                    await tx.CommitAsync();
+                }
+                catch
+                {
+                    await tx.RollbackAsync();
+                    throw;
+                }
+            }
+
+            // === 5) Gravar Log e Retorno ===
+
+            // Grava log de criação (padrão async, não bloqueante para a resposta)
+            await LogCreationAsync(licenca, chave, dto);
+
+            // Retorna DTO resumido
+            return new LicencaDTO
+            {
+                NumLic = licenca.NumLic,
+                Chave = chave.Chave,
+                Scade = licenca.Scade,
+                Status = licenca.Status
+            };
+        }
+        private LicencasChaveModel CriarLicencaChaveModel(CriarLicencaDTO dto, ContratoModel contrato)
+        {
+            var chaveString = "LIC-" + Guid.NewGuid().ToString("N").ToUpper().Substring(0, 16);
+
+            return new LicencasChaveModel
+            {
+                Chave = chaveString,
+                IdSoftware = dto.IdSoftware,
+                IdRevenda = dto.IdRevenda ?? 0,
+                NumLic = 0,
+                DataInser = DateTime.UtcNow,
+                TipoLic = string.IsNullOrWhiteSpace(dto.TipoLic) ? (contrato?.Plano ?? "INDEFINIDO") : dto.TipoLic,
+                Entregue = 0,
+                Status = "Available"
+            };
+        }
+        private DateTime CalcularScade(DateTime dtoScade, DateTime dtoDataLic, DateTime? contratoDataFim, string plano)
+        {
+            // Prioridade: DTO > contrato.dataFim > cálculo por plano > 1 ano por padrão
+            if (dtoScade != default(DateTime)) return dtoScade;
+            if (contratoDataFim.HasValue) return contratoDataFim.Value;
+
+            var dataBase = dtoDataLic == default(DateTime) ? DateTime.UtcNow : dtoDataLic;
+
+            if (!string.IsNullOrWhiteSpace(plano))
+            {
+                var p = plano.ToLowerInvariant();
+                if (p.Contains("anual") || p.Contains("ano")) return dataBase.AddYears(1);
+                if (p.Contains("mensal") || p.Contains("mês")) return dataBase.AddMonths(1);
+                if (p.Contains("trimestral")) return dataBase.AddMonths(3);
+                // adicionar regras conforme necessário
+            }
+
+            return dataBase.AddYears(1); // fallback
+        }
+        private LicencaModel CriarLicencaModel(CriarLicencaDTO dto, ContratoModel contrato, LicencasChaveModel chave, DateTime scade)
+        {
+            var dataLic = dto.DataLic == default(DateTime) ? DateTime.UtcNow : dto.DataLic;
+
+            // Definir MaxDevices: priorizar DTO se informado e dentro do permitido pelo contrato,
+            // senão, usar valor padrão a partir do contrato (por exemplo qtdLicencas ou limite específico)
+            int maxDevices;
+            if (dto.MaxDevices > 0)
+            {
+                // Se existir uma regra no contrato sobre MaxDevicesPermitidos, aplicar aqui:
+                // maxDevices = Math.Min(dto.MaxDevices, contrato.MaxDevicesPermitidos);
+                maxDevices = dto.MaxDevices;
+            }
+            else
+            {
+                maxDevices = contrato.QtdLicencas > 0 ? contrato.QtdLicencas : 1;
+            }
+
+            return new LicencaModel
+            {
+                IdCliente = dto.IdCliente ?? 0,
+                TipoLic = chave.TipoLic,
+                MacAddress = dto.MacAddress,
+                DataLic = dataLic,
+                Scade = scade,
+                MaxDevices = maxDevices,
+                Attivo = dto.Attivo,
+                IdRevenda = dto.IdRevenda ?? 0,
+                IdLicencaChave = chave.IdLicencaChave,
+                Status = "Active",
+                DataAtivacao = null,
+                SistemaOp = dto.SistemaOp,
+                TipoPc = dto.TipoPc,
+                NomeComputador = dto.NomeComputador,
+                Software = dto.Software,
+                ip = dto.Ip,
+                Processador = dto.Processador
+            };
+        }
+
+        private async Task LogCreationAsync(LicencaModel licenca, LicencasChaveModel chave, CriarLicencaDTO dto)
+        {
             try
             {
-                await _repository.CreateNewAnagrafica(anagrafica);
-       
-                await _unitOfWork.CompleteAsync();
+                var log = new LicencaLogModel
+                {
+                    numLic = licenca.NumLic,
+                    chave = chave.Chave,
+                    endPoint = "create",
+                    RequestPayload = JsonSerializer.Serialize(dto),
+                    responseCode = 201,
+                    ClienteIp = null,
+                    createdAt = DateTime.UtcNow
+                };
 
-                //await _context.SaveChangesAsync();
-                _logger.LogInformation("Cliente criado com sucesso. ID do Cliente: {IdAnagrafica}", anagrafica.IdAnagrafica);
-
-                return anagrafica;
-
-            }catch (Exception ex){
-                _logger.LogError(ex, "Ocorreu um erro ao salvar a Anagrafica no banco de dados.");
-                // Re-lança a exceção para que o Controller possa capturá-la.
-                throw;
+                await _repository.LogAsync(log);
             }
-        }*/
-
-        public async Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto)
-        {
-            _logger.LogInformation("Iniciando criação de licença complexa");
-
-            // Validar cliente
-            var clienteExiste = await _context.Anagrafica.AnyAsync(c => c.IdAnagrafica == dto.IdCliente);
-            if (!clienteExiste)
-                throw new InvalidOperationException($"Cliente {dto.IdCliente} não encontrado");
-
-            // Mapear DTO → Model
-            var model = _mapper.Map<LicencaModel>(dto);
-
-            // Chamar repositório
-            await _repository.CreateSql(model);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Licença complexa criada com ID {NumLic}", model.NumLic);
-
-            return model;
+            catch (Exception ex)
+            {
+                // Não falhar a criação da licença por falha no log; apenas registre localmente
+                _logger?.LogWarning(ex, "Falha ao gravar log de criação da licença numLic={NumLic}", licenca?.NumLic);
+            }
         }
 
+        public async Task<bool> UpdateStatusAsync(int numLic, string status, string reason = null)
+        {
+            var licenca = await _repository.GetLicencaByNumLicAsync(numLic);
+            if (licenca == null) return false;
+            licenca.Status = status;
+
+            await _repository.UpdateLicencaAsync(licenca);
+            await _repository.LogAsync(new LicencaLogModel
+            {
+                numLic = licenca.NumLic,
+                chave = licenca.IdLicencaChave?.ToString(),
+                endPoint = "update-status",
+                RequestPayload = JsonSerializer.Serialize(new { status, reason }),
+                responseCode = 200,
+                ClienteIp = null
+            });
+            return true;
+        }
+
+        public async Task<IEnumerable<LicencaDeviceDTO>> GetDevicesAsync(int numLic)
+        {
+            var devices = await _repository.GetDevicesAsync(numLic);
+            return devices.Select(d => new LicencaDeviceDTO
+            {
+                DeviceFingerprint = d.DeviceFingerprint,
+                ActivatedAt = d.ActivatedAt,
+                LastSeenAt = d.LastSeenAt,
+                IsActive = d.IsActive == 1
+            });
+        }
+
+        public async Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null)
+        {
+            var logs = await _repository.GetLogsAsync(numLic, from, to);
+            return logs.Select(l => new LicencaLogDto
+            {
+                IdLog = l.idLog,
+                NumLic = l.numLic,
+                Chave = l.chave,
+                Endpoint = l.endPoint,
+                RequestPayload = l.RequestPayload,
+                ResponseCode = l.responseCode,                
+                ClientIp = l.ClienteIp,
+                CreatedAt = l.createdAt
+            });
+        }
     }
 }

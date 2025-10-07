@@ -11,28 +11,30 @@ namespace LicencaApi.Interfaces
      * fornecer, mas não contém lógica — apenas as assinaturas.*/
     public interface ILicencaService
     {
-        Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
-        ///Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica();
+        //Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
 
-        Task<LicencaModel?> BuscarPorIdLicenca(int id);
-        //Task<AnagraficaModel?> BuscarPorIdAnagrafica(int id);
+        //Task<LicencaModel?> BuscarPorIdLicenca(int id);
 
 		Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
-        Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto);
-        Task<IEnumerable<LicencaModel?>> BuscarAtivasAsync();
-        Task<bool> DesativarAsync(int id);
-        Task<AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request);
-        Task<AtivacaoDispositivoResponseDTO> BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request);
-        Task<bool> DeletarAsync(int id);
+        //Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto);
+        //Task<IEnumerable<LicencaModel?>> BuscarAtivasAsync();
+        //Task<bool> DesativarAsync(int id);
+        //Task<AtivacaoDispositivoResponseDTO> ProcessarAtivacaoDispositivoAsync(AtivacaoDispositivoRequestDTO request);
+        //Task<AtivacaoDispositivoResponseDTO> BuscarLicencaExistenteAsync(AtivacaoDispositivoRequestDTO request);
+        //Task<bool> DeletarAsync(int id);
 
 
         Task<IEnumerable<LicencaDetalhadaDTO>>  ObterTodasComDetalhesAsync();
-        /* O método CriarNovaLinhaAsync é responsável por criar uma nova licença detalhada
-         * a partir dos dados fornecidos no DTO (Data Transfer Object) LicencaDetalhadaDTO.
-         * Ele retorna a licença criada ou null se a criação falhar.
-         */
-        //Task<AnagraficaModel?> CriarNovaAnagrafica(CriarAnagraficaDTO dto);
 
-        Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto);
+        //Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto);
+
+        Task<LicencaDTO> CreateAsync(CriarLicencaDTO dto);
+        Task<ActivationResultDTO> ActivateAsync(ActivateLicenseDTO licenseDTO, string clienteIp = null);
+        Task<ValidationResultDTO> ValidateAsync(ValidateLicenseDTO licenseDTO, string clienteIp = null);
+
+        Task<bool> UpdateStatusAsync(int numLic, string status, string reason = null);
+        Task<IEnumerable<LicencaDeviceDTO>> GetDevicesAsync(int numLic);
+        Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null);
+
     }
 }

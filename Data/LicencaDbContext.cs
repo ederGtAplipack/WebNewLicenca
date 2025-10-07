@@ -20,6 +20,8 @@ namespace LicencaApi.Data
         public DbSet<SoftwareModel> Software { get; set; }
         //public DbSet<AnagraficaModel> Anagrafica { get; set; }
         public DbSet<LicencasChaveModel> LicencasChave { get; set; }
+        public DbSet<LicencaDispositivoModel> LicencaDispositivo { get; set; }
+        public DbSet<LicencaLogModel> LicencaLog { get; set; }
         public DbSet<RevendaModel> Revenda { get; set; }
         public DbSet<RevendaUserModel> RevendaUser { get; set; }
         public DbSet<LicencaDetalhadaDTO> LicencaDetalhadaDTOs { get; set; } // Adicionando o DbSet para LicencaDetalhadaDTO
@@ -35,6 +37,18 @@ namespace LicencaApi.Data
 
             // Garanta a chave primária
             modelBuilder.Entity<LicencaModel>().HasKey(l => l.NumLic); // Ou qual for sua PK
+
+            modelBuilder.Entity<SoftwareModel>().HasKey(s => s.IdSoftware); // Definindo a chave primária para SoftwareModel
+
+            modelBuilder.Entity<ContratoModel>().HasKey(c => c.IdContrato); // Definindo a chave primária para ContratoModel
+
+            modelBuilder.Entity<LicencaDispositivoModel>().HasKey(ld => ld.idDispositivo); // Definindo a chave primária para LicencaDispositivoModel
+
+            modelBuilder.Entity<LicencaLogModel>().HasKey(ll => ll.idLog); // Definindo a chave primária para LicencaLogModel
+
+            modelBuilder.Entity<LicencasChaveModel>().HasKey(lc => lc.IdLicencaChave); // Definindo a chave primária para LicencasChaveModel
+
+            modelBuilder.Entity<RevendaModel>().HasKey(r => r.idRevenda); // Definindo a chave primária para RevendaModel
 
             modelBuilder.Entity<LicencaDetalhadaDTO>().HasKey(l => l.NumLic); // Definindo a chave primária para LicencaDetalhadaDTO
 

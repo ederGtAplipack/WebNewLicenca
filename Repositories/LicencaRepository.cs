@@ -92,7 +92,7 @@ namespace LicencaApi.Repositories
            //wait _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()
+        /*public async Task<IEnumerable<LicencaModel>> BuscarAtivasAsync()
         {
             // Aqui você pode implementar a lógica para buscar licenças ativas
             _logger.LogInformation("Passando pelo Repository das ativas.");
@@ -105,7 +105,7 @@ namespace LicencaApi.Repositories
             if (licenca == null) return false;
             licenca.Attivo = false;
             return true;
-        }
+        }*/
 
         public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
         {
@@ -123,6 +123,126 @@ namespace LicencaApi.Repositories
         {
             _logger.LogInformation("Passando pelo Repository do CreateNewAnagrafica.");
             await _context.Anagrafica.AddAsync(anagraficaModel);
+        }
+
+        public async Task<LicencasChaveModel> GetLicencaChaveByChaveAsync(string chave)
+        {
+            _logger.LogInformation("Passando pelo Repository do GetLicencaChaveByChaveAsync {chave}.", chave);
+            var licencaChave = await _context.LicencasChave.FirstOrDefaultAsync(lc => lc.Chave == chave);
+            if (licencaChave == null)
+            {
+                throw new KeyNotFoundException($"Licença com chave '{chave}' não encontrada.");
+            }
+            return licencaChave;
+        }
+
+        public async Task<LicencaModel> GetLicencaByIdLicencaChaveAsync(int idLicencaChave)
+        {
+            var licenca = await _context.Licenca.FirstOrDefaultAsync(l => l.IdLicencaChave == idLicencaChave);
+            if (licenca == null)
+            {
+                throw new KeyNotFoundException($"Licença com IdLicencaChave '{idLicencaChave}' não encontrada.");
+            }
+            return licenca;
+
+        }
+
+        public async Task<LicencaModel> GetLicencaByNumLicAsync(int numLic)
+        {
+            var licenca = await _context.Licenca.FirstOrDefaultAsync(l => l.NumLic == numLic);
+            if (licenca == null)
+            {
+                throw new KeyNotFoundException($"Licença com NumLic '{numLic}' não encontrada.");
+            }
+            return licenca;
+        }
+
+        public async Task<int> CountActiveDevicesAsync(int numLic)
+        {
+            return await _context.LicencaDispositivo.CountAsync(d => d.numLic == numLic && d.IsActive == 1);
+        }
+
+        public async Task<LicencaDispositivoModel> GetDeviceByFingerprintAsync(int numLic, string deviceFingerprint)
+        {
+            var device = await _context.LicencaDispositivo
+                .FirstOrDefaultAsync(d => d.numLic == numLic && d.DeviceFingerprint == deviceFingerprint);
+            if (device == null)
+            {
+                throw new KeyNotFoundException($"Dispositivo com fingerprint '{deviceFingerprint}' para a licença '{numLic}' não encontrado.");
+            }
+            return device;
+        }
+
+        public async Task<LicencaDispositivoModel> AddDeviceAsync(LicencaDispositivoModel device)
+        {
+            await _context.LicencaDispositivo.AddAsync(device);
+            await _context.SaveChangesAsync(); // Salva imediatamente para garantir que o ID seja gerado
+            return device;
+        }
+
+        public async Task<LicencaDispositivoModel> UpdateDeviceAsync(LicencaDispositivoModel device)
+        {
+           _context.LicencaDispositivo.Update(device);
+            await _context.SaveChangesAsync(); // Salva as alterações
+            return device;
+        }
+
+        public async Task LogAsync(LicencaLogModel logEntry)
+        {
+            _context.LicencaLog.Add(logEntry);
+            await _context.SaveChangesAsync();           
+        }
+
+
+        public async Task<IEnumerable<LicencaDispositivoModel>> GetDevicesAsync(int numLic)
+        {
+            _context.LicencaDispositivo.Where(d => d.numLic == numLic);
+            await _context.SaveChangesAsync();
+            return await _context.LicencaDispositivo.Where(d => d.numLic == numLic).ToListAsync();
+        }
+
+        public async Task<IEnumerable<LicencaLogModel>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null)
+        {
+            _context.LicencaLog.Where(l => l.numLic == numLic);
+            await _context.SaveChangesAsync();
+            var query = _context.LicencaLog.AsQueryable();
+            query = query.Where(l => l.numLic == numLic);
+            if (from.HasValue)
+            {
+                query = query.Where(l => l.createdAt >= from.Value);
+            }
+            if (to.HasValue)
+            {
+                query = query.Where(l => l.createdAt <= to.Value);
+            }
+            return await query.ToListAsync();
+
+        }
+
+        public async Task UpdateLicencaAsync(LicencaModel licenca)
+        {
+           _context.Licenca.Update(licenca);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<LicencasChaveModel> CreateLicencaChaveAsync(LicencasChaveModel licencasChave)
+        {
+            _context.LicencasChave.Add(licencasChave);
+            await _context.SaveChangesAsync();
+            return licencasChave;
+        }
+
+        public async Task<LicencaModel> CreateLicencaAsync(LicencaModel licenca)
+        {   
+            _context.Licenca.Add(licenca);
+            await _context.SaveChangesAsync();
+            return licenca;
+        }
+
+        public async Task UpdateLicencaChaveAsync(LicencasChaveModel chave)
+        {
+            _context.LicencasChave.Update(chave);
+            await _context.SaveChangesAsync();            
         }
     }
 }

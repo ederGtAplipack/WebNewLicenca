@@ -317,18 +317,77 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "GetAll",
-    "RelativePath": "api/v1/Licenca",
+    "Method": "GetDevices",
+    "RelativePath": "api/v1/Licenca/{numLic}/devices",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "numLic",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "GetLogs",
+    "RelativePath": "api/v1/Licenca/{numLic}/logs",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numLic",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "UpdateStatus",
+    "RelativePath": "api/v1/Licenca/{numLic}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numLic",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.UpdateStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "Activate",
+    "RelativePath": "api/v1/Licenca/activate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.ActivateLicenseDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Create",
-    "RelativePath": "api/v1/Licenca",
+    "RelativePath": "api/v1/Licenca/createNewLicenca",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -343,78 +402,15 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "GetById",
-    "RelativePath": "api/v1/Licenca/{id}",
-    "HttpMethod": "GET",
+    "Method": "Validate",
+    "RelativePath": "api/v1/Licenca/validate",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "Deletar",
-    "RelativePath": "api/v1/Licenca/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "Desativar",
-    "RelativePath": "api/v1/Licenca/{id}/desativar",
-    "HttpMethod": "PATCH",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "GetAtivas",
-    "RelativePath": "api/v1/Licenca/ativas",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
-    "Method": "Update",
-    "RelativePath": "api/v1/Licenca/atualizar/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
       {
         "Name": "dto",
-        "Type": "LicencaApi.DTOs.AtualizarLicencaDTO",
+        "Type": "LicencaApi.DTOs.ValidateLicenseDTO",
         "IsRequired": true
       }
     ],
@@ -609,22 +605,6 @@
       {
         "Name": "dto",
         "Type": "LicencaApi.DTOs.AtualizarSoftwareDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "LicencaApi.Controllers.V1.AtivacaoController",
-    "Method": "ProcessarAtivacaoDispositivo",
-    "RelativePath": "ativar-processar",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "LicencaApi.DTOs.AtivacaoDispositivoRequestDTO",
         "IsRequired": true
       }
     ],
