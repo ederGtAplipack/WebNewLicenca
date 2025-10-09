@@ -3,7 +3,6 @@
     public class CriarLicencaDTO
     {
         // Propriedades que representam os dados necessários para criar uma nova licença
-        public int NumLic { get; set; }
         public int? IdCliente { get; set; }
         public string? TipoLic { get; set; } = string.Empty;
         public string? MacAddress { get; set; } = string.Empty;

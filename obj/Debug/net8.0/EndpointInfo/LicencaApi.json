@@ -716,6 +716,18 @@
         }
       }
     },
+    "/api/v1/Licenca/GetAllWithDetails": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/LicencaQuery/GetAllWithDetails": {
       "get": {
         "tags": [
@@ -1319,10 +1331,6 @@
       "CriarLicencaDTO": {
         "type": "object",
         "properties": {
-          "numLic": {
-            "type": "integer",
-            "format": "int32"
-          },
           "idCliente": {
             "type": "integer",
             "format": "int32",

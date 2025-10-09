@@ -4,6 +4,7 @@ using LicencaApi.Data;
 using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mysqlx.Crud;
@@ -31,6 +32,18 @@ namespace LicencaApi.Services
             _logger = logger;
             _context = context;
             _unitOfWork = unitOfWork;
+        }
+
+        public class ResultDevice
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public IEnumerable<LicencaDeviceDTO> Devices { get; set; }
+        }
+
+        public class DeviceExistsException : Exception
+        {
+            public DeviceExistsException(string message) : base(message) { }
         }
 
         public async Task<IEnumerable<LicencaModel>> BuscarTodasAsync()
@@ -360,7 +373,7 @@ namespace LicencaApi.Services
             }
 
             // verifica se a licença está ativa e não expirada
-            if (!string.IsNullOrEmpty(licenca.Status) && licenca.Status.ToLower() != "active" && licenca.Attivo == 0)
+            if (!string.Equals(licenca.Status, "Active", StringComparison.OrdinalIgnoreCase))
             {
                 await _repository.LogAsync(new LicencaLogModel
                 {
@@ -377,7 +390,7 @@ namespace LicencaApi.Services
                     Message = $"Licença está {licenca.Status}"
                 };
             }
-            if (licenca.Scade < DateTime.Now)
+            if (licenca.Scade < DateTime.UtcNow)
             {
                 await _repository.LogAsync(new LicencaLogModel
                 {
@@ -416,7 +429,7 @@ namespace LicencaApi.Services
             }
 
             // atualiza último acesso
-            device.LastSeenAt = DateTime.Now;
+            device.LastSeenAt = DateTime.UtcNow;
             await _repository.UpdateDeviceAsync(device);
 
             // log seccess
@@ -651,7 +664,8 @@ namespace LicencaApi.Services
                     RequestPayload = JsonSerializer.Serialize(dto),
                     responseCode = 201,
                     ClienteIp = null,
-                    createdAt = DateTime.UtcNow
+                    createdAt = DateTime.UtcNow,
+                    mensagem = "Licença criada com sucesso ! numLic={NumLic}"
                 };
 
                 await _repository.LogAsync(log);
@@ -682,16 +696,34 @@ namespace LicencaApi.Services
             return true;
         }
 
+        // ==============================================
+        // MÉTODOS PARA RELATÓRIOS E AUDITORIA
+        // ==============================================
         public async Task<IEnumerable<LicencaDeviceDTO>> GetDevicesAsync(int numLic)
         {
             var devices = await _repository.GetDevicesAsync(numLic);
-            return devices.Select(d => new LicencaDeviceDTO
+
+            if (devices == null || !devices.Any())
+            {
+                _logger.LogWarning("Nenhum dispositivo encontrado para a licença numLic={NumLic}", numLic);
+                throw new DeviceExistsException($"Nenhum dispositivo encontrado para a licença {numLic}.");
+            }
+
+            var deviceDtos = devices.Select(d => new LicencaDeviceDTO
             {
                 DeviceFingerprint = d.DeviceFingerprint,
                 ActivatedAt = d.ActivatedAt,
+                DeviceInfo = JsonSerializer.Serialize(d.DeviceInfo),
                 LastSeenAt = d.LastSeenAt,
                 IsActive = d.IsActive == 1
-            });
+            }).ToList();
+
+            return new ResultDevice
+            {
+                Success = true,
+                Message = $"{deviceDtos.Count} dispositivo(s) encontrado(s) para a licença.",
+                Devices = deviceDtos
+            }.Devices;
         }
 
         public async Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null)

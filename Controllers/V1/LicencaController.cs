@@ -115,5 +115,23 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno");
             }
         }
+
+        [HttpGet("GetAllWithDetails")]
+        /*[Authorize(Roles = "Admin")]*/
+        public async Task<IActionResult> GetAllWithDetails()
+        {
+            try
+            {
+                var licencas = await _licencaService.ObterTodasComDetalhesAsync();
+                return Ok(licencas);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em GetAllWithDetails");
+                return StatusCode(500, "Erro interno");
+            }
+        }
+
+
     }
 }

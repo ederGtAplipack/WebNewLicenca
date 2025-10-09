@@ -125,36 +125,22 @@ namespace LicencaApi.Repositories
             await _context.Anagrafica.AddAsync(anagraficaModel);
         }
 
-        public async Task<LicencasChaveModel> GetLicencaChaveByChaveAsync(string chave)
+        public async Task<LicencasChaveModel?> GetLicencaChaveByChaveAsync(string chave)
         {
             _logger.LogInformation("Passando pelo Repository do GetLicencaChaveByChaveAsync {chave}.", chave);
-            var licencaChave = await _context.LicencasChave.FirstOrDefaultAsync(lc => lc.Chave == chave);
-            if (licencaChave == null)
-            {
-                throw new KeyNotFoundException($"Licença com chave '{chave}' não encontrada.");
-            }
-            return licencaChave;
+            return await _context.LicencasChave.FirstOrDefaultAsync(lc => lc.Chave == chave);
         }
 
         public async Task<LicencaModel> GetLicencaByIdLicencaChaveAsync(int idLicencaChave)
         {
-            var licenca = await _context.Licenca.FirstOrDefaultAsync(l => l.IdLicencaChave == idLicencaChave);
-            if (licenca == null)
-            {
-                throw new KeyNotFoundException($"Licença com IdLicencaChave '{idLicencaChave}' não encontrada.");
-            }
-            return licenca;
-
+            _logger.LogInformation("Passando pelo Repository do GetLicencaByIdLicencaChaveAsync {idLicencaChave}.", idLicencaChave);
+            return await _context.Licenca.FirstOrDefaultAsync(l => l.IdLicencaChave == idLicencaChave);
         }
 
         public async Task<LicencaModel> GetLicencaByNumLicAsync(int numLic)
         {
-            var licenca = await _context.Licenca.FirstOrDefaultAsync(l => l.NumLic == numLic);
-            if (licenca == null)
-            {
-                throw new KeyNotFoundException($"Licença com NumLic '{numLic}' não encontrada.");
-            }
-            return licenca;
+            _logger.LogInformation("Passando pelo Repository do GetLicencaByNumLicAsync {numLic}.", numLic);
+            return await _context.Licenca.FirstOrDefaultAsync(l => l.NumLic == numLic);
         }
 
         public async Task<int> CountActiveDevicesAsync(int numLic)
@@ -172,28 +158,26 @@ namespace LicencaApi.Repositories
         public async Task<LicencaDispositivoModel> AddDeviceAsync(LicencaDispositivoModel device)
         {
             await _context.LicencaDispositivo.AddAsync(device);
-            await _context.SaveChangesAsync(); // Salva imediatamente para garantir que o ID seja gerado
             return device;
         }
 
         public async Task<LicencaDispositivoModel> UpdateDeviceAsync(LicencaDispositivoModel device)
         {
            _context.LicencaDispositivo.Update(device);
-            await _context.SaveChangesAsync(); // Salva as alterações
             return device;
         }
 
         public async Task LogAsync(LicencaLogModel logEntry)
         {
             _context.LicencaLog.Add(logEntry);
-            await _context.SaveChangesAsync();           
+            await _context.SaveChangesAsync();
+            return;
         }
 
 
         public async Task<IEnumerable<LicencaDispositivoModel>> GetDevicesAsync(int numLic)
         {
             _context.LicencaDispositivo.Where(d => d.numLic == numLic);
-            await _context.SaveChangesAsync();
             return await _context.LicencaDispositivo.Where(d => d.numLic == numLic).ToListAsync();
         }
 
@@ -218,7 +202,7 @@ namespace LicencaApi.Repositories
         public async Task UpdateLicencaAsync(LicencaModel licenca)
         {
            _context.Licenca.Update(licenca);
-            await _context.SaveChangesAsync();
+            return;
         }
 
         public async Task<LicencasChaveModel> CreateLicencaChaveAsync(LicencasChaveModel licencasChave)
@@ -238,7 +222,7 @@ namespace LicencaApi.Repositories
         public async Task UpdateLicencaChaveAsync(LicencasChaveModel chave)
         {
             _context.LicencasChave.Update(chave);
-            await _context.SaveChangesAsync();            
+            return;
         }
     }
 }

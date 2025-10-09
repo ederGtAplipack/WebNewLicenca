@@ -1,22 +1,41 @@
 public class LicencaDetalhadaDTO
 {
+    // LICENÇA
     public int NumLic { get; set; }
-    public int IdCliente { get; set; }
-    public string? NomeCliente { get; set; }   // Novo: Nome do Cliente vindo de Anagrafica
+    public int? IdCliente { get; set; }
     public string? TipoLic { get; set; }
-    public string? MacAddress { get; set; }
+    public string? StatusLicenca { get; set; }
     public DateTime DataLic { get; set; }
     public DateTime Scade { get; set; }
-    public int Attivo { get; set; }
-    public int IdRevenda { get; set; }
-    public string? SistemaOp { get; set; }
     public DateTime? DataAtivacao { get; set; }
-    public string? TipoPc { get; set; }
-    public string? NomeComputador { get; set; }
-    public string? Software { get; set; }
-    public string? Ip { get; set; }
-    public string? Processador { get; set; }
-    public string? Status { get; set; }
+
+    // CLIENTE
+    public string? NomeCliente { get; set; }
+    public string? CNPJCliente { get; set; }
+    public string? EmailCliente { get; set; }
+
+    // CONTRATO
+    public int? IdContrato { get; set; }
+    public string? StatusContrato { get; set; }
+    public string? PlanoContrato { get; set; }
+    public int? QtdLicencasContrato { get; set; }
+
+    // CHAVE
     public int? IdLicencaChave { get; set; }
-    public string? ChaveLicenca { get; set; } // Novo: Chave vindo da tabela LicencasChave
+    public string? ChaveLicenca { get; set; }
+    public string? StatusChave { get; set; }
+
+    // REVENDA
+    public int? IdRevenda_Revenda { get; set; }
+    public string? RazaoSocialRevenda { get; set; }
+
+    // SOFTWARE
+    public int? IdSoftware { get; set; }
+    public string? NomeSoftware { get; set; }
+
+    // DISPOSITIVO
+    public string? DeviceFingerprint { get; set; }
+    public string? DeviceInfo { get; set; }
+    public bool? DeviceIsActive { get; set; }
+    public DateTime? DeviceActivatedAt { get; set; }
 }

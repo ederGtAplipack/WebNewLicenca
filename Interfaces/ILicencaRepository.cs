@@ -17,7 +17,7 @@ namespace LicencaApi.Interfaces
         //Task<bool> DesativarAsync(int id);
         Task<IEnumerable<LicencaDetalhadaDTO>> ObterTodasComDetalhesAsync();
 
-        Task<LicencasChaveModel> GetLicencaChaveByChaveAsync(string chave);
+        Task<LicencasChaveModel?> GetLicencaChaveByChaveAsync(string chave);
         Task<LicencaModel> GetLicencaByIdLicencaChaveAsync(int idLicencaChave);
 
         Task<LicencaModel> GetLicencaByNumLicAsync(int numLic);
