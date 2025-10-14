@@ -628,6 +628,37 @@
         }
       }
     },
+    "/api/v1/Licenca/createMultipleLicencas": {
+      "post": {
+        "tags": [
+          "Licenca"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateMultipleLicensesDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateMultipleLicensesDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateMultipleLicensesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca/{numLic}/status": {
       "put": {
         "tags": [
@@ -1459,6 +1490,36 @@
           "processor": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateMultipleLicensesDTO": {
+        "type": "object",
+        "properties": {
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCliente": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idSoftware": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantidade": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "scade": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxDevices": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

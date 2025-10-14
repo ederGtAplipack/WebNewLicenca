@@ -386,6 +386,22 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "CreateMultiple",
+    "RelativePath": "api/v1/Licenca/createMultipleLicencas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.GenerateMultipleLicensesDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "Create",
     "RelativePath": "api/v1/Licenca/createNewLicenca",
     "HttpMethod": "POST",

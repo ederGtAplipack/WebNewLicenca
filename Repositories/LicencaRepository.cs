@@ -224,5 +224,26 @@ namespace LicencaApi.Repositories
             _context.LicencasChave.Update(chave);
             return;
         }
+
+        public async Task VincularHardwareAsync(int numLic, string mac, string tipoPc, string nomeComputador, string processador, string ip, string sistemaOp)
+        {
+            var licenca = await _context.Licenca.FirstOrDefaultAsync(l => l.NumLic == numLic);
+            if (licenca == null)
+                throw new KeyNotFoundException($"Licença #{numLic} não encontrada para vincular hardware.");
+
+            licenca.MacAddress = mac;
+            licenca.TipoPc = tipoPc;
+            licenca.NomeComputador = nomeComputador;
+            licenca.Processador = processador;
+            licenca.ip = ip;
+            licenca.SistemaOp = sistemaOp;
+            licenca.Status = "Active";
+            licenca.Attivo = 1;
+            licenca.DataAtivacao = DateTime.UtcNow;
+
+            _context.Licenca.Update(licenca);
+            await _context.SaveChangesAsync();
+
+        }
     }
 }

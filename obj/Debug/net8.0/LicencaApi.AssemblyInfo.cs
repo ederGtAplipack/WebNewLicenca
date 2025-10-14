@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LicencaApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db9292e12da7d8786f47a52bda044841ae70d794")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b4e2b3bedb7ad1401e59e1bc2c8ae47f657e3c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("LicencaApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LicencaApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

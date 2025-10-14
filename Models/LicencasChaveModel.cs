@@ -24,7 +24,7 @@ namespace LicencaApi.Models
         public int? NumLic { get; set; }
 
         [Column("DataInser")]
-        public DateTime? DataInser { get; set; }
+        public DateTime? DataInser { get; set; } = DateTime.UtcNow;
 
         [Column("TipoLic")]
         public string? TipoLic { get; set; }
@@ -39,10 +39,7 @@ namespace LicencaApi.Models
         public DateTime? CreatedAt { get; set; }
 
         [Column("Status")]
-        public string? Status { get; set; }
+        public string? Status { get; set; } = "Available";
 
-        // Navegação
-        /*[ForeignKey("idSoftware")]
-        public virtual SoftwareModel? Software { get; set; }*/
     }
 }

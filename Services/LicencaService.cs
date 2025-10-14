@@ -59,7 +59,7 @@ namespace LicencaApi.Services
             _logger.LogInformation("Passando pelo Service do ObterTodasComDetalhesAsync.");
             var licencasDetalhadas = await _repository.ObterTodasComDetalhesAsync();
             return licencasDetalhadas;
-        }       
+        }
 
         /*Esse método tem a responsabilidade de criar (inserir) uma nova licença no banco de dados a partir dos dados recebidos (DTO).*/
         public async Task<LicencaModel> CriarAsync(CriarLicencaDTO dto)
@@ -572,6 +572,7 @@ namespace LicencaApi.Services
             string tipoLic = (dto.TipoLic ?? contrato.Plano ?? "GEN").Substring(0, Math.Min(3, (dto.TipoLic ?? "GEN").Length)).ToUpper();
             string mac = (dto.MacAddress ?? "000000000000").Replace(":", "").Replace("-", "").ToUpper();
             mac = mac.Length > 6 ? mac.Substring(mac.Length - 6) : mac.PadLeft(6, '0');
+            string nomePc = (dto.NomeComputador ?? "PCNAME").ToUpper().Substring(0, Math.Min(6, (dto.NomeComputador ?? "PCNAME").Length));
             string tipoPc = (dto.TipoPc ?? "PC").ToUpper().Substring(0, Math.Min(2, (dto.TipoPc ?? "PC").Length));
             string proc = (dto.Processador ?? "CPU").ToUpper().Substring(0, Math.Min(3, (dto.Processador ?? "CPU").Length));
 
@@ -736,7 +737,7 @@ namespace LicencaApi.Services
                 Chave = l.chave,
                 Endpoint = l.endPoint,
                 RequestPayload = l.RequestPayload,
-                ResponseCode = l.responseCode,                
+                ResponseCode = l.responseCode,
                 ClientIp = l.ClienteIp,
                 CreatedAt = l.createdAt
             });
@@ -747,6 +748,99 @@ namespace LicencaApi.Services
         {
             // Chame o método existente, passando null para numLic  
             return await ActivateAsync(null, licenseDTO, clienteIp);
+        }
+
+        public async Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto)
+        {
+            var result = new GenerateMultipleResultDTO { TotalRequested = dto.Quantidade };
+
+            // 1. Validar contrato
+            var contrato = _context.Contratos
+                .FirstOrDefault(c => c.IdContrato == dto.IdContrato &&
+                                    c.IdCliente == dto.IdCliente &&
+                                    c.StatusContrato == "Ativo" &&
+                                    c.PagamentoEmDia == 1);
+
+            if (contrato is null)
+                throw new InvalidOperationException($"Contrato {dto.IdContrato} inválido para o cliente {dto.IdCliente}.");
+
+            if (contrato.QtdLicencas < dto.Quantidade)
+                throw new InvalidOperationException($"Contrato não possui saldo suficiente de licenças. Disponíveis: {contrato.QtdLicencas}.");
+
+            using var transaction = _context.Database.BeginTransaction();
+
+            try
+            {
+                for (int i = 0; i < dto.Quantidade; i++)
+                {
+                    try
+                    {
+                        // 2. Criar chave
+                        var chave = new LicencasChaveModel
+                        {
+                            Chave = $"LIC-{Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper()}",
+                            IdSoftware = dto.IdSoftware,
+                            TipoLic = contrato.Plano ?? "PADRAO",
+                            Status = "Available",
+                            Entregue = 0,
+                            DataInser = DateTime.UtcNow
+                        };
+
+                        await _repository.CreateLicencaChaveAsync(chave);
+
+                        // 3. Criar licença
+                        var licenca = new LicencaModel
+                        {
+                            IdCliente = dto.IdCliente,
+                            IdLicencaChave = chave.IdLicencaChave,
+                            TipoLic = contrato.Plano ?? "PADRAO",
+                            DataLic = DateTime.UtcNow,
+                            Status = "PendingActivation",
+                            Attivo = 0,
+                            MaxDevices = dto.MaxDevices,
+                            Software = null
+                        };
+
+                        await _repository.CreateLicencaAsync(licenca);
+
+                        // 4. Atualizar a chave com o número da licença
+                        chave.NumLic = licenca.NumLic;
+                        _context.LicencasChave.Update(chave);
+
+                        result.CreatedLicenseKeys.Add(new LicencaDTO
+                        {
+                            NumLic = licenca.NumLic,
+                            Chave = chave.Chave,
+                            Scade = licenca.Scade,
+                            Status = licenca.Status
+                        });
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Erro ao gerar licença {Index} de {Total} para o contrato {ContratoId}", i + 1, dto.Quantidade, dto.IdContrato);
+                        result.FailedLicenseKeys.Add($"Erro ao gerar licença {i + 1}: {ex.Message}");
+
+                    }
+                }
+                // 5. Atualizar saldo de contrato
+                contrato.QtdLicencas = Math.Max(0, contrato.QtdLicencas - result.CreatedLicenseKeys.Count);
+                _context.Contratos.Update(contrato);
+
+                // 6. Commit
+                await _unitOfWork.CompleteAsync();
+                await transaction.CommitAsync();
+
+                result.TotalCreated = result.CreatedLicenseKeys.Count;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao gerar múltiplas licenças para o contrato {ContratoId}", dto.IdContrato);
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }

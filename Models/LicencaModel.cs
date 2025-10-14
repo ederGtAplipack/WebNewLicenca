@@ -21,7 +21,7 @@ namespace LicencaApi.Models
         [Column("Scade")]
         public DateTime Scade { get; set; }
         [Column("Attivo")]
-        public int Attivo { get; set; }
+        public int Attivo { get; set; } = 0;
         [Column("IdRevenda")]
         public int IdRevenda { get; set; }
         [Column("SistemaOp")]
@@ -39,11 +39,11 @@ namespace LicencaApi.Models
         [Column("Processador")]
         public string? Processador { get; set; } = string.Empty;
         [Column("Status")]
-        public string? Status { get; set; } = string.Empty; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
+        public string? Status { get; set; } = "PendingActivation"; // Ex: "Ativa", "Expirada", "Pendente Analise", "Negada"
         [Column("idlicencachave")]
         public int? IdLicencaChave { get;  set; } // Chave de Licença, pode ser um GUID ou outro identificador único
         [Column("MaxDevices")]
-        public int MaxDevices { get; set; } // Número máximo de dispositivos permitidos
+        public int MaxDevices { get; set; } = 1; // Número máximo de dispositivos permitidos
 
         // navigation properties if needed
         [ForeignKey("IdCliente")]

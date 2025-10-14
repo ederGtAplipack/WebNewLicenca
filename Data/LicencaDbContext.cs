@@ -16,6 +16,7 @@ namespace LicencaApi.Data
         // DbSets para as entidades do modelo
         public DbSet<LicencaModel> Licenca { get; set; }
         public DbSet<ContratoModel> Contratos { get; set; }
+        public DbSet<GenerateMultipleLicensesDTO> GenerateMultipleLicensesDTOs { get; set; } // Adicionando o DbSet para GenerateMultipleLicensesDTO
         public DbSet<AcessoNewModel> AcessosNew { get; set; } // Adicionando o DbSet para AcessoNewModel
         public DbSet<SoftwareModel> Software { get; set; }
         //public DbSet<AnagraficaModel> Anagrafica { get; set; }
@@ -47,6 +48,12 @@ namespace LicencaApi.Data
             modelBuilder.Entity<LicencaLogModel>().HasKey(ll => ll.idLog); // Definindo a chave primária para LicencaLogModel
 
             modelBuilder.Entity<LicencasChaveModel>().HasKey(lc => lc.IdLicencaChave); // Definindo a chave primária para LicencasChaveModel
+
+            modelBuilder.Entity<GenerateMultipleLicensesDTO>(entity =>
+            {
+                entity.HasNoKey(); // Indica que esta entidade não tem chave primária
+                entity.ToView(null); // Opcional: define o nome da tabela, se necessário
+            });
 
             modelBuilder.Entity<RevendaModel>().HasKey(r => r.idRevenda); // Definindo a chave primária para RevendaModel
 

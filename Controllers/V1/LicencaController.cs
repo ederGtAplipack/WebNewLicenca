@@ -68,7 +68,26 @@ namespace LicencaApi.Controllers.V1
             var result = await _licencaService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetDevices), new { numLic = result.NumLic }, result);
         }
-        
+
+        [HttpPost("createMultipleLicencas")]
+        public async Task<IActionResult> CreateMultiple(GenerateMultipleLicensesDTO dto)
+        {
+            if (dto == null || dto.Quantidade <= 0)
+                return BadRequest("Dados inválidos para geração de licenças.");
+
+            try
+            {
+                var result = await _licencaService.GenerateMultipleAsync(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao gerar múltiplas licenças.");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+
         [HttpPut("{numLic}/status")]
         /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> UpdateStatus(int numLic, UpdateStatusDTO dto)

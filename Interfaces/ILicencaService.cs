@@ -35,6 +35,6 @@ namespace LicencaApi.Interfaces
         Task<bool> UpdateStatusAsync(int numLic, string status, string reason = null);
         Task<IEnumerable<LicencaDeviceDTO>> GetDevicesAsync(int numLic);
         Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null);
-
+        Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto);
     }
 }
