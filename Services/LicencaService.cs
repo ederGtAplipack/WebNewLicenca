@@ -11,6 +11,7 @@ using Mysqlx.Crud;
 using MySqlX.XDevAPI;
 using NuGet.Packaging.Licenses;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Text.Json;
 
 /*A classe LicencaService atua como intermediária entre a camada de repositório (que interage com o banco de dados) e a camada de apresentação (que consome os DTOs). 
@@ -565,28 +566,39 @@ namespace LicencaApi.Services
                 Status = licenca.Status
             };
         }
+
+        //gera uma chave aleatória para a licença
+        private string GerarChaveAleatoria()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            string bloco() => new string(Enumerable.Range(0, 5).Select(_ => chars[random.Next(chars.Length)]).ToArray());
+            return $"{bloco()}-{bloco()}-{bloco()}-{bloco()}-{bloco()}";
+        }
+
+
         private LicencasChaveModel CriarLicencaChaveModel(CriarLicencaDTO dto, ContratoModel contrato)
         {
-            // --- Montagem de token com dados do cliente e dispositivo ---
-            string clienteId = dto.IdCliente?.ToString("D5") ?? "00000";
+            /*string clienteId = dto.IdCliente?.ToString("D5") ?? "00000";
             string tipoLic = (dto.TipoLic ?? contrato.Plano ?? "GEN").Substring(0, Math.Min(3, (dto.TipoLic ?? "GEN").Length)).ToUpper();
+            string dataLic = (dto.DataLic != default(DateTime) ? dto.DataLic : DateTime.UtcNow).ToString("yyMM");
             string mac = (dto.MacAddress ?? "000000000000").Replace(":", "").Replace("-", "").ToUpper();
             mac = mac.Length > 6 ? mac.Substring(mac.Length - 6) : mac.PadLeft(6, '0');
             string nomePc = (dto.NomeComputador ?? "PCNAME").ToUpper().Substring(0, Math.Min(6, (dto.NomeComputador ?? "PCNAME").Length));
             string tipoPc = (dto.TipoPc ?? "PC").ToUpper().Substring(0, Math.Min(2, (dto.TipoPc ?? "PC").Length));
             string proc = (dto.Processador ?? "CPU").ToUpper().Substring(0, Math.Min(3, (dto.Processador ?? "CPU").Length));
 
-            // --- Gerar parte aleatória criptograficamente segura ---
             string random = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
 
-            // --- Montagem final da chave ---
-            string chaveString = $"LIC-{clienteId}-{tipoLic}{tipoPc}{proc}-{mac}-{random}";
+            string chaveString = $"LIC-{clienteId}-{tipoLic}{tipoPc}{proc}-{mac}-{random}";*/
+
+            string chaveString = GerarChaveAleatoria();
 
             return new LicencasChaveModel
             {
                 Chave = chaveString,
                 IdSoftware = dto.IdSoftware,
-                IdRevenda = dto.IdRevenda ?? 0,
+                IdRevenda = dto.IdRevenda ?? null,
                 NumLic = 0,
                 DataInser = DateTime.UtcNow,
                 TipoLic = string.IsNullOrWhiteSpace(dto.TipoLic) ? (contrato?.Plano ?? "INDEFINIDO") : dto.TipoLic,
@@ -653,6 +665,9 @@ namespace LicencaApi.Services
             };
         }
 
+        //----------------------------------------------------------
+        // MÉTODOS DE LOG (CRIAÇÃO E ATIVAÇÃO)
+        //----------------------------------------------------------
         private async Task LogCreationAsync(LicencaModel licenca, LicencasChaveModel chave, CriarLicencaDTO dto)
         {
             try
@@ -666,7 +681,7 @@ namespace LicencaApi.Services
                     responseCode = 201,
                     ClienteIp = null,
                     createdAt = DateTime.UtcNow,
-                    mensagem = "Licença criada com sucesso ! numLic={NumLic}"
+                    mensagem = "Licença criada com sucesso !, {numLic=NumLic}"
                 };
 
                 await _repository.LogAsync(log);
@@ -674,9 +689,34 @@ namespace LicencaApi.Services
             catch (Exception ex)
             {
                 // Não falhar a criação da licença por falha no log; apenas registre localmente
-                _logger?.LogWarning(ex, "Falha ao gravar log de criação da licença numLic={NumLic}", licenca?.NumLic);
+                _logger?.LogWarning(ex, "Falha ao gravar log de criação da licença numLic={NumLic}, {licenca?.NumLic}");
+            }
+        } 
+        
+        private async Task LogCreationMultiAsync(int numLic, int idCliente, string chave, string mensagem)
+        {
+            try
+            {
+                var log = new LicencaLogModel
+                {
+                    numLic = numLic,
+                    chave = chave,
+                    endPoint = "create-multiple",
+                    RequestPayload = JsonSerializer.Serialize(new { numLic, idCliente, chave }),
+                    responseCode = 201,
+                    ClienteIp = null,
+                    createdAt = DateTime.UtcNow,
+                    mensagem = mensagem
+                };
+                await _repository.LogAsync(log);
+            }
+            catch (Exception ex)
+            {
+                // Não falhar a criação da licença por falha no log; apenas registre localmente
+                _logger?.LogWarning(ex, "Falha ao gravar log de criação da licença numLic={NumLic}", numLic);
             }
         }
+
 
         public async Task<bool> UpdateStatusAsync(int numLic, string status, string reason = null)
         {
@@ -750,7 +790,7 @@ namespace LicencaApi.Services
             return await ActivateAsync(null, licenseDTO, clienteIp);
         }
 
-        public async Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto)
+        public async Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto, LicencaDTO licencaDTO)
         {
             var result = new GenerateMultipleResultDTO { TotalRequested = dto.Quantidade };
 
@@ -765,7 +805,7 @@ namespace LicencaApi.Services
                 throw new InvalidOperationException($"Contrato {dto.IdContrato} inválido para o cliente {dto.IdCliente}.");
 
             if (contrato.QtdLicencas < dto.Quantidade)
-                throw new InvalidOperationException($"Contrato não possui saldo suficiente de licenças. Disponíveis: {contrato.QtdLicencas}.");
+                throw new InvalidOperationException($"Contrato não possui licenças. Disponíveis: {contrato.QtdLicencas}.");
 
             using var transaction = _context.Database.BeginTransaction();
 
@@ -778,9 +818,10 @@ namespace LicencaApi.Services
                         // 2. Criar chave
                         var chave = new LicencasChaveModel
                         {
-                            Chave = $"LIC-{Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper()}",
+                            //será gerada na Ativação da licença
+                            Chave = GerarChaveAleatoria(),
                             IdSoftware = dto.IdSoftware,
-                            TipoLic = contrato.Plano ?? "PADRAO",
+                            TipoLic = contrato.Plano ?? "DEMO",
                             Status = "Available",
                             Entregue = 0,
                             DataInser = DateTime.UtcNow
@@ -795,6 +836,7 @@ namespace LicencaApi.Services
                             IdLicencaChave = chave.IdLicencaChave,
                             TipoLic = contrato.Plano ?? "PADRAO",
                             DataLic = DateTime.UtcNow,
+                            Scade = CalcularScade(dto.Scade, DateTime.UtcNow, contrato.DataFim, contrato.Plano),
                             Status = "PendingActivation",
                             Attivo = 0,
                             MaxDevices = dto.MaxDevices,
@@ -802,6 +844,8 @@ namespace LicencaApi.Services
                         };
 
                         await _repository.CreateLicencaAsync(licenca);
+
+                        //var scade = CalcularScade(dto.Scade, licencaDTO.DataLic, contrato.DataFim, contrato.Plano);
 
                         // 4. Atualizar a chave com o número da licença
                         chave.NumLic = licenca.NumLic;
@@ -815,6 +859,7 @@ namespace LicencaApi.Services
                             Status = licenca.Status
                         });
 
+                        await LogCreationMultiAsync(licenca.NumLic, dto.IdCliente, chave.Chave, "Licença gerada por GenerateMultipleAsync");
 
                     }
                     catch (Exception ex)
@@ -842,5 +887,11 @@ namespace LicencaApi.Services
                 throw;
             }
         }
+
+        public async Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto)
+        {
+            return await GenerateMultipleAsync(dto, null);
+        }
+       
     }
 }
