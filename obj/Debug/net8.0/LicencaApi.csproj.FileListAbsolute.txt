@@ -683,4 +683,3 @@ C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalage
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\bin\Debug\net8.0\System.Web.WebPages.dll
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\bin\Debug\net8.0\WebGrease.dll
-C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

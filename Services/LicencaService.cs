@@ -141,7 +141,7 @@ namespace LicencaApi.Services
         }*/
 
 
-        public async Task<ActivationResultDTO> ActivateAsync(int? numLic, ActivateLicenseDTO licenseDTO, string clienteIp = null)
+        /*public async Task<ActivationResultDTO> ActivateAsync(int? numLic, ActivateLicenseDTO licenseDTO, string clienteIp = null)
         {
             // === 1) Validação do Payload ===
             if (licenseDTO == null || string.IsNullOrWhiteSpace(licenseDTO.Chave))
@@ -153,7 +153,7 @@ namespace LicencaApi.Services
                 };
 
             // === 2) Buscar chave ===
-            var chave = await _repository.GetLicencaChaveByChaveAsync(licenseDTO.Chave);
+            var chave = await _repository.GetLicencaChaveByChaveAsync(licenseDTO.Chave.ToString());
             if (chave == null)
             {
                 await LogActivationAttemptAsync(null, licenseDTO, 404, clienteIp, "Chave não encontrada");
@@ -166,7 +166,7 @@ namespace LicencaApi.Services
             }
 
             // === 3) Buscar licença associada ===
-            var licenca = await _repository.GetLicencaByIdLicencaChaveAsync(chave.IdLicencaChave);
+            var licenca = await _repository.GetLicencaByIdLicencaChaveAsync(licenseDTO.Chave);
             if (licenca == null)
             {
                 await LogActivationAttemptAsync(null, licenseDTO, 404, clienteIp, "Licença não encontrada para a chave.");
@@ -306,7 +306,166 @@ namespace LicencaApi.Services
                 StatusCode = 403,
                 Message = $"Licença não pode ser ativada no estado atual: {licenca.Status ?? "indefinido"}."
             };
+        }*/
+
+        public async Task<ActivationResultDTO> ActivateAsync(int? numLic, ActivateLicenseDTO licenseDTO, string clienteIp = null)
+        {
+            // === 1) Validação do Payload ===
+            if (licenseDTO == null || string.IsNullOrWhiteSpace(licenseDTO.Chave))
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 400,
+                    Message = "Requisição inválida: chave de licença ausente ou payload vazio."
+                };
+
+            // === 2) Buscar chave na tabela LicencasChave ===
+            var chave = await _repository.GetLicencaChaveByChaveAsync(licenseDTO.Chave);
+            if (chave == null)
+            {
+                await LogActivationAttemptAsync(null, licenseDTO, 404, clienteIp, "Chave não encontrada.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 404,
+                    Message = "Chave de licença inexistente."
+                };
+            }
+
+            // === 3) Buscar licença associada ===
+            var licenca = await _repository.GetLicencaByIdLicencaChaveAsync(chave.IdLicencaChave);
+            if (licenca == null)
+            {
+                await LogActivationAttemptAsync(null, licenseDTO, 404, clienteIp, "Licença associada à chave não encontrada.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 404,
+                    Message = "Nenhuma licença associada a esta chave foi encontrada."
+                };
+            }
+
+            // === 4) Validação de validade da chave/licença ===
+            if (licenca.Scade < DateTime.UtcNow)
+            {
+                await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 403, clienteIp, "Licença expirada.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = $"Licença expirada em {licenca.Scade:dd/MM/yyyy}."
+                };
+            }
+
+            if (licenca.Status == "Revoked" || licenca.Status == "Suspended")
+            {
+                await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 403, clienteIp, $"Licença está {licenca.Status}.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = $"Licença não pode ser ativada (status atual: {licenca.Status})."
+                };
+            }
+
+            // === 5) Validação dos dados do dispositivo ===
+            if (string.IsNullOrWhiteSpace(licenseDTO.DeviceFingerprint))
+            {
+                await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 400, clienteIp, "Fingerprint do dispositivo ausente.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 400,
+                    Message = "Fingerprint do dispositivo é obrigatório para ativação."
+                };
+            }
+
+            if (licenseDTO.DeviceInfo == null)
+            {
+                await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 400, clienteIp, "Dados do dispositivo não informados.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 400,
+                    Message = "As informações do dispositivo (DeviceInfo) são obrigatórias."
+                };
+            }
+
+            // === 6) Verificar se o dispositivo já está registrado ===
+            var existingDevice = await _repository.GetDeviceByFingerprintAsync(licenca.NumLic, licenseDTO.DeviceFingerprint);
+            var activeDevices = await _repository.CountActiveDevicesAsync(licenca.NumLic);
+
+            if (existingDevice == null && activeDevices >= licenca.MaxDevices)
+            {
+                await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 403, clienteIp, "Limite máximo de dispositivos atingido.");
+                return new ActivationResultDTO
+                {
+                    Success = false,
+                    StatusCode = 403,
+                    Message = "Limite máximo de dispositivos ativos atingido para esta licença."
+                };
+            }
+
+            // === 7) Criar ou atualizar o dispositivo ===
+            LicencaDispositivoModel device;
+            if (existingDevice == null)
+            {
+                device = new LicencaDispositivoModel
+                {
+                    numLic = licenca.NumLic,
+                    DeviceFingerprint = licenseDTO.DeviceFingerprint,
+                    DeviceInfo = JsonSerializer.Serialize(licenseDTO.DeviceInfo),
+                    ActivatedAt = DateTime.UtcNow,
+                    LastSeenAt = DateTime.UtcNow,
+                    IsActive = 1
+                };
+                await _repository.AddDeviceAsync(device);
+            }
+            else
+            {
+                existingDevice.LastSeenAt = DateTime.UtcNow;
+                existingDevice.DeviceInfo = JsonSerializer.Serialize(licenseDTO.DeviceInfo);
+                existingDevice.IsActive = 1;
+                await _repository.UpdateDeviceAsync(existingDevice);
+                device = existingDevice;
+            }
+
+            // === 8) Atualizar a licença com informações do dispositivo ===
+            licenca.Attivo = 1;
+            licenca.Status = "Active";
+            licenca.DataAtivacao = DateTime.UtcNow;
+
+            // Atualiza informações de hardware recebidas
+            var info = licenseDTO.DeviceInfo;
+            licenca.MacAddress = info?.Mac;
+            licenca.NomeComputador = info?.Hostname;
+            //licenca.TipoPc = info?.TipoPc;
+            licenca.Processador = info?.Processor;
+            licenca.SistemaOp = info?.Os;
+            licenca.ip = clienteIp ?? info?.Ip;
+
+            chave.Entregue = 1;
+            chave.EntreguePara = licenseDTO.DeviceInfo?.Hostname ?? "Desconhecido";
+            chave.CreatedAt = DateTime.UtcNow;
+            chave.Status = "Used";
+
+            await _repository.UpdateLicencaAsync(licenca);
+
+            await LogActivationAttemptAsync(licenca.NumLic, licenseDTO, 200, clienteIp, "Licença ativada com sucesso e chave marcada como entregue.");
+
+            var remainingSlots = Math.Max(0, licenca.MaxDevices - await _repository.CountActiveDevicesAsync(licenca.NumLic));
+
+            return new ActivationResultDTO
+            {
+                Success = true,
+                StatusCode = 200,
+                Message = "Licença ativada com sucesso e vinculada ao dispositivo.",
+                NumLic = licenca.NumLic,
+                ExpiresAt = licenca.Scade,
+                RemainingSlots = remainingSlots
+            };
         }
+
 
 
         // ==============================================
@@ -317,7 +476,7 @@ namespace LicencaApi.Services
             await _repository.LogAsync(new LicencaLogModel
             {
                 numLic = numLic,
-                chave = dto?.Chave,
+                chave = dto?.Chave.ToString(),
                 endPoint = "activate",
                 RequestPayload = dto != null ? JsonSerializer.Serialize(dto) : null,
                 responseCode = code,
@@ -892,6 +1051,6 @@ namespace LicencaApi.Services
         {
             return await GenerateMultipleAsync(dto, null);
         }
-       
+
     }
 }

@@ -244,6 +244,6 @@ namespace LicencaApi.Repositories
             _context.Licenca.Update(licenca);
             await _context.SaveChangesAsync();
 
-        }
+        }       
     }
 }

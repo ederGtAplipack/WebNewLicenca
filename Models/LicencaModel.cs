@@ -35,7 +35,7 @@ namespace LicencaApi.Models
         [Column("Software")]
         public string? Software { get; set; } = string.Empty;
         [Column("ip")]
-        public string ip { get; internal set; }
+        public string? ip { get; internal set; }
         [Column("Processador")]
         public string? Processador { get; set; } = string.Empty;
         [Column("Status")]
