@@ -244,6 +244,12 @@ namespace LicencaApi.Repositories
             _context.Licenca.Update(licenca);
             await _context.SaveChangesAsync();
 
-        }       
+        } 
+        public void AtualizarLicenca(LicencaModel model)
+        {
+            _logger.LogInformation("Passando pelo Repository do Update.");
+            _context.Entry(model).State = EntityState.Modified;
+
+        }
     }
 }

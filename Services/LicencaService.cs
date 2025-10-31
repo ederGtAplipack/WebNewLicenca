@@ -4,6 +4,7 @@ using LicencaApi.Data;
 using LicencaApi.DTOs;
 using LicencaApi.Interfaces;
 using LicencaApi.Models;
+using LicencaApi.Repositories;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -840,7 +841,7 @@ namespace LicencaApi.Services
                     responseCode = 201,
                     ClienteIp = null,
                     createdAt = DateTime.UtcNow,
-                    mensagem = "Licença criada com sucesso !, {numLic=NumLic}"
+                    mensagem = "Licença criada com sucesso !, {numLic}"
                 };
 
                 await _repository.LogAsync(log);
@@ -926,21 +927,49 @@ namespace LicencaApi.Services
             }.Devices;
         }
 
-        public async Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null)
-        {
-            var logs = await _repository.GetLogsAsync(numLic, from, to);
-            return logs.Select(l => new LicencaLogDto
-            {
-                IdLog = l.idLog,
-                NumLic = l.numLic,
-                Chave = l.chave,
-                Endpoint = l.endPoint,
-                RequestPayload = l.RequestPayload,
-                ResponseCode = l.responseCode,
-                ClientIp = l.ClienteIp,
-                CreatedAt = l.createdAt
-            });
-        }
+        public async Task<IEnumerable<LicencaLogModel>> GetLogsModelAsync(int numLic, DateTime? from = null, DateTime? to = null)
+		{
+			try
+			{
+				// Cria a query base
+				var query = _context.LicencaLog
+					.AsNoTracking()
+					.Where(l => l.numLic == numLic);
+
+				// Filtros opcionais por data
+				if (from.HasValue)
+					query = query.Where(l => l.createdAt >= from.Value);
+
+				if (to.HasValue)
+					query = query.Where(l => l.createdAt <= to.Value);
+
+				// Mapeia os resultados, substituindo null por valores padrão
+				var logs = await query
+					.Select(l => new LicencaLogModel
+					{
+						idLog = l.idLog,
+						numLic = l.numLic,
+						chave = l.chave ?? string.Empty,
+						endPoint = l.endPoint ?? string.Empty,
+						RequestPayload = l.RequestPayload ?? string.Empty,
+						responseCode = l.responseCode,
+						ClienteIp = l.ClienteIp ?? string.Empty,
+						createdAt = l.createdAt,
+						mensagem = l.mensagem ?? string.Empty
+					})
+					.OrderByDescending(l => l.createdAt)
+					.ToListAsync();
+
+				return logs;
+			}
+			catch (Exception ex)
+			{
+				// Loga o erro para análise posterior
+				Console.WriteLine($"Erro ao obter logs da licença {numLic}: {ex.Message}");
+				throw; // Propaga para o controller registrar corretamente
+			}
+		}
+
 
         // Adicione este método para implementar corretamente a interface ILicencaService
         public async Task<ActivationResultDTO> ActivateAsync(ActivateLicenseDTO licenseDTO, string clienteIp = null)
@@ -1052,5 +1081,60 @@ namespace LicencaApi.Services
             return await GenerateMultipleAsync(dto, null);
         }
 
+        public async Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null)
+        {
+            var logs = await GetLogsModelAsync(numLic, from, to); // Chama o método existente que retorna LicencaLogModel
+
+            // Mapeia LicencaLogModel para LicencaLogDto
+            return logs.Select(l => new LicencaLogDto
+            {
+                IdLog = l.idLog,
+                NumLic = l.numLic,
+                Chave = l.chave,
+                Endpoint = l.endPoint,
+                RequestPayload = l.RequestPayload,
+                ResponseCode = l.responseCode ?? 0,
+                ClientIp = l.ClienteIp,
+                CreatedAt = l.createdAt,
+                Mensagem = l.mensagem
+            });
+        }
+
+        public async Task<bool> UpdateAsync(int id, AtualizarLicencaDTO dto)
+        {
+            _logger.LogInformation("Passando pelo Serviço de Atualização de Licenca com numLic {numLic}", id);
+            var licenca = await _unitOfWork.Licencas.BuscarPorIdAsync(id);
+
+            if (licenca == null)
+            {
+                _logger.LogWarning("Licenca com numLic {numLic} não encontrado para atualização.", id);
+                return false;
+            }
+
+            try
+            {
+                _mapper.Map(dto, licenca);
+                _unitOfWork.Licencas.AtualizarLicenca(licenca);
+                await _unitOfWork.CompleteAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogError(ex, "Erro de concorrência ao atualizar o Licenca com ID {Id}.", id);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao mapear DTO para LicencaModel.");
+                throw;
+            }
+
+        }
+
+        public async Task<LicencaModel?> BuscarPorIdLicenca(int id)
+        {
+            _logger.LogInformation("Passando pelo LicencaService.BuscarPorIdLicenca.");
+            return await _repository.BuscarPorIdAsync(id);
+        }
     }
 }

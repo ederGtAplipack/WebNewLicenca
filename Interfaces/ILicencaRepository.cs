@@ -1,3 +1,4 @@
+using AutoMapper;
 using LicencaApi.DTOs;
 using LicencaApi.Models;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ namespace LicencaApi.Interfaces
     public interface ILicencaRepository
     {
         Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
-        //Task<LicencaModel?> BuscarPorIdAsync(int id);
+        Task<LicencaModel?> BuscarPorIdAsync(int id);
         Task CriarAsync(LicencaModel model);
         //Task CreateSql(LicencaModel licencaDetalhadaDTO);
 
@@ -31,12 +32,14 @@ namespace LicencaApi.Interfaces
 
         Task LogAsync(LicencaLogModel logEntry);
         Task<IEnumerable<LicencaDispositivoModel>> GetDevicesAsync(int numLic);
-        /* método que busca logs de licença dentro de uma faixa de datas opcional.*/         
+        /* método que busca logs de licença dentro de uma faixa de datas opcional.*/
         Task<IEnumerable<LicencaLogModel>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null);
 
         Task UpdateLicencaAsync(LicencaModel licenca);
-        Task <LicencasChaveModel> CreateLicencaChaveAsync(LicencasChaveModel licencasChave);
-        Task <LicencaModel> CreateLicencaAsync(LicencaModel licenca);
+        Task<LicencasChaveModel> CreateLicencaChaveAsync(LicencasChaveModel licencasChave);
+        Task<LicencaModel> CreateLicencaAsync(LicencaModel licenca);
         Task UpdateLicencaChaveAsync(LicencasChaveModel chave);
+        //Task <IEnumerator<LicencaModel>> BuscarPorIdLicenca(int id);
+        void AtualizarLicenca(LicencaModel model);
     }
 }

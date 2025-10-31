@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_3",
+    "RelativePath": "",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.AnagraficaController",
     "Method": "GetByIdAnagrafica",
     "RelativePath": "api/v1/Anagrafica/{id}",
@@ -317,6 +333,22 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/Licenca/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetDevices",
     "RelativePath": "api/v1/Licenca/{numLic}/devices",
     "HttpMethod": "GET",
@@ -424,6 +456,27 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "Update",
+    "RelativePath": "api/v1/Licenca/updateLicenca/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "LicencaApi.DTOs.AtualizarLicencaDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

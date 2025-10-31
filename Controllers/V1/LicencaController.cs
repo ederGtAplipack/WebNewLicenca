@@ -61,7 +61,7 @@ namespace LicencaApi.Controllers.V1
                 _logger.LogError(ex, "Erro em Validate");
                 return StatusCode(500, "Erro interno");
             }
-        }        
+        }
         [HttpPost("createNewLicenca")]
         public async Task<IActionResult> Create(CriarLicencaDTO dto)
         {
@@ -85,6 +85,24 @@ namespace LicencaApi.Controllers.V1
                 _logger.LogError(ex, "Erro ao gerar múltiplas licenças.");
                 return StatusCode(500, new { message = ex.Message });
             }
+        }
+
+        [HttpPut("updateLicenca/{id:int}")]
+        public async Task<IActionResult> Update(int id, AtualizarLicencaDTO dto)
+        {
+            _logger.LogInformation("Iniciando atualização de Licenca com numLic {numLic}", id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            /*if (id != dto.NumLic)
+                return BadRequest("ID de licença inválido.");*/
+
+            var atualizado = await _licencaService.UpdateAsync(id, dto);
+            if (!atualizado)
+                return NotFound();
+
+            _logger.LogInformation("Licenca com numLic {numLic} atualizada com sucesso", id);
+            return NoContent();
         }
 
 
@@ -151,6 +169,23 @@ namespace LicencaApi.Controllers.V1
             }
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var licenca = await _licencaService.BuscarPorIdLicenca(id);
+                if (licenca == null)
+                    return NotFound();
+                return Ok(licenca);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em GetById");
+                return StatusCode(500, "Erro interno");
+            }
 
+
+        }
     }
 }

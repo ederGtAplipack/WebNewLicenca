@@ -10,5 +10,6 @@
         public int ResponseCode { get; set; }
         public string ClientIp { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string Mensagem { get; set; }
     }
 }

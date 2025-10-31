@@ -11,11 +11,10 @@ namespace LicencaApi.Interfaces
      * fornecer, mas não contém lógica — apenas as assinaturas.*/
     public interface ILicencaService
     {
-        //Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
+        Task<IEnumerable<LicencaDetalhadaDTO>>  ObterTodasComDetalhesAsync();
+        Task<LicencaModel?> BuscarPorIdLicenca(int id);
 
-        //Task<LicencaModel?> BuscarPorIdLicenca(int id);
-
-		Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
+        Task<LicencaModel?> CriarAsync(CriarLicencaDTO dto);
         //Task<bool> AtualizarAsync(int id, AtualizarLicencaDTO dto);
         //Task<IEnumerable<LicencaModel?>> BuscarAtivasAsync();
         //Task<bool> DesativarAsync(int id);
@@ -24,7 +23,6 @@ namespace LicencaApi.Interfaces
         //Task<bool> DeletarAsync(int id);
 
 
-        Task<IEnumerable<LicencaDetalhadaDTO>>  ObterTodasComDetalhesAsync();
 
         //Task<LicencaModel?> CriarNewLicenca(LicencaDetalhadaDTO dto);
 
@@ -36,5 +34,6 @@ namespace LicencaApi.Interfaces
         Task<IEnumerable<LicencaDeviceDTO>> GetDevicesAsync(int numLic);
         Task<IEnumerable<LicencaLogDto>> GetLogsAsync(int numLic, DateTime? from = null, DateTime? to = null);
         Task<GenerateMultipleResultDTO> GenerateMultipleAsync(GenerateMultipleLicensesDTO dto);
+        Task<bool> UpdateAsync(int id, AtualizarLicencaDTO dto);
     }
 }

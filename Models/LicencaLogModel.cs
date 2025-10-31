@@ -10,14 +10,14 @@ namespace LicencaApi.Models
     {
        [Column("idlog")]
        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int idLog { get; set; }
+       public int idLog { get; set; }
        public int? numLic { get; set; }
-       public string chave { get; set; }            
+       public string? chave { get; set; }            
        public string? endPoint { get; set; }
-       public string RequestPayload { get; set; }    
-       public int responseCode { get; set; }
-       public string ClienteIp { get; set; }
+       public string? RequestPayload { get; set; }    
+       public int? responseCode { get; set; }
+       public string? ClienteIp { get; set; }
        public DateTime createdAt { get; set; }
-       public string mensagem { get; set; }
+       public string? mensagem { get; set; }
     }
 }

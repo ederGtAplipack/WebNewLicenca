@@ -3,6 +3,7 @@ using LicencaApi.Configurations;
 using LicencaApi.Data;
 using LicencaApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -13,12 +14,15 @@ var connectionString = builder.Configuration.GetConnectionString("MySqlConnectio
 builder.Services.AddDbContext<LicencaDbContext>(options =>
            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// Configuração do Kestrel
-builder.WebHost.UseKestrel(serverOptions =>
+/*if (!builder.Environment.IsDevelopment())
 {
-    serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10 MB
-    serverOptions.ListenAnyIP(8080);
-});
+    // Configuração do Kestrel
+    builder.WebHost.UseKestrel(serverOptions =>
+    {
+        serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10 MB
+        serverOptions.ListenAnyIP(8080);
+    });
+}*/
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(LicencaMapper));
@@ -42,14 +46,21 @@ builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAutho
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"C:\inetpub\API\DataProtection-Keys"))
+    .SetApplicationName("LicencaApi");
+
 // Configuração de Versionamento de API
 builder.Services.AddVersioningConfiguration();
 builder.Services.AddSwaggerConfiguration();
 
+builder.WebHost.UseIIS();
+builder.WebHost.UseIISIntegration();
+
 var app = builder.Build();
 
 // Middleware
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
@@ -72,4 +83,5 @@ app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/", () => Results.Ok("API Licenca rodando no IIS!"));
 app.Run();

@@ -18,7 +18,8 @@ namespace LicencaApi.Configurations
                     {
                         policy.WithOrigins(allowedOrigins)
                               .AllowAnyHeader()
-                              .AllowAnyMethod();
+                              .AllowAnyMethod()
+							  .AllowCredentials();
                     }
                     else
                     {

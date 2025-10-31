@@ -659,6 +659,48 @@
         }
       }
     },
+    "/api/v1/Licenca/updateLicenca/{id}": {
+      "put": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarLicencaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca/{numLic}/status": {
       "put": {
         "tags": [
@@ -751,6 +793,41 @@
       "get": {
         "tags": [
           "Licenca"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Licenca/{id}": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "LicencaApi"
         ],
         "responses": {
           "200": {
@@ -1215,6 +1292,81 @@
             "format": "date-time"
           },
           "observacoes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarLicencaDTO": {
+        "type": "object",
+        "properties": {
+          "tipoLic": {
+            "type": "string",
+            "nullable": true
+          },
+          "macAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataLic": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scade": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxDevices": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "attivo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idRevenda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idSoftware": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaOp": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataAtivacao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tipoPc": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeComputador": {
+            "type": "string",
+            "nullable": true
+          },
+          "software": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "processador": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLicencaChave": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "status": {
             "type": "string",
             "nullable": true
           }

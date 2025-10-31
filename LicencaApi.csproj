@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aee5d04b-27f5-40f5-9298-ba38e28d0e65</UserSecretsId>
+	  <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+	  <PackageReference Include="Microsoft.AspNetCore.Server.IIS" Version="2.2.6" />
   </ItemGroup>
 
 </Project>
