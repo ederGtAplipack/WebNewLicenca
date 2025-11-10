@@ -25,7 +25,7 @@ namespace LicencaApi.Repositories
 
         public async Task<IEnumerable<AnagraficaModel>> BuscarTodasAnagrafica()
         {
-            _logger.LogInformation("Passando pelo ClienteRepository.BuscarTodasAnagrafica.");
+            //_logger.LogInformation("Passando pelo ClienteRepository.BuscarTodasAnagrafica.");
             return await _context.Anagrafica.ToListAsync();
         }
 

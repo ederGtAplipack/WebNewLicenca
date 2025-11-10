@@ -679,10 +679,10 @@ C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalage
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\LicencaApi.csproj.Up2Date
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\LicencaApi.dll
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\refint\LicencaApi.dll
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\LicencaApi.pdb
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\LicencaApi.genruntimeconfig.cache
 C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\ref\LicencaApi.dll
+C:\Users\eder.silva\OneDrive - Americana Sistemas de Identificacao Para Embalagens LTDA\Área de Trabalho\Wkspc\LicencaApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

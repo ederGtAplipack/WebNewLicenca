@@ -34,7 +34,6 @@ namespace LicencaApi.Repositories
             _logger.LogInformation("Passando pelo LicencaRepository.");
             return await _context.Licenca.ToListAsync();
         }
-
         public async Task<IEnumerable<LicencaDetalhadaDTO>> ObterTodasComDetalhesAsync()
         {
             _logger.LogInformation("Passando pelo Repository do ObterTodasComDetalhesAsync.");
@@ -43,7 +42,7 @@ namespace LicencaApi.Repositories
             var sql = LicencaSqlBuilder.GetAllWithDetailsSql();
             /* Usando FromSqlRaw para executar a consulta SQL e mapear os resultados para LicencaDetalhadaDTO */
             return await _context.Set<LicencaDetalhadaDTO>().FromSqlRaw(sql).ToListAsync();
-
+            
             // Pega a conexão que o EF já gerencia
             /*var connection = _context.Database.GetDbConnection();
             // Se a conexão estiver fechada, abre ela

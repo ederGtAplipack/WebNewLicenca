@@ -801,6 +801,18 @@
         }
       }
     },
+    "/api/v1/Licenca/GetAll": {
+      "get": {
+        "tags": [
+          "Licenca"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca/{id}": {
       "get": {
         "tags": [
@@ -1309,23 +1321,7 @@
             "type": "string",
             "nullable": true
           },
-          "dataLic": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "scade": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "maxDevices": {
-            "type": "integer",
-            "format": "int32"
-          },
           "attivo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "idRevenda": {
             "type": "integer",
             "format": "int32"
           },
@@ -1336,10 +1332,6 @@
           "sistemaOp": {
             "type": "string",
             "nullable": true
-          },
-          "dataAtivacao": {
-            "type": "string",
-            "format": "date-time"
           },
           "tipoPc": {
             "type": "string",
@@ -1358,15 +1350,6 @@
             "nullable": true
           },
           "processador": {
-            "type": "string",
-            "nullable": true
-          },
-          "idLicencaChave": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "status": {
             "type": "string",
             "nullable": true
           }

@@ -168,6 +168,22 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno");
             }
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var licencas = await _licencaService.BuscarTodasAsync();
+                return Ok(licencas);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro em GetAll");
+                return StatusCode(500, "Erro interno");
+            }
+        }
+
+
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)

@@ -31,7 +31,7 @@ namespace LicencaApi.Services
 
         public async Task<IEnumerable<AnagraficaModel>> BuscarTodosClientes()
         {
-            _logger.LogInformation("Passando pelo ClienteService.BuscarTodosClientes.");
+            //_logger.LogInformation("Passando pelo ClienteService.BuscarTodosClientes.");
             return await _clienteRepository.BuscarTodasAnagrafica();
         }
 

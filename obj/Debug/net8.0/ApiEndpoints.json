@@ -450,6 +450,16 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/Licenca/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LicencaController",
     "Method": "GetAllWithDetails",
     "RelativePath": "api/v1/Licenca/GetAllWithDetails",
     "HttpMethod": "GET",
