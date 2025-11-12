@@ -526,6 +526,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LicencaApi.Controllers.V1.LicenseDeviceController",
+    "Method": "GetStatus",
+    "RelativePath": "api/v1/LicenseDevice/status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LicencaApi.Controllers.V1.RevendaController",
     "Method": "GetByIdRevenda",
     "RelativePath": "api/v1/Revenda/{id}",

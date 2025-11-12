@@ -29,6 +29,9 @@ namespace LicencaApi.Configurations
             services.AddScoped<ISoftwareService, SoftwareService>();
             services.AddScoped<ISoftwareRepository, SoftwareRepository>();
 
+            services.AddScoped<ILicenseDeviceService, LicenseDeviceService>();
+            services.AddScoped<ILicenseDeviceRepository, LicenseDeviceRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(LicencaMapper));
                         

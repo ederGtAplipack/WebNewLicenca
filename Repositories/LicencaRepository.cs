@@ -246,9 +246,8 @@ namespace LicencaApi.Repositories
         } 
         public void AtualizarLicenca(LicencaModel model)
         {
-            _logger.LogInformation("Passando pelo Repository do Update.");
+            _logger.LogInformation("Passando pelo Repository do AtualizarLicenca.");
             _context.Entry(model).State = EntityState.Modified;
-
         }
     }
 }

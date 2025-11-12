@@ -8,7 +8,7 @@ namespace LicencaApi.Interfaces
     public interface ILicencaRepository
     {
         Task<IEnumerable<LicencaModel>> BuscarTodasAsync();
-        Task<LicencaModel?> BuscarPorIdAsync(int id);
+        Task<LicencaModel> BuscarPorIdAsync(int id);
         Task CriarAsync(LicencaModel model);
         //Task CreateSql(LicencaModel licencaDetalhadaDTO);
 

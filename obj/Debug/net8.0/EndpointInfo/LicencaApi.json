@@ -872,6 +872,18 @@
         }
       }
     },
+    "/api/v1/LicenseDevice/status": {
+      "get": {
+        "tags": [
+          "LicenseDevice"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Revenda/{id}": {
       "get": {
         "tags": [

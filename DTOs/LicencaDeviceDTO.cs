@@ -2,7 +2,7 @@
 {
     public class LicencaDeviceDTO
     {
-        public int IdDispositivo { get; set; }
+        public int? IdDispositivo { get; set; }
         public string DeviceFingerprint { get; set; }
         public string DeviceInfo { get; set; }
         public DateTime? ActivatedAt { get; set; }
