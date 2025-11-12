@@ -872,10 +872,22 @@
         }
       }
     },
-    "/api/v1/LicenseDevice/status": {
+    "/api/v1/LicenseDevice/licenseDeviceStatus": {
       "get": {
         "tags": [
           "LicenseDevice"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/Logs/LicencaLog": {
+      "get": {
+        "tags": [
+          "Logs"
         ],
         "responses": {
           "200": {

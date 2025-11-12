@@ -841,7 +841,7 @@ namespace LicencaApi.Services
                     responseCode = 201,
                     ClienteIp = null,
                     createdAt = DateTime.UtcNow,
-                    mensagem = "Licença criada com sucesso !, {numLic}"
+                    mensagem = $"Licença criada com sucesso! Número da Licença: {licenca.NumLic}"
                 };
 
                 await _repository.LogAsync(log);

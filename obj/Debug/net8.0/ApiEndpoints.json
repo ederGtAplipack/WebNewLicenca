@@ -528,7 +528,17 @@
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicenseDeviceController",
     "Method": "GetStatus",
-    "RelativePath": "api/v1/LicenseDevice/status",
+    "RelativePath": "api/v1/LicenseDevice/licenseDeviceStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.LogsController",
+    "Method": "GetLogs",
+    "RelativePath": "api/v1/Logs/LicencaLog",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

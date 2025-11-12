@@ -30,7 +30,7 @@ namespace LicencaApi.Data
         public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
         public DbSet<SoftwareModel> Softwares { get; set; } // DbSet para SoftwareModel
         public DbSet<LicencaDispositivos> LicencaDispositivos { get; set; } // DbSet para LicencaDispositivos
-
+        //public DbSet<LicencaLogModel> LicencaLogs { get; set; } // DbSet para LicencaLogModel
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -114,5 +114,6 @@ namespace LicencaApi.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }
