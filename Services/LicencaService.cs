@@ -460,10 +460,10 @@ namespace LicencaApi.Services
             {
                 Success = true,
                 StatusCode = 200,
-                Message = "Licença ativada com sucesso e vinculada ao dispositivo.",
+                Message = $"Licença ativada com sucesso e vinculada ao dispositivo. {chave.Chave} ",
                 NumLic = licenca.NumLic,
                 ExpiresAt = licenca.Scade,
-                RemainingSlots = remainingSlots
+                RemainingSlots = remainingSlots,                
             };
         }
 
@@ -482,7 +482,8 @@ namespace LicencaApi.Services
                 RequestPayload = dto != null ? JsonSerializer.Serialize(dto) : null,
                 responseCode = code,
                 ClienteIp = ip,
-                createdAt = DateTime.UtcNow
+                createdAt = DateTime.UtcNow,
+                mensagem = $"Licença ativada com sucesso e vinculada ao dispositivo. {dto.DeviceFingerprint}"
             });
         }
 
@@ -623,7 +624,7 @@ namespace LicencaApi.Services
             var contrato = await _context.Contratos
                 .FirstOrDefaultAsync(c =>
                     c.IdCliente == dto.IdCliente &&
-                    c.StatusContrato == "Ativo" &&
+                    c.StatusContrato == 1 &&
                     c.PagamentoEmDia == 1);
 
             if (contrato is null)
@@ -986,7 +987,7 @@ namespace LicencaApi.Services
             var contrato = _context.Contratos
                 .FirstOrDefault(c => c.IdContrato == dto.IdContrato &&
                                     c.IdCliente == dto.IdCliente &&
-                                    c.StatusContrato == "Ativo" &&
+                                    c.StatusContrato == 1 &&
                                     c.PagamentoEmDia == 1);
 
             if (contrato is null)

@@ -10,7 +10,7 @@ namespace LicencaApi.DTOs
         public DateTime? datafim { get; set; }
         public string? periodicidade { get; set; } = string.Empty;
         public int pagamentoEmdia { get; set; }
-        public string? statusContrato { get; set; } = string.Empty;
+        public int? StatusContrato { get; set; } 
         public string? statusDescricao { get; set; } = string.Empty;
         public DateTime dataUltimoPagamento { get; set; }
         public DateTime dataProximoPagamento { get; set; }

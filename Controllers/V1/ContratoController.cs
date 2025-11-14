@@ -42,7 +42,6 @@ namespace LicencaApi.Controllers.V1
             }
         }
 
-
         [HttpGet("AllContrato")]
         public async Task<IActionResult> GetAll()
         {
@@ -91,6 +90,7 @@ namespace LicencaApi.Controllers.V1
         public async Task<IActionResult> UpdateContrato(int id, AtualizarContratoDTO dto)
         {
             _logger.LogInformation("Iniciando atualização de Contrato com ID {Id}", id);
+            _logger.LogDebug("Dados recebidos para atualização: {@Dto}", dto);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -101,7 +101,6 @@ namespace LicencaApi.Controllers.V1
             _logger.LogInformation("Contrato com ID {Id} atualizada com sucesso", id);
             return NoContent();
         }
-
 
         [HttpDelete("DeleteContrato/{id:int}")]
         public async Task<IActionResult> DeleteContrato(int id)

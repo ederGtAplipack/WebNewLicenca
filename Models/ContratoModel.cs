@@ -26,7 +26,7 @@ namespace LicencaApi.Models
         public DateTime? DataFim { get; set; }
         public string Periodicidade { get; set; } = "Mensal"; // ou Anual, Trimestral, Vitalício
         public int PagamentoEmDia { get; set; } = 1; // novo campo
-        public string StatusContrato { get; set; } = "Ativo"; // Ex: Ativo, Inativo, Suspenso
+        public int StatusContrato { get; set; } 
         public string StatusDescricao { get; set; } = "Contrato ativo e em dia"; // Descrição do status do contrato
         public DateTime? DataUltimoPagamento { get; set; } // Data do último pagamento, se aplicável
         public DateTime? DataProximoPagamento { get; set; } // Data do próximo pagamento, se aplicável

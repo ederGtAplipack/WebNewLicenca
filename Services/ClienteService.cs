@@ -5,6 +5,7 @@ using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.Contracts;
 
 namespace LicencaApi.Services
 {
@@ -14,13 +15,15 @@ namespace LicencaApi.Services
         private readonly IClienteRepository _clienteRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IAuditService _auditService;
 
-        public ClienteService(IClienteRepository repository, IUnitOfWork unitOfWork, ILogger<ClienteService> logger, IMapper mapper)
+        public ClienteService(IClienteRepository repository, IUnitOfWork unitOfWork, ILogger<ClienteService> logger, IMapper mapper, IAuditService auditService)
         {
             _clienteRepository = repository;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
+            _auditService = auditService;
         }
 
         public async Task<AnagraficaModel?> BuscarPorIdCliente(int id)
@@ -49,6 +52,14 @@ namespace LicencaApi.Services
             await _clienteRepository.CreateNewAnagrafica(anagrafica);
             await _unitOfWork.CompleteAsync();
 
+            // Registro genérico
+            await _auditService.AuditLogAsync(
+                entidade: "Cliente",
+                acao: "Create",
+                payload: dto,
+                entidadeId: anagrafica.IdAnagrafica
+            );
+
             _logger.LogInformation("Cliente criado com sucesso. ID: {IdAnagrafica}", anagrafica.IdAnagrafica);
             return anagrafica;
         }
@@ -69,6 +80,15 @@ namespace LicencaApi.Services
                 _mapper.Map(dto, cliente);
                 _unitOfWork.Cliente.AtualizarAnagrafica(cliente);
                 await _unitOfWork.CompleteAsync();
+
+                // Registro genérico
+                await _auditService.AuditLogAsync(
+                    entidade: "Cliente",
+                    acao: "Update",
+                    payload: dto,
+                    entidadeId: cliente.IdAnagrafica
+                );
+
                 return true;
             }
             catch (DbUpdateConcurrencyException ex)

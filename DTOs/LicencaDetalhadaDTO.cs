@@ -16,7 +16,7 @@ public class LicencaDetalhadaDTO
 
     // CONTRATO
     public int? IdContrato { get; set; }
-    public string? StatusContrato { get; set; }
+    public int? StatusContrato { get; set; }
     public string? PlanoContrato { get; set; }
     public int? QtdLicencasContrato { get; set; }
 

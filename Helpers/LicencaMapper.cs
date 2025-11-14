@@ -17,7 +17,9 @@ namespace LicencaApi.Helpers
             CreateMap<CriarRevendaDTO, RevendaModel>();
             CreateMap<AtualizarRevendaDTO, RevendaModel>();
             CreateMap<CriarContratoDTO, ContratoModel>();
-            CreateMap<AtualizarContratoDTO, ContratoModel>();
+            CreateMap<AtualizarContratoDTO, ContratoModel>()
+                .ForMember(d => d.StatusContrato, opt => opt.Ignore())
+                .ForMember(d => d.StatusDescricao, opt => opt.Ignore());
             CreateMap<CriarSoftwareDTO, SoftwareModel>();
             CreateMap<AtualizarSoftwareDTO, SoftwareModel>();
         }

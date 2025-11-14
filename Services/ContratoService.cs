@@ -5,6 +5,7 @@ using LicencaApi.Interfaces;
 using LicencaApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace LicencaApi.Services
 {
@@ -14,13 +15,15 @@ namespace LicencaApi.Services
         private readonly IContratoRepository _contratoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IAuditService _auditService;
 
-        public ContratoService(IUnitOfWork unitOfWork, ILogger<ContratoService> logger, IMapper mapper, IContratoRepository repository)
+        public ContratoService(IUnitOfWork unitOfWork, ILogger<ContratoService> logger, IMapper mapper, IContratoRepository repository, IAuditService auditService)
         {
             _contratoRepository = repository;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
+            _auditService = auditService;
         }
 
         public async Task<ContratoModel?> BuscarPorIdContrato(int id)
@@ -48,12 +51,24 @@ namespace LicencaApi.Services
                 throw new InvalidOperationException("Não foi possível mapear o DTO para o modelo de Contrato.");
             }
 
+            // 🔥 NOVO: Calcula status com base na DataFim do DTO antes de salvar
+            DefinirStatusInicial(contrato);
+            
             await _contratoRepository.CreateNewContrato(contrato);
             await _unitOfWork.CompleteAsync();
+
+            // Registro genérico
+            await _auditService.AuditLogAsync(
+                entidade: "Contrato",
+                acao: "Create",
+                payload: dto,
+                entidadeId: contrato.IdContrato
+            );
 
             _logger.LogInformation("Contrato criado com sucesso. ID: {IdContrato}", contrato.IdContrato);
             return contrato;
         }
+
 
         public async Task<bool> AtualizarAsync(int id, AtualizarContratoDTO dto)
         {
@@ -69,8 +84,26 @@ namespace LicencaApi.Services
             try
             {
                 _mapper.Map(dto, contrato);
-                _unitOfWork.Contrato.AtualizarContratto(contrato);
+
+                //VerificarStatusContrato(id).Wait();
+
+                //_unitOfWork.Contrato.AtualizarContratto(contrato);
+                
+                var (statusInt, statusDesc) = CalcularStatusContrato(dto.datafim);
+                contrato.StatusContrato = statusInt;
+                contrato.StatusDescricao = statusDesc;
+
+
                 await _unitOfWork.CompleteAsync();
+
+                // Registro genérico
+                await _auditService.AuditLogAsync(
+                    entidade: "Contrato",
+                    acao: "Update",
+                    payload: dto,
+                    entidadeId: contrato.IdContrato
+                );
+
                 return true;
             }
             catch (DbUpdateConcurrencyException ex)
@@ -83,6 +116,37 @@ namespace LicencaApi.Services
                 _logger.LogError(ex, "Erro ao mapear DTO para ContratoModel.");
                 throw;
             }
+        }
+
+        private (int statusInt, string statusDesc) CalcularStatusContrato(object dataFim)
+        {
+            if (dataFim == null)
+            {
+                return (1, "Contrato ativo");
+            }
+            DateTime dataFimDateTime;
+            if (dataFim is DateTime dt)
+            {
+                dataFimDateTime = dt;
+            }
+            else if (DateTime.TryParse(dataFim.ToString(), out DateTime parsedDate))
+            {
+                dataFimDateTime = parsedDate;
+            }
+            else
+            {
+                throw new ArgumentException("DataFim inválida.");
+            }
+            var hoje = DateTime.UtcNow;
+            if (dataFimDateTime < hoje)
+            {
+                return (0, "Contrato vencido");
+            }
+            if ((dataFimDateTime - hoje).TotalDays <= 30)
+            {
+                return (2, "Contrato próximo do vencimento");
+            }
+            return (1, "Contrato ativo e em dia");
         }
 
         public async Task<bool> DeletarContrato(int id)
@@ -118,5 +182,59 @@ namespace LicencaApi.Services
             }
             return "Ativo";
         }
+        private void DefinirStatusInicial(ContratoModel contrato)
+        {
+            if (!contrato.DataFim.HasValue)
+            {
+                contrato.StatusContrato = 1;
+                contrato.StatusDescricao = "Contrato ativo";
+                return;
+            }
+
+            var dataFim = contrato.DataFim.Value;
+            var hoje = DateTime.UtcNow;
+
+            if (dataFim < hoje)
+            {
+                contrato.StatusContrato = 0;
+                contrato.StatusDescricao = "Contrato vencido";
+                return;
+            }
+
+            if ((dataFim - hoje).TotalDays <= 30)
+            {
+                contrato.StatusContrato = 2;
+                contrato.StatusDescricao = "Contrato próximo do vencimento";
+                return;
+            }
+
+            contrato.StatusContrato = 1;
+            contrato.StatusDescricao = "Contrato ativo e em dia";
+        }
+        /*private async Task LogCrontratoAsync(CriarContratoDTO dto)
+        {
+            try
+            {
+                var log = new CriarContratoDTO
+                {
+                    idCliente = dto.idCliente,
+                    plano = dto.plano,
+                    qtdLicencas = dto.qtdLicencas,
+                    dataInicio = dto.dataInicio,
+                    datafim = dto.datafim,
+                    periodicidade = dto.periodicidade,
+                    statusContrato = dto.statusContrato,
+                    statusDescricao = dto.statusDescricao,
+                    dataUltimoPagamento = dto.dataUltimoPagamento,
+                    dataProximoPagamento = dto.dataProximoPagamento,
+                    observacoes = dto.observacoes
+                };
+                await _contratoRepository.LogContratoCreationAsync(log);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao registrar log de criação de contrato.");
+            }
+        }*/
     }
 }

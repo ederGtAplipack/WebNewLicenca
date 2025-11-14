@@ -30,8 +30,7 @@ namespace LicencaApi.Data
         public DbSet<AnagraficaModel> Anagrafica{ get; set; } // Adicionando o DbSet para AnagraficaDetalhadaDTO
         public DbSet<SoftwareModel> Softwares { get; set; } // DbSet para SoftwareModel
         public DbSet<LicencaDispositivos> LicencaDispositivos { get; set; } // DbSet para LicencaDispositivos
-        //public DbSet<LicencaLogModel> LicencaLogs { get; set; } // DbSet para LicencaLogModel
-
+        public DbSet<auditlog> auditlog { get; set; } // DbSet para AuditLog
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,7 +71,9 @@ namespace LicencaApi.Data
             modelBuilder.Entity<RevendaUserModel>().ToTable("revenda_user");
 
             modelBuilder.Entity<LicencaDeviceDTO>().HasKey(ld => ld.IdDispositivo);
-            
+
+            modelBuilder.Entity<auditlog>().HasKey(al => al.IdLog); // Definindo a chave primária para AuditLog
+
             // Configura a chave primária composta
             modelBuilder.Entity<RevendaUserModel>()
                 .HasKey(ru => new { ru.idRevenda, ru.idUser });

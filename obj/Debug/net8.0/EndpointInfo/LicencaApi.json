@@ -1312,7 +1312,8 @@
             "format": "int32"
           },
           "statusContrato": {
-            "type": "string",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "statusDescricao": {
@@ -1496,7 +1497,8 @@
             "nullable": true
           },
           "statusContrato": {
-            "type": "string",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "statusDescricao": {
