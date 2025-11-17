@@ -91,6 +91,10 @@ namespace LicencaApi.Data
                 .WithMany()
                 .HasForeignKey(ru => ru.idUser);
 
+            modelBuilder.Entity<ContratoModel>()
+                .HasMany(c => c.Licencas) // Propriedade de navegação para Licencas
+                .WithOne(l => l.Contrato) // Propriedade de navegação inversa em LicencaModel
+                .HasForeignKey(l => l.IdContrato); // Chave estrangeira em LicencaModel
 
             modelBuilder.Entity<RevendaUserModel>().HasKey(rv => rv.idRevenda);
 

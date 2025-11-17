@@ -6,6 +6,7 @@ namespace LicencaApi.Interfaces
     public interface IContratoRepository
     {
         void AtualizarContratto(ContratoModel contratoModel);
+        Task<ContratoModel?> BuscarContratoComLicenca(int idContrato);
         Task<ContratoModel?> BuscarPorIdContrato(int id);
         //VAI PARA public class ContratoRepository : IContratoRepository CTRL + F12 QUE É O "FIM"
         Task<IEnumerable<ContratoDetalhadoDTO>> BuscarTodasContratos();

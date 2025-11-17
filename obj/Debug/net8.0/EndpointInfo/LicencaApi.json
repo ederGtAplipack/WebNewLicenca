@@ -535,6 +535,28 @@
         }
       }
     },
+    "/api/v1/Contrato/licenseContrato": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "parameters": [
+          {
+            "name": "idContrato",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/Licenca/activate": {
       "post": {
         "tags": [
@@ -1524,6 +1546,11 @@
         "type": "object",
         "properties": {
           "idCliente": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "idContrato": {
             "type": "integer",
             "format": "int32",
             "nullable": true

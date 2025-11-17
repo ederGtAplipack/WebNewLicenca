@@ -6,6 +6,7 @@ namespace LicencaApi.Interfaces
     public interface IContratoService
     {
         Task<bool> AtualizarAsync(int id, AtualizarContratoDTO dto);
+        Task <ContratoModel?> BuscarContratoComLicenca(int idContrato);
         Task<ContratoModel?> BuscarPorIdContrato(int id);
         Task<IEnumerable<ContratoDetalhadoDTO>> BuscarTodosContratos();
         Task<ContratoModel?> CriarNovoContrato(CriarContratoDTO dto);

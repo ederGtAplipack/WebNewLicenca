@@ -5,6 +5,7 @@ namespace LicencaApi.DTOs
         public int NumLic { get; set; }
         public string Chave { get; set; }
         public int IdCliente { get; set; }
+        public int IdContrato { get; set; }
         public string? TipoLic { get; set; }
         public string? MacAddress { get; set; }
         public DateTime DataLic { get; set; }

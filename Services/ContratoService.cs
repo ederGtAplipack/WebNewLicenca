@@ -211,30 +211,36 @@ namespace LicencaApi.Services
             contrato.StatusContrato = 1;
             contrato.StatusDescricao = "Contrato ativo e em dia";
         }
-        /*private async Task LogCrontratoAsync(CriarContratoDTO dto)
+
+        public async Task<ContratoModel?> BuscarContratoComLicenca(int idContrato)
         {
-            try
-            {
-                var log = new CriarContratoDTO
-                {
-                    idCliente = dto.idCliente,
-                    plano = dto.plano,
-                    qtdLicencas = dto.qtdLicencas,
-                    dataInicio = dto.dataInicio,
-                    datafim = dto.datafim,
-                    periodicidade = dto.periodicidade,
-                    statusContrato = dto.statusContrato,
-                    statusDescricao = dto.statusDescricao,
-                    dataUltimoPagamento = dto.dataUltimoPagamento,
-                    dataProximoPagamento = dto.dataProximoPagamento,
-                    observacoes = dto.observacoes
-                };
-                await _contratoRepository.LogContratoCreationAsync(log);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao registrar log de criação de contrato.");
-            }
-        }*/
+            _logger.LogInformation("Passando pelo ContratoService BuscarContratoComLicenca.");
+            return await _contratoRepository.BuscarContratoComLicenca(idContrato);
+        }
+        /*private async Task LogCrontratoAsync(CriarContratoDTO dto)
+{
+   try
+   {
+       var log = new CriarContratoDTO
+       {
+           idCliente = dto.idCliente,
+           plano = dto.plano,
+           qtdLicencas = dto.qtdLicencas,
+           dataInicio = dto.dataInicio,
+           datafim = dto.datafim,
+           periodicidade = dto.periodicidade,
+           statusContrato = dto.statusContrato,
+           statusDescricao = dto.statusDescricao,
+           dataUltimoPagamento = dto.dataUltimoPagamento,
+           dataProximoPagamento = dto.dataProximoPagamento,
+           observacoes = dto.observacoes
+       };
+       await _contratoRepository.LogContratoCreationAsync(log);
+   }
+   catch (Exception ex)
+   {
+       _logger.LogError(ex, "Erro ao registrar log de criação de contrato.");
+   }
+}*/
     }
 }

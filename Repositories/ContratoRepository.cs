@@ -52,5 +52,16 @@ namespace LicencaApi.Repositories
             _context.Contratos.Remove(contrato);
 
         }
+
+        public async Task<ContratoModel?> BuscarContratoComLicenca(int idContrato)
+        {
+            _logger.LogInformation("Passando pelo Repository do BuscarContratoComLicenca.");
+            //return _context.Contratos.FindAsync(idContrato).AsTask();
+            //var sql = ContratoSqlBuilder.GetContratoWithLicencaSql();
+            return await _context.Contratos
+                .Include(c => c.Licencas)
+                .FirstOrDefaultAsync(c => c.IdContrato == idContrato);
+        }
+      
     }
 }

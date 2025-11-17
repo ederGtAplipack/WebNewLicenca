@@ -807,6 +807,7 @@ namespace LicencaApi.Services
             return new LicencaModel
             {
                 IdCliente = dto.IdCliente ?? 0,
+                IdContrato = contrato.IdContrato,
                 TipoLic = chave.TipoLic,
                 MacAddress = dto.MacAddress,
                 DataLic = dataLic,

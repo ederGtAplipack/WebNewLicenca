@@ -312,6 +312,22 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
+    "Method": "GetLicenseContrato",
+    "RelativePath": "api/v1/Contrato/licenseContrato",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idContrato",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LicencaApi.Controllers.V1.ContratoController",
     "Method": "UpdateContrato",
     "RelativePath": "api/v1/Contrato/UpdateContrato/{id}",
     "HttpMethod": "PUT",
@@ -527,7 +543,7 @@
   },
   {
     "ContainingType": "LicencaApi.Controllers.V1.LicenseDeviceController",
-    "Method": "GetStatus",
+    "Method": "GetLincDeviceStatus",
     "RelativePath": "api/v1/LicenseDevice/licenseDeviceStatus",
     "HttpMethod": "GET",
     "IsController": true,

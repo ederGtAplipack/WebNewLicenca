@@ -1,3 +1,4 @@
+
 namespace LicencaApi.MSSQL.Builders
 {
     public class ContratoSqlBuilder
@@ -148,6 +149,64 @@ namespace LicencaApi.MSSQL.Builders
                 DELETE FROM Licenca 
                 WHERE 
                     NumLic = @NumLic";
+        }
+
+        internal static string GetContratoWithLicencaSql()
+        {
+            return @"
+                SELECT 
+                    c.idContrato, 
+                    c.idCliente, 
+                    c.plano, 
+                    c.qtdLicencas, 
+                    c.dataInicio, 
+                    c.dataFim, 
+                    c.Periodicidade, 
+                    c.PagamentoEmDia, 
+                    c.StatusContrato, 
+                    c.DataProximoPagamento, 
+                    c.DataUltimoPagamento, 
+                    c.Observacoes, 
+                    c.StatusDescricao,
+                    a.idanagrafica, 
+                    a.razaoSocial, 
+                    a.nomeFantasia, 
+                    a.contato, 
+                    a.cep, 
+                    a.endereco, 
+                    a.bairro, 
+                    a.cidade, 
+                    a.uf, 
+                    a.cnpj, 
+                    a.ie, 
+                    a.telefone, 
+                    a.email, 
+                    a.idrevenda, 
+                    a.Senha,
+                    l.NumLic,
+                    l.TipoLic,
+                    l.MacAddress,
+                    l.DataLic,
+                    l.Scade,
+                    l.Attivo,
+                    l.IdRevenda AS LicencaIdRevenda,
+                    l.SistemaOp,
+                    l.DataAtivacao,
+                    l.TipoPc,
+                    l.NomeComputador,
+                    l.Software,
+                    l.Ip,
+                    l.Processador,
+                    l.Status AS LicencaStatus,
+                    l.IdLicencaChave
+                FROM 
+                    licencas.contrato c
+                JOIN 
+                    licencas.anagrafica a ON c.idCliente = a.idanagrafica
+                LEFT JOIN
+                    licencas.licenca l ON c.idCliente = l.IdCliente
+                WHERE 
+                    c.idContrato = @IdContrato";
         }
     }
 }

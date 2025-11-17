@@ -32,5 +32,6 @@ namespace LicencaApi.Models
         public DateTime? DataProximoPagamento { get; set; } // Data do próximo pagamento, se aplicável
         public string? Observacoes { get; set; } // Campo opcional para observações adicionais
 
+        public ICollection<LicencaModel>? Licencas { get; set; }
     }
 }

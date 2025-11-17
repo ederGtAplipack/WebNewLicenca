@@ -9,6 +9,7 @@ namespace LicencaApi.MSSQL.Builders
                 -- Licença principal
                 l.numLic AS NumLic,
                 l.IdCliente AS IdCliente,
+                l.IdContrato AS IdContrato,
                 a.NomeFantasia AS NomeCliente,
                 l.TipoLic AS TipoLic,
                 l.MacAddress AS MacAddress,

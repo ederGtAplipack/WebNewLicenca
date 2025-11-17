@@ -105,7 +105,6 @@ namespace LicencaApi.Controllers.V1
             return NoContent();
         }
 
-
         [HttpPut("{numLic}/status")]
         /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> UpdateStatus(int numLic, UpdateStatusDTO dto)
@@ -122,6 +121,7 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno");
             }
         }
+
         [HttpGet("{numLic}/devices")]
         /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> GetDevices(int numLic)
@@ -182,8 +182,6 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno");
             }
         }
-
-
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)

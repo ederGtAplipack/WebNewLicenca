@@ -19,7 +19,7 @@ namespace LicencaApi.Controllers.V1
         }
 
         [HttpGet("licenseDeviceStatus")]
-        public async Task<IActionResult> GetStatus()
+        public async Task<IActionResult> GetLincDeviceStatus()
         {
             try
             {

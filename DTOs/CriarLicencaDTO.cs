@@ -4,6 +4,7 @@
     {
         // Propriedades que representam os dados necessários para criar uma nova licença
         public int? IdCliente { get; set; }
+        public int? IdContrato { get; set; }
         public string? TipoLic { get; set; } = string.Empty;
         public string? MacAddress { get; set; } = string.Empty;
         public DateTime DataLic { get; set; } = DateTime.UtcNow;

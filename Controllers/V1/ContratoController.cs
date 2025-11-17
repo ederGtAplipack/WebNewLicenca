@@ -148,5 +148,23 @@ namespace LicencaApi.Controllers.V1
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
+        [HttpGet("licenseContrato")]
+        public async Task<IActionResult> GetLicenseContrato(int idContrato)
+        {
+            try
+            {
+                _logger.LogInformation("Iniciando Busca por Contratos com Licenças");
+                //VAI PARA O public interface IContratoService
+                var contrato = await _contratoService.BuscarContratoComLicenca(idContrato);
+                _logger.LogInformation("Fim da Busca por contratos com Licenças");
+                return Ok(contrato);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erros ao buscar Contratos com Licenças");
+                return StatusCode(500, "Erro interno do Servidor");
+            }
+
+        }
     }
 }

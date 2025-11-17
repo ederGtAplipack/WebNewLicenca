@@ -12,6 +12,8 @@ namespace LicencaApi.Models
         public int NumLic { get; set; }
         [Column("IdCliente")]
         public int IdCliente { get; set; }
+        public int IdContrato { get; set; }
+
         [Column("TipoLic")]
         public string? TipoLic { get; set; } = string.Empty;
         [Column("MacAddress")]
@@ -48,5 +50,7 @@ namespace LicencaApi.Models
         // navigation properties if needed
         [ForeignKey("IdCliente")]
         public AnagraficaModel? IdClienteNavigation { get; internal set; }
+
+        public ContratoModel? Contrato { get; set; }
     }
 }
